@@ -1,0 +1,25 @@
+.navbar-brand {
+  background-image: url(../../assets/images/cottura.png);
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-position: center center;
+  background-size: 70px 70px;
+  margin: 0;
+  padding: 0;
+}
+
+@media (min-width: 768px) {
+  li .nav-link {
+    border: 1px solid black;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-nav{
+    margin-top: 1em;
+  }
+  .nav-item{
+    text-align-last: start;
+  }
+}
