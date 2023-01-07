@@ -1,2 +1,39 @@
-<h1>Public::Users#edit</h1>
-<p>Find me in app/views/public/users/edit.html.erb</p>
+<!--< %= render "public/shared/error_messages", resource: resource %>-->
+<div class="container my-5">
+  <div class="row mb-3">
+    <div class="col-8 mx-auto">
+      <%= form_with model: @user, url: user_path(@user.id), method: :patch do |f| %>
+        <h2 class="d-inline-block p-1 rounded-2 text-bg-secondary">プロフィール編集画面</h2>
+        
+        <div class="mb-3 mt-3">
+          <%= f.label :image, "プロフィール画像", { class: "form-label"} %>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-image"></i></span>
+            <%= f.file_field :image, { accept: "image/*", class: "form-control" } %>
+          </div>
+        </div>
+        
+        <div class="mb-3 mt-3">
+          <%= f.label :name, "ニックネーム", { class: "form-label"} %>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
+            <%= f.text_field :name, { class: "form-control", autofocus: true, placeholder: "cottura!" } %>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <%= f.label :content, "自己紹介", { class: "form-label"} %>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-id-badge"></i></span>
+            <%= f.text_area :content, { class: "form-control", placeholder: "簡単な自己紹介を入力" } %>
+          </div>
+        </div>
+        
+        <div class=""> 
+          <%= f.submit "新規登録", class: "btn btn-lg btn-success" %>
+        </div>
+        
+      <% end %>
+    </div>
+  </div>
+</div>

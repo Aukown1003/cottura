@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   devise_scope :user do
     post 'user/guest_sign_in', to: 'public/sessions#guest_sign_in'
   end
+  
   scope module: :public do
     root to: 'homes#top'
     resources :users, except: [:new, :index, :create] do

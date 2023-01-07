@@ -1,2 +1,30 @@
-<h1>Public::Users#show</h1>
-<p>Find me in app/views/public/users/show.html.erb</p>
+<div class="container my-4">
+  <div class="row mb-3">
+    <div class="col-sm-4 my-auto text-center text-sm-end mx-auto">
+      <%= image_tag @user.get_user_image(200, 200), alt: "ユーザー画像", class:"user_profile_image"%>
+    </div>
+    <div class="col-sm-7 text-center text-sm-start offset-sm-1">
+      <h2 class="mb-2 mt-3 mt-sm-0"><%= @user.name %>のキッチン</h2>
+      <p><%= safe_join(@user.content.split("\n"),tag(:br)) %></p>
+      <!--<p>< %= @user.content %></p>-->
+      <% if @user.id == current_user.id && @user.email != 'guest@example.com' %>
+        <div class="d-flex justify-content-evenly justify-content-sm-start">
+          <div class="m-1">
+            <%= link_to "プロフィール編集", edit_user_path, class:"btn btn-sm btn-success" %>
+          </div>
+          <div class="m-1">
+            <%= link_to "会員情報編集", edit_user_registration_path, class:"btn btn-sm btn-success" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="mt-5 row">
+    <div class="col text-center m-1 text-bg-secondary" style="width: 200px;">resipe_index</div>
+    <div class="col text-center m-1 text-bg-secondary" style="width: 200px;">resipe_index</div>
+    <div class="col text-center m-1 text-bg-secondary" style="width: 200px;">resipe_index</div>
+    <div class="col text-center m-1 text-bg-secondary" style="width: 200px;">resipe_index</div>
+  </div>
+
+</div>

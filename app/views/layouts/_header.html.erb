@@ -11,7 +11,7 @@
           <ul class="navbar-nav ms-auto">
 
             <li class="nav-item mb-1 mb-lg-0">
-              <%= link_to root_path, class: 'nav-link text-dark btn me-2' do %>
+              <%= link_to user_path(current_user.id), class: 'nav-link text-dark btn me-2' do %>
                 <i class="fas fa-home"></i><%= " マイページ" %>
               <% end %>
             </li>
