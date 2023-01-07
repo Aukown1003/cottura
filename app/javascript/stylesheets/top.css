@@ -4,7 +4,10 @@
   border: 3px solid black;
 }
 
-
+.hidden {
+  opacity: 0; /*透明度*/
+  visibility: hidden; /*視認性、最初は隠しておきたいのでhiddenを指定*/
+}
 
 .top_image_form{
   position: relative;

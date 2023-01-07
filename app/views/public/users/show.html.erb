@@ -19,12 +19,34 @@
       <% end %>
     </div>
   </div>
-
-  <div class="mt-5 row">
-    <div class="col text-center m-1 text-bg-secondary" style="width: 200px;">resipe_index</div>
-    <div class="col text-center m-1 text-bg-secondary" style="width: 200px;">resipe_index</div>
-    <div class="col text-center m-1 text-bg-secondary" style="width: 200px;">resipe_index</div>
-    <div class="col text-center m-1 text-bg-secondary" style="width: 200px;">resipe_index</div>
+    <button id="atab">ボタン</button>
+      投稿したレシピ
+    <button id="btab">ボタン</button>
+      お気に入りしたレシピ
+  <div class="active">
+    <div id="tabA">
+      <%= render 'public/users/recipe' %>
+    </div>
+    <div id="tabB" class="hidden">
+      <%= render 'public/users/a' %>
+    </div>
   </div>
 
+
 </div>
+<script>
+document.addEventListener('turbolinks:load', function() {
+  let tabA = document.getElementById('tabA');
+  let tabB = document.getElementById('tabB');
+  let atab = document.getElementById('atab');
+  let btab = document.getElementById('btab');
+  atab.addEventListener('click', () => {
+    tabA.classList.add('hidden');
+    tabB.classList.remove('hidden');
+    });
+  btab.addEventListener('click', () => {
+    tabB.classList.add('hidden');
+    tabA.classList.remove('hidden');
+  });
+});
+</script>
