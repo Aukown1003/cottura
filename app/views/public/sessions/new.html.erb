@@ -1,44 +1,44 @@
 <div class="container my-5">
   <div class="row mb-3">
-      <h5>ログイン</h5>
-  </div>
-
-  <div class="col-12">
-    <%= form_with model: @user, url: session_path(resource_name) do |f| %>
-
-      <div class="mb-3">
-        <%= f.label :email, "メールアドレス", { class: "form-label"} %>
-        <div class="input-group">
-          <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-          <%= f.email_field :email, { class: "form-control", autofocus: true, autocomplete: "email", placeholder: "cottura@example.com" } %>
+    <!--<col-6で画像を-->
+    <div class="col-8 mx-auto">
+      <h2 class="d-inline-block p-1 rounded-2 text-bg-secondary">ログイン</h2>
+      <%= form_with model: @user, url: session_path(resource_name) do |f| %>
+  
+        <div class="mb-3 mt-3">
+          <%= f.label :email, "メールアドレス", { class: "form-label"} %>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <%= f.email_field :email, { class: "form-control", autofocus: true, autocomplete: "email", placeholder: "cottura@example.com" } %>
+          </div>
         </div>
-      </div>
-
-      <div class="mb-3">
-        <%= f.label :password, "パスワード", { class: "form-label"} %>
-        <div class="input-group">
-          <span class="input-group-text"><i class="fas fa-lock"></i></span>
-          <%= f.password_field :password, { class: "form-control", autocomplete: "new-password", placeholder: "password" } %>
+  
+        <div class="mb-3">
+          <%= f.label :password, "パスワード", { class: "form-label"} %>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+            <%= f.password_field :password, { class: "form-control", autocomplete: "new-password", placeholder: "password" } %>
+          </div>
         </div>
-      </div>
-
-      <div class="text-center">
-        <%= f.submit "ログイン", class: "btn btn-lg btn-primary" %>
-      </div>
-    <% end %>
-  </div>
-
-  <div class="col-12 mt-5">
-    <h5 class="mb-3">会員登録がお済みでない方</h5>
-    <div class="text-center mb-3">
-      <%= link_to "ゲストログイン",  user_guest_sign_in_path, method: :post, class:"btn btn-lg btn-secondary" %><br>
-      <p class="mt-2">※一部機能に制限があります</p>
+  
+        <div class="">
+          <%= f.submit "ログイン", class: "btn btn-lg btn-primary" %>
+        </div>
+      <% end %>
     </div>
-    
-    <h3 class="text-center mb-3">または<h3>
-    
-    <div class="text-center">
-      <%= render "public/shared/links" %>
+  
+    <div class="col-8 mt-5 mx-auto">
+      <h2 class="d-inline-block p-1 rounded-2 text-bg-secondary">会員登録がお済みでない方</h2>
+      <div class="mb-3 mt-3">
+        <%= link_to "ゲストログイン",  user_guest_sign_in_path, method: :post, class:"btn btn-lg btn-warning" %><br>
+        <p class="mt-2">※一部機能に制限があります</p>
+      </div>
+      
+      <h3 class="mb-3">または<h3>
+      
+      <div class="">
+        <%= render "public/shared/links" %>
+      </div>
     </div>
   </div>
 </div>

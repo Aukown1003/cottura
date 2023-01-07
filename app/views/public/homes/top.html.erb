@@ -1,8 +1,20 @@
 <div class="container">
   <div class="row">
-    <div class="col-12 d-flex">
-      <h1 class="top_text">COTTURA!</h1>
-      <%= image_tag 'top_image.jpg', class:"img-fluid mx-auto" %>
+    <div class="col-12">
+      <div class="top_image_form d-flex mx-auto mt-3">
+        <%= image_tag 'top_image.jpg', class:"img-fluid mx-auto" %>
+        <p class="cover-text">COTTURA!</p>
+      </div>
+      <div class="text-center mx-auto" style="max-width: 356px;">
+        <p class="m-0 mt-3" style="text-align: left;">
+          ようこそCOTTURAへ！</br>
+          このサイトはレシピサイトはレシピサイトです</br>
+          レシピを投稿したり検索したり出来ます
+        </p>
+      </div>
+      <div class="text-center mt-4">
+        <%= link_to "レシピ一覧", root_path, class:"btn btn-lg btn-success"%>
+      </div>
     </div>
   </div>
 </div>
