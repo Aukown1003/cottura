@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  namespace :admin do
+    get 'users/index'
+    get 'users/edit'
+    get 'users/show'
+  end
   # 制限有りはdevise_for :users,skip: [:passwords], controllers: {
   devise_for :users, controllers: {
     registrations: "public/registrations",
@@ -16,10 +21,13 @@ Rails.application.routes.draw do
     end
   end
   
+  # registrationsは後で削除
   devise_for :admin ,controllers: {
+    registrations: "admin/registrations",
     sessions: "admin/sessions"
   }
   namespace :admin do
+    root to: 'homes#top'
     #以下adminはすべてこの中に
   end
   

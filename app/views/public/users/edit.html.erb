@@ -21,16 +21,16 @@
           </div>
         </div>
         
-        <div class="mb-3">
+        <div class="mb-3 h-auto">
           <%= f.label :content, "自己紹介", { class: "form-label"} %>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-id-badge"></i></span>
-            <%= f.text_area :content, { class: "form-control", placeholder: "簡単な自己紹介を入力" } %>
+            <%= f.text_area :content, { class: "form-control", placeholder: "簡単な自己紹介を入力", maxlength: "200", rows: 6 } %>
           </div>
         </div>
         
         <div class=""> 
-          <%= f.submit "新規登録", class: "btn btn-lg btn-success" %>
+          <%= f.submit "プロフィール更新", class: "btn btn-lg btn-success" %>
         </div>
         
       <% end %>
