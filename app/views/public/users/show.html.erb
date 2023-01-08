@@ -19,34 +19,44 @@
       <% end %>
     </div>
   </div>
-    <button id="atab">ボタン</button>
-      投稿したレシピ
-    <button id="btab">ボタン</button>
-      お気に入りしたレシピ
-  <div class="active">
-    <div id="tabA">
-      <%= render 'public/users/recipe' %>
-    </div>
-    <div id="tabB" class="hidden">
-      <%= render 'public/users/a' %>
+  
+  <div class="tab-panel row">
+    <!--タブ-->
+    <ul class="tab-group mb-0">
+      <li class="tab tab-A is-active col mx-2">投稿したレシピ</li>
+      <li class="tab tab-B col mx-2">お気に入りレシピ</li>
+    </ul>
+    <!--タブを切り替えて表示するコンテンツ-->
+    <div class="panel-group mt-2">
+      <div class="panel tab-A is-show">
+        <%= render 'public/users/recipe' %>
+      </div>
+      <div class="panel tab-B">
+        <%= render 'public/users/a' %>
+      </div>
     </div>
   </div>
-
-
+  
 </div>
+
 <script>
-document.addEventListener('turbolinks:load', function() {
-  let tabA = document.getElementById('tabA');
-  let tabB = document.getElementById('tabB');
-  let atab = document.getElementById('atab');
-  let btab = document.getElementById('btab');
-  atab.addEventListener('click', () => {
-    tabA.classList.add('hidden');
-    tabB.classList.remove('hidden');
-    });
-  btab.addEventListener('click', () => {
-    tabB.classList.add('hidden');
-    tabA.classList.remove('hidden');
-  });
-});
+  document.addEventListener('turbolinks:load', function() {
+    // タブに対してクリックイベントを適用
+    const tabs = document.getElementsByClassName('tab');
+    for(let i = 0; i < tabs.length; i++) {
+      tabs[i].addEventListener('click', tabSwitch, false);
+    }
+  
+    // タブをクリックすると実行する関数
+    function tabSwitch(){
+      // タブのclassの値を変更
+      document.getElementsByClassName('is-active')[0].classList.remove('is-active');
+      this.classList.add('is-active');
+      // コンテンツのclassの値を変更
+      document.getElementsByClassName('is-show')[0].classList.remove('is-show');
+      const arrayTabs = Array.prototype.slice.call(tabs);
+      const index = arrayTabs.indexOf(this);
+      document.getElementsByClassName('panel')[index].classList.add('is-show');
+    };
+  }, false);
 </script>
