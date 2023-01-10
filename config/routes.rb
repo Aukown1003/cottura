@@ -1,9 +1,4 @@
 Rails.application.routes.draw do
-  namespace :admin do
-    get 'users/index'
-    get 'users/edit'
-    get 'users/show'
-  end
   # 制限有りはdevise_for :users,skip: [:passwords], controllers: {
   devise_for :users, controllers: {
     registrations: "public/registrations",

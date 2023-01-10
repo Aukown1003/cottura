@@ -3,9 +3,22 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-         
+
   has_one_attached :image
-  
+
+  # バリデーション
+  validates :name, presence: true
+
+  # ユーザーステータスメソッド
+  def active?
+    if self.is_active == true
+      "有効"
+    else
+      "退会"
+    end
+  end
+
+  # 画像のリサイズ、及びデフォルト画像の設定
   def get_user_image(width, height)
     unless image.attached?
       file_path = Rails.root.join('app/assets/images/no_image_user.png')
@@ -14,7 +27,8 @@ class User < ApplicationRecord
     # image.variant(resize_to_limit: [width, height]).processed
     image.variant(resize_to_fill: [width, height]).processed
   end
-  
+
+  # ゲストユーザーログインメソッド
   def self.guest
     find_or_create_by!(name: 'guestuser' ,email: 'guest@example.com') do |user|
       user.password = SecureRandom.urlsafe_base64
@@ -22,5 +36,5 @@ class User < ApplicationRecord
       user.content = "ゲストユーザーでログイン中！"
     end
   end
-  
+
 end
