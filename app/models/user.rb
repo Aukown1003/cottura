@@ -8,10 +8,12 @@ class User < ApplicationRecord
 
   # バリデーション
   validates :name, presence: true
+  validates :email, presence: true
   
-  
+  # アソシエーション
+  has_many :recipes, dependent: :destroy
 
-  # ユーザーアカウントメソッド
+  # ユーザーアカウント状態メソッド
   def active?
     if self.is_active == true
       "有効"
