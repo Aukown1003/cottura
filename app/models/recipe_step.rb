@@ -3,5 +3,5 @@ class RecipeStep < ApplicationRecord
   belongs_to :recipe
   
   # バリデーション
-  validates :quantity, presence: true
+  validates :content, presence: true
 end

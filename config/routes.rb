@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   devise_scope :user do
     post 'user/guest_sign_in', to: 'public/sessions#guest_sign_in'
   end
-  
+
   scope module: :public do
     root to: 'homes#top'
     resources :users, except: [:new, :index, :create] do
@@ -16,7 +16,7 @@ Rails.application.routes.draw do
     end
     resources :recipes
   end
-  
+
   # registrationsは後で削除
   devise_for :admin ,controllers: {
     registrations: "admin/registrations",
@@ -27,5 +27,5 @@ Rails.application.routes.draw do
     resources :users, except: [:new, :create]
     #以下adminはすべてこの中に
   end
-  
+
 end

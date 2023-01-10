@@ -4,21 +4,25 @@ class Public::RecipesController < ApplicationController
   end
 
   def index
+    @recipes = Recipe.all
   end
 
   def show
-    
+    @recipe = Recipe.find(params[:id])
   end
-  
+
   def create
-    recipe = current_user.recipes.new(recipe_params)
-    recipe.save!
-    redirect_to root_path, notice: "「#{recipe.title}」のレシピを投稿しました。"
+    ActiveRecord::Base.transaction do
+      recipe = current_user.recipes.new(recipe_params)
+      binding.pry
+      # recipe.save!
+    end
+    redirect_to root_path, notice: "投稿しました"
   end
 
   def edit
   end
-  
+
   private
   def recipe_params
       params.require(:recipe).permit(
@@ -27,9 +31,9 @@ class Public::RecipesController < ApplicationController
         :content,
         :total_time,
         :is_open,
-        recipe_ingredients_attributes: [:id, :content, :quantity, :_destroy],
-        recipe_steps_attributes: [:id, :direction, :image, :_destroy]
+        recipe_ingredients_attributes: [:id, :name, :quantity, :unit_id, :_destroy],
+        recipe_steps_attributes: [:id, :content, :_destroy]
         )
   end
-  
+
 end
