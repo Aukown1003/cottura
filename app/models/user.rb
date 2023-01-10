@@ -8,8 +8,10 @@ class User < ApplicationRecord
 
   # バリデーション
   validates :name, presence: true
+  
+  
 
-  # ユーザーステータスメソッド
+  # ユーザーアカウントメソッド
   def active?
     if self.is_active == true
       "有効"
