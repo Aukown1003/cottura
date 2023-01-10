@@ -14,8 +14,8 @@ class Public::RecipesController < ApplicationController
   def create
     ActiveRecord::Base.transaction do
       recipe = current_user.recipes.new(recipe_params)
-      binding.pry
-      # recipe.save!
+      # binding.pry
+      recipe.save!
     end
     redirect_to root_path, notice: "投稿しました"
   end
