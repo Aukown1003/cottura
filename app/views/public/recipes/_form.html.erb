@@ -1,0 +1,20 @@
+<%= form_with(model: @recipe, local: true) do |f| %>
+  <div>材料</div>
+  <div class="recipe_ingredient">
+    <%= f.fields_for :recipe_ingredients do |ingredient| %>
+      <%= render "recipe_ingredient_fields", f: ingredient %>
+    <% end %>
+    <%= link_to_add_fields "材料の追加", f, :recipe_ingredients %>
+  </div>
+
+  <div>作り方</div>
+  <div class="recipe_step">
+    <%= f.fields_for :recipe_steps do |step| %>
+      <%= render "step_fields", f: step %>
+    <% end %>
+    <%= link_to_add_fields "作り方の追加", f, :recipe_steps %>
+  </div>
+
+  <%= f.submit %>
+<% end %>
+

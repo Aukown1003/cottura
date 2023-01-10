@@ -1,0 +1,12 @@
+<div class="nested-fields">
+  <%= f.hidden_field :_destroy %>
+  <div class="ingredient__inputBx">
+    <%= f.label :name %>
+    <%= f.text_field :name, placeholder: "材料", class:"ingredient__content"%>
+    <%= f.text_field :quantity, class:"ingredient__quantity" %>
+    <%= f.collection_select(:unit_id, Unit.all, :id, :name) %>
+    <%= link_to '#' , class: "remove-field-btn" do %>
+      <%= image_tag 'delete', class: "js-remove_fields" %>
+    <% end %>
+  </div>
+</div>
