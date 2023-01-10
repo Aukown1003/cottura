@@ -9,12 +9,18 @@ class Public::RecipesController < ApplicationController
   def show
     
   end
+  
+  def create
+    recipe = current_user.recipes.new(recipe_params)
+    recipe.save!
+    redirect_to root_path, notice: "「#{recipe.title}」のレシピを投稿しました。"
+  end
 
   def edit
   end
   
   private
-  def person_params
+  def recipe_params
       params.require(:recipe).permit(
         :user_id,
         :title,
