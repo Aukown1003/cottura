@@ -1,0 +1,32 @@
+<div class="container my-4">
+  <div class="row mb-3">
+    <div class="col-sm-10 mx-auto">
+      <h2>会員一覧</h2>
+      <table class="table">
+        <thead>
+          <tr class="align-middle">
+            <th></th>
+            <th>ID</th>
+            <th>ユーザー名</th>
+            <th>メールアドレス</th>
+            <th>投稿レシピ数</th>
+            <th>アカウント状態</th>
+          </tr>
+        </thead>
+        <% @users.each do |user| %>
+        <tbody>
+          <tr class="align-middle">
+            <td><%= image_tag user.get_user_image(50, 50), alt: "ユーザー画像", class:"user_profile_image" %></td>
+            <td><%= user.id %></td>
+            <td><%= link_to user.name, admin_user_path(user.id) %></td>
+            <td><%= user.email %></td>
+            <!--暫定処理、あとでレシピに差し替え-->
+            <td><%= user.name %></td>
+            <td><%= user.active? %></td>
+          </tr>
+        </tbody>
+        <% end %>
+      </table>
+    </div>
+  </div>
+</div>

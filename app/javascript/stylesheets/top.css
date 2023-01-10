@@ -1,0 +1,65 @@
+/*ユーザー画像を丸く*/
+.user_profile_image{
+  border-radius: 50%;
+  border: 3px solid black;
+}
+
+/*タブ機能*/
+.tab-group{
+  display: flex;
+  justify-content: center;
+}
+.tab{
+  flex-grow: 1;
+  padding:5px;
+  list-style:none;
+  border:solid 1px #CCC;
+  text-align:center;
+  cursor:pointer;
+}
+
+.panel{
+  display:none;
+}
+.tab.is-active{
+  background:#F00;
+  color:#FFF;
+  transition: all 0.2s ease-out;
+}
+.panel.is-show{
+  display:block;
+}
+/*ここまで*/
+
+/*以下完成済み*/
+.top_image_form{
+  position: relative;
+}
+
+.cover-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  text-shadow: 4px 2px 5px black;
+  color: white;
+  font-family: -webkit-body;
+  letter-spacing: 0.1em;
+  font-weight: bold;
+}
+
+@media (min-width:768px) {
+  .cover-text {
+    font-size: 60px;
+  }
+}
+@media (max-width:768px) {
+  .cover-text {
+    font-size: 45px;
+  }
+}
+@media (max-width: 479px) {
+  .cover-text {
+    font-size: 30px;
+  }
+}

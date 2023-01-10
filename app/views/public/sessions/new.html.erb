@@ -1,26 +1,44 @@
-<h2>Log in</h2>
-
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
-
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+<div class="container my-5">
+  <div class="row mb-3">
+    <!--<col-6で画像を-->
+    <div class="col-8 mx-auto">
+      <h2 class="d-inline-block p-1 rounded-2 text-bg-secondary">ログイン</h2>
+      <%= form_with model: @user, url: session_path(resource_name) do |f| %>
+  
+        <div class="mb-3 mt-3">
+          <%= f.label :email, "メールアドレス", { class: "form-label"} %>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            <%= f.email_field :email, { class: "form-control", autofocus: true, autocomplete: "email", placeholder: "cottura@example.com" } %>
+          </div>
+        </div>
+  
+        <div class="mb-3">
+          <%= f.label :password, "パスワード", { class: "form-label"} %>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+            <%= f.password_field :password, { class: "form-control", autocomplete: "new-password", placeholder: "password" } %>
+          </div>
+        </div>
+  
+        <div>
+          <%= f.submit "ログイン", class: "btn btn-lg btn-primary" %>
+        </div>
+      <% end %>
     </div>
-  <% end %>
-
-  <div class="actions">
-    <%= f.submit "Log in" %>
+  
+    <div class="col-8 mt-5 mx-auto">
+      <h2 class="d-inline-block p-1 rounded-2 text-bg-secondary">会員登録がお済みでない方</h5>
+      <div class="mb-3 mt-3">
+        <%= link_to "ゲストログイン",  user_guest_sign_in_path, method: :post, class:"btn btn-lg btn-warning" %><br>
+        <p class="mt-2">※一部機能に制限があります</p>
+      </div>
+      
+      <h3 class="mb-3">または<h3>
+      
+      <div class="">
+        <%= render "public/shared/links" %>
+      </div>
+    </div>
   </div>
-<% end %>
-
-<%= render "public/shared/links" %>
+</div>
