@@ -22,7 +22,7 @@ class User < ApplicationRecord
     end
   end
 
-  # 画像のリサイズ、及びデフォルト画像の設定
+  # 画像のリサイズ、及びデフォルト画像の設定メソッド
   def get_user_image(width, height)
     unless image.attached?
       file_path = Rails.root.join('app/assets/images/no_image_user.png')
