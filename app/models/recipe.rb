@@ -27,6 +27,7 @@ class Recipe < ApplicationRecord
     image.variant(resize_to_fill: [width, height]).processed
   end
   
+  # 調理時間作成メソッド
   def self.select_time_data
     # 登録したい時間
     hour = 7

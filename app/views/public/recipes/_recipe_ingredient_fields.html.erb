@@ -1,10 +1,14 @@
-<div class="nested-fields">
+<div class="nested-fields text-start">
   <%= f.hidden_field :_destroy %>
-  <div class="recipe_ingredient_inputBox">
-    <%= f.text_field :name, placeholder: "材料", class:""%>
-    <%= f.text_field :quantity, placeholder: "分量",class:"" %>
-    <%= f.collection_select(:unit_id, Unit.all, :id, :name) %>
-    <%= link_to "削除", '#', class: "remove_fields" %>
+  <div class="recipe_ingredient_inputBox d-flex justify-content-between mb-3">
+    <%= f.text_field :name, placeholder: "材料名", class:"ingredient-name p-1 me-3"%>
+    <%= f.text_field :quantity, placeholder: "分量",class:"ingredient-quantity p-1 me-2" %>
+    <div class="d-inline-block selectdiv unit">
+      <%= f.collection_select(:unit_id, Unit.all, :id, :name, class:"ingredient-unit p-0") %>
+    </div>
+    <%= link_to '#', class: "remove-field-btn" do %>
+      <%= image_tag 'ifn0498', class:"remove_fields" %>
+    <% end %>
   </div>
 </div>
 

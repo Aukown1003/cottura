@@ -4,7 +4,8 @@ class Public::RecipesController < ApplicationController
   end
 
   def index
-    @recipes = Recipe.all
+    # @recipes = Recipe.all
+    @recipes = Recipe.includes(:user)
   end
 
   def show
@@ -21,6 +22,9 @@ class Public::RecipesController < ApplicationController
   end
 
   def edit
+  end
+  
+  def destroy
   end
 
   private

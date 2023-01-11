@@ -1,53 +1,65 @@
 <%= form_with(model: @recipe, local: true) do |f| %>
-
-  <div>
-    <%= f.text_field :title, placeholder: "レシピ名", class:""%>
-  </div>
-  
-  <div>
-    <label>
-      <i class="fas fa-camera fa-4x btn btn-outline-secondary"></i>
-      <%= f.file_field :image, accept: "image/*", class: "input-image" %>
-    </label>
-  </div>
-  
-  <!--クラス名、id変更禁止(javascript使用-->
-  <div class="preview">
-    <div id="preview">
-      <img src="/assets/no_image_item" alt="default-image" class="img-fluid">
+  <div class="row">
+    <div class="col-12 text-center mb-3">
+      <%= f.text_field :title, placeholder: "レシピ名", class:""%>
     </div>
+
+    <div class="col-md-6 text-center my-auto">
+      <!--クラス名、id変更禁止(javascript使用)-->
+      <div class="preview">
+        <div id="preview">
+          <img src="/assets/no_image_item" alt="default-image" class="img-fluid default-image">
+        </div>
+      </div>
+
+      <label class="mt-3 mb-3 mb-md-3">
+        <%= f.label :image, class: "d-block align-middle btn btn-primary" do %>
+          <i class="fas fa-camera fa-2x "></i>
+          <span class="">写真を追加</span>
+        <!--クラス名変更禁止(css使用)-->
+          <%= f.file_field :image, accept: "image/*", class: "input-image" %>
+        <% end %>
+      </label>
+
+    </div>
+
+    <div class="col-md-6">
+      <div class="mb-3">
+        <h6>レシピ紹介</h6>
+        <%= f.text_area :content, placeholder: "説明", class:"w-100"%>
+      </div>
+      
+      <div class="selectdiv mb-3">
+        <h6>調理時間</h6>
+        <%= f.select :total_time, Recipe.select_time_data ,include_blank: "選択して下さい" %>
+      </div>
+
+
+      <h6>材料</h6>
+      <div class="recipe_ingredient text-center">
+        <%= f.fields_for :recipe_ingredients do |ingredient| %>
+          <%= render "recipe_ingredient_fields", f: ingredient %>
+        <% end %>
+        <%= link_to_add_fields "材料の追加", f, :recipe_ingredients %>
+      </div>
+    </div>
+    
+    <div class="col-12 text-center">
+      <h6>作り方</h6>
+      <div class="recipe_step">
+        <%= f.fields_for :recipe_steps do |step| %>
+          <%= render "recipe_step_fields", f: step %>
+        <% end %>
+        <%= link_to_add_fields "作り方の追加", f, :recipe_steps %>
+      </div>
+    </div>
+    
+    <div class="col-12 mt-3 text-center">
+      <%= f.submit "レシピを投稿する", class:"btn btn-primary" %>
+    </div>
+    
   </div>
-
-  <div>レシピ紹介</div>
-  <div>
-    <%= f.text_area :content, placeholder: "説明", class:""%>
-  </div>
-
-  <div>調理時間</div>
-  <div>
-    <%= f.select :total_time, Recipe.select_time_data ,include_blank: "選択して下さい" %>
-  </div>
-
-
-  <div>材料</div>
-  <div class="recipe_ingredient">
-    <%= f.fields_for :recipe_ingredients do |ingredient| %>
-      <%= render "recipe_ingredient_fields", f: ingredient %>
-    <% end %>
-    <%= link_to_add_fields "材料の追加", f, :recipe_ingredients %>
-  </div>
-
-  <div>作り方</div>
-  <div class="recipe_step">
-    <%= f.fields_for :recipe_steps do |step| %>
-      <%= render "recipe_step_fields", f: step %>
-    <% end %>
-    <%= link_to_add_fields "作り方の追加", f, :recipe_steps %>
-  </div>
-
-  <%= f.submit "レシピを投稿する" %>
 <% end %>
-
 <script>
 // 項目追加
 class addFields {
@@ -111,7 +123,7 @@ window.addEventListener('turbolinks:load', () => new removeFields())
 
   // もしurlにnewが含まれていれば実行。後でeditも足す
 if (document.URL.match(/new/)){
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('turbolinks:load', () => {
     const createImageHTML = (blob) => {
       const imageElement = document.getElementById('preview');
       const blobImage = document.createElement('img');
@@ -124,6 +136,7 @@ if (document.URL.match(/new/)){
      // id = recipe_imageを取得(ファイルを選択時のボタン)、クリック時に以下の処理を実行
     document.getElementById('recipe_image').addEventListener('change', (e) => {
       const imageContent = document.querySelector('img');
+      // imageContentに値が入っている場合remove
       if (imageContent){
         imageContent.remove();
       }

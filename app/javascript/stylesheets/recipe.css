@@ -1,0 +1,161 @@
+/*showページ使用*/
+
+/*ユーザー画像を丸く*/
+.user_profile_image{
+  border-radius: 50%;
+  border: 3px solid black;
+}
+
+/*タブ機能*/
+.tab-group{
+  display: flex;
+  justify-content: center;
+}
+.tab{
+  flex-grow: 1;
+  padding: 5px;
+  list-style: none;
+  border: solid 1px #CCC;
+  text-align: center;
+  cursor: pointer;
+}
+
+.panel{
+  display: none;
+}
+.tab.is-active{
+  background: #F00;
+  color: #FFF;
+  transition: all 0.2s ease-out;
+}
+.panel.is-show{
+  display: block;
+}
+
+/*newページ使用*/
+.input-image{
+  display: none;
+}
+
+.default-image{
+  width: 500px;
+  object-fit: cover;
+}
+
+.new-img{
+  width: 500px;
+  object-fit: cover;
+}
+
+.add_fields{
+  display: inline-block;
+  background: #0d6efd;
+  width: 30%;
+  text-align: center;
+  border-radius: 20px;
+  margin-top: 10px;
+  padding: 10px 5px;
+  color: white;
+  text-decoration: none;
+}
+
+a.add_fields:hover,a.add_fields:visited{
+  color : white;
+}
+
+
+.remove-field-btn{
+  margin: auto 0 auto 7px;
+}
+/*ここから*/
+select::-ms-expand {
+display: none;
+}
+
+/*.selectdiv:after{*/
+/*  content: '<>';*/
+/*  font: 17px "Consolas", monospace;*/
+/*  color: #333;*/
+/*  -webkit-transform: rotate(90deg);*/
+/*  -moz-transform: rotate(90deg);*/
+/*  -ms-transform: rotate(90deg);*/
+/*  transform: rotate(90deg);*/
+/*  right: 11px;*/
+  /*Adjust for position however you want*/
+  
+/*  top: 18px;*/
+/*  padding: 0 0 2px;*/
+/*  border-bottom: 1px solid #999;*/
+  /*left line */
+  
+/*  position: absolute;*/
+/*  pointer-events: none;*/
+/*}*/
+
+.selectdiv select {
+  /*-webkit-appearance: none;*/
+  /*-moz-appearance: none;*/
+  /*appearance: none;*/
+  /* Add some styling */
+  
+  display: block;
+  width: 100%;
+  /*max-width: 90px;*/
+  height: 40px;
+  padding: 0.25rem;
+  font-size: 16px;
+  line-height: 1.75;
+  color: #333;
+  text-align: center;
+  background-color: #ffffff;
+  background-image: none;
+  border: 2px solid #cccccc;
+  border-radius: 10px;
+  -ms-word-break: normal;
+  word-break: normal;
+}
+
+
+.ingredient-name{
+  width: 30%;
+  border: none;
+  border-bottom: 2px solid #cccccc;
+}
+
+.ingredient-quantity{
+  width: 30%;
+  border: none;
+  border-bottom: 2px solid #cccccc;
+}
+
+
+@media (min-width:1400px)  {
+  .ingredient-name{
+    width: 48%;
+  }
+  .ingredient-quantity{
+    width: 33%;
+  }
+}
+
+
+@media (min-width:1200px) and (max-width:1399px) {
+  .ingredient-name{
+    width: 48%;
+  }
+}
+
+@media (min-width:992px) and (max-width:1199px) {
+  .ingredient-name{
+    width: 40%;
+  }
+  .ingredient-quantity{
+    width: 33%;
+  }
+}
+
+@media (max-width:991px)  {
+  .selectdiv{
+    font-size: 12px;
+  }
+}
