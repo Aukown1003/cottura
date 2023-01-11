@@ -25,7 +25,7 @@
           <%= f.label :content, "自己紹介", { class: "form-label"} %>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-id-badge"></i></span>
-            <%= f.text_area :content, { class: "form-control", placeholder: "簡単な自己紹介を入力", rows: 6 } %>
+            <%= f.text_area :content, { class: "form-control textarea", placeholder: "簡単な自己紹介を入力", rows: 1 } %>
           </div>
         </div>
         
@@ -37,3 +37,24 @@
     </div>
   </div>
 </div>
+
+<script>
+// テキストエリアの可変処理
+window.addEventListener('turbolinks:load', () => {
+  // textareaタグを全て取得
+  const textareaEls = document.querySelectorAll("textarea");
+
+  textareaEls.forEach((textareaEl) => {
+    // デフォルト値としてスタイル属性を付与
+    textareaEl.setAttribute("style", `height: ${textareaEl.scrollHeight}px;`);
+    // inputイベントが発生するたびに関数呼び出し
+    textareaEl.addEventListener("input", setTextareaHeight);
+  });
+
+  // textareaの高さを計算して指定する関数
+  function setTextareaHeight() {
+    this.style.height = "auto";
+    this.style.height = `${this.scrollHeight}px`;
+  }
+});
+</script>

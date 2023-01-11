@@ -1,7 +1,7 @@
 <%= form_with(model: @recipe, local: true) do |f| %>
   <div class="row">
-    <div class="col-12 text-center mb-3">
-      <%= f.text_field :title, placeholder: "レシピ名", class:""%>
+    <div class="col-12 text-center mb-5">
+      <%= f.text_field :title, placeholder: "レシピ名(32文字以内)", class:"recipe-name"%>
     </div>
 
     <div class="col-md-6 text-center my-auto">
@@ -25,17 +25,17 @@
 
     <div class="col-md-6">
       <div class="mb-3">
-        <h6>レシピ紹介</h6>
-        <%= f.text_area :content, placeholder: "説明", class:"w-100"%>
+        <h5 class="font-weight-bold">レシピ紹介</h5>
+        <%= f.text_area :content, placeholder: "簡単な概要を記述(140文字以内)", class:"w-100 recipe-content textArea", rows: 1%>
       </div>
       
       <div class="selectdiv mb-3">
-        <h6>調理時間</h6>
+        <h5 class="font-weight-bold">調理時間</h5>
         <%= f.select :total_time, Recipe.select_time_data ,include_blank: "選択して下さい" %>
       </div>
 
 
-      <h6>材料</h6>
+      <h5 class="font-weight-bold">材料</h5>
       <div class="recipe_ingredient text-center">
         <%= f.fields_for :recipe_ingredients do |ingredient| %>
           <%= render "recipe_ingredient_fields", f: ingredient %>
@@ -45,7 +45,7 @@
     </div>
     
     <div class="col-12 text-center">
-      <h6>作り方</h6>
+      <h5 class="font-weight-bold">作り方</h5>
       <div class="recipe_step">
         <%= f.fields_for :recipe_steps do |step| %>
           <%= render "recipe_step_fields", f: step %>
@@ -61,6 +61,27 @@
   </div>
 <% end %>
 <script>
+
+// テキストエリアの可変処理
+window.addEventListener('turbolinks:load', () => {
+  // textareaタグを全て取得
+  const textareaEls = document.querySelectorAll("textarea");
+
+  textareaEls.forEach((textareaEl) => {
+    // デフォルト値としてスタイル属性を付与
+    textareaEl.setAttribute("style", `height: ${textareaEl.scrollHeight}px;`);
+    // inputイベントが発生するたびに関数呼び出し
+    textareaEl.addEventListener("input", setTextareaHeight);
+  });
+
+  // textareaの高さを計算して指定する関数
+  function setTextareaHeight() {
+    this.style.height = "auto";
+    this.style.height = `${this.scrollHeight}px`;
+  }
+});
+
+
 // 項目追加
 class addFields {
   constructor() {

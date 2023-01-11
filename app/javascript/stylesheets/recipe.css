@@ -115,17 +115,19 @@ display: none;
   word-break: normal;
 }
 
-
-.ingredient-name{
-  width: 30%;
+.recipe-name,.recipe-content,.ingredient-name,.ingredient-quantity{
   border: none;
   border-bottom: 2px solid #cccccc;
 }
 
-.ingredient-quantity{
+.recipe-name{
+  font-size: 27px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.ingredient-name,.ingredient-quantity{
   width: 30%;
-  border: none;
-  border-bottom: 2px solid #cccccc;
 }
 
 
