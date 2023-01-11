@@ -1,14 +1,15 @@
 <h1>Public::Recipes#show</h1>
 <p>Find me in app/views/public/recipes/show.html.erb</p>
 
-<%= @recipe.title %><br>
-<%= @recipe.content %><br>
-<%= @recipe.total_time %><br>
+タイトル：<%= @recipe.title %><br>
+画像：<%= image_tag @recipe.get_recipe_image(400, 400) %><br>
+紹介文：<%= @recipe.content %><br>
+時間：<%= @recipe.total_time %><br>
 <% @recipe.recipe_ingredients.each do |ingredient| %>
-  <%= ingredient.name %>
-  <%= ingredient.quantity %>
-  <%= ingredient.unit.name %>
-<% end %><br>
+  材料名：<%= ingredient.name %>
+  分量：<%= ingredient.quantity %>
+  <%= ingredient.unit.name %><br>
+<% end %>
 <% @recipe.recipe_steps.each do |step| %>
-  <%= step.content %><br>
+  作り方：<%= step.content %><br>
 <% end %>

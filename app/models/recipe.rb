@@ -1,4 +1,7 @@
 class Recipe < ApplicationRecord
+  
+  has_one_attached :image
+  
   #アソシエーション
   belongs_to :user
   
@@ -14,9 +17,19 @@ class Recipe < ApplicationRecord
   validates :content, presence: true
   validates :total_time, presence: true
   
+  
+  def get_recipe_image(width, height)
+    unless image.attached?
+      file_path = Rails.root.join('app/assets/images/no_image_item.png')
+      image.attach(io: File.open(file_path), filename: 'default-recipe-image.png', content_type: 'image/png')
+    end
+    # image.variant(resize_to_limit: [width, height]).processed
+    image.variant(resize_to_fill: [width, height]).processed
+  end
+  
   def self.select_time_data
     # 登録したい時間
-    hour = 8
+    hour = 7
     # 何分刻みで登録するか
     min = 15
     

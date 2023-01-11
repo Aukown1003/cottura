@@ -1,7 +1,21 @@
 <%= form_with(model: @recipe, local: true) do |f| %>
-  <div>タイトル</div>
+
   <div>
     <%= f.text_field :title, placeholder: "レシピ名", class:""%>
+  </div>
+  
+  <div>
+    <label>
+      <i class="fas fa-camera fa-4x btn btn-outline-secondary"></i>
+      <%= f.file_field :image, accept: "image/*", class: "input-image" %>
+    </label>
+  </div>
+  
+  <!--クラス名、id変更禁止(javascript使用-->
+  <div class="preview">
+    <div id="preview">
+      <img src="/assets/no_image_item" alt="default-image" class="img-fluid">
+    </div>
   </div>
 
   <div>レシピ紹介</div>
@@ -93,4 +107,31 @@ class removeFields {
 }
 
 window.addEventListener('turbolinks:load', () => new removeFields())
+
+
+  // もしurlにnewが含まれていれば実行。後でeditも足す
+if (document.URL.match(/new/)){
+  document.addEventListener('DOMContentLoaded', () => {
+    const createImageHTML = (blob) => {
+      const imageElement = document.getElementById('preview');
+      const blobImage = document.createElement('img');
+      // class属性の追加
+      blobImage.setAttribute('class', 'new-img img-fluid');
+      blobImage.setAttribute('src', blob);
+
+      imageElement.appendChild(blobImage);
+    };
+     // id = recipe_imageを取得(ファイルを選択時のボタン)、クリック時に以下の処理を実行
+    document.getElementById('recipe_image').addEventListener('change', (e) => {
+      const imageContent = document.querySelector('img');
+      if (imageContent){
+        imageContent.remove();
+      }
+
+      const file = e.target.files[0];
+      const blob = window.URL.createObjectURL(file);
+      createImageHTML(blob);
+    });
+  });
+}
 </script>
