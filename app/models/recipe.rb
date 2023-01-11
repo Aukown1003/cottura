@@ -13,9 +13,10 @@ class Recipe < ApplicationRecord
   
   # バリデーション
   validates :user_id, presence: true
-  validates :title, presence: true
-  validates :content, presence: true
+  validates :title, presence: true, length: {maximum: 32}
+  validates :content, presence: true, length: {maximum: 140}
   validates :total_time, presence: true
+  
   
   
   def get_recipe_image(width, height)
