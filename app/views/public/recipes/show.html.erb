@@ -7,7 +7,7 @@
         <%= @recipe.title %>
       </h1>
     </div>
-    
+
     <div class="col-md-2 text-center mt-4 mt-md-0 mb-4 mb-md-5">
       <div class="">
         <%= image_tag @recipe.user.get_user_image(50,50) %>
@@ -30,7 +30,7 @@
         <h5 class="fw-bold border-bottom border-secondary mb-3">調理時間</h5>
         <span class="p-2"><%= @recipe.total_time %>分</span>
       </div>
-      
+
       <div class="mb-3">
         <h5 class="fw-bold border-bottom border-secondary mb-3">材料一覧</h5>
         <table class="table">
@@ -39,10 +39,10 @@
               <th>材料名</th>
               <th class="text-end">分量</th>
               <th></th>
-              <th></th>
+              <th style="width: 30%;"></th>
             </tr>
           </thead>
-          
+
           <% @recipe.recipe_ingredients.each do |ingredient| %>
           <tbody>
             <tr class="align-middle">
@@ -50,26 +50,23 @@
               <% if ingredient.unit.name == "大さじ" || ingredient.unit.name == "小さじ"%>
                 <td class="text-end"><%= ingredient.unit.name %></td>
                 <% if session[:recalculation].present? %>
-                  <!--< % binding.pry %>-->
                   <td class="text-start"><%= (ingredient.quantity.to_i * session[:recalculation]).round(1) %></td>
                 <% else %>
                   <td class="text-start"><%= ingredient.quantity %></td>
                 <% end %>
               <% else %>
                 <% if session[:recalculation].present? %>
-                  <!--< % binding.pry %>-->
-                  <td class="text-start"><%= (ingredient.quantity.to_i * session[:recalculation]).round(1) %></td>
+                  <td class="text-end"><%= (ingredient.quantity.to_i * session[:recalculation]).round(1) %></td>
                 <% else %>
-                  <td class="text-start"><%= ingredient.quantity %></td>
+                  <td class="text-end"><%= ingredient.quantity %></td>
                 <% end %>
                 <td class="text-start"><%= ingredient.unit.name %></td>
               <% end %>
-              
-              <td class="d-flex">
-                
-                <%= f.text_field (ingredient.id).to_s,  placeholder: "分量", class:"ingredient-quantity"%>
+
+              <td class="">
+                <%= f.text_field (ingredient.id).to_s,  placeholder: "分量", class:"ingredient-quantity d-block mx-auto text-center"%>
               </td>
-              
+
             </tr>
           </tbody>
           <% end %>
@@ -77,7 +74,7 @@
         <% if session[:recalculation].present? %>
           <% session[:recalculation] = nil %>
         <% end %>
-        <p class=""><%= f.submit "再計算" %></p>
+        <p class="text-end pe-5"><%= f.submit "再計算", class:"btn btn-primary" %></p>
       </div>
     </div>
   </div>
@@ -95,7 +92,7 @@
         </thead>
         <tbody>
           <% counter = 1 %>
-          <% @recipe.recipe_steps.each do |step| %> 
+          <% @recipe.recipe_steps.each do |step| %>
             <tr class="align-middle border-bottom">
               <td><%= "step.#{counter}" %></td>
               <% if step.image.attached? %>
@@ -112,9 +109,23 @@
     </div>
   </div>
 
+  <input id="allow-drinks" type="checkbox"/>
+<%= f.text_field :test,  id:"textField" %>
+<%= f.text_field :test2, id:"textField_s" %>
 </div>
 <% end %>
 
 <script>
+
+let changeText = document.getElementById("allow-drinks");
+let drinkSelect = document.getElementById("textField_s");
+
+changeText.addEventListener("change", function(event) {
+  if (event.target.checked) {
+    drinkSelect.disabled = false;
+  } else {
+    drinkSelect.disabled = true;
+  }
+}, false);
 
 </script>
