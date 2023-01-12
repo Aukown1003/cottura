@@ -7,4 +7,14 @@ class RecipeStep < ApplicationRecord
   
   # バリデーション
   validates :content, presence: true
+  
+  
+  def get_recipe_image(width, height)
+    unless image.attached?
+      file_path = Rails.root.join('app/assets/images/no_image_item.png')
+      image.attach(io: File.open(file_path), filename: 'default-recipe-image.png', content_type: 'image/png')
+    end
+    # image.variant(resize_to_limit: [width, height]).processed
+    image.variant(resize_to_fill: [width, height]).processed
+  end
 end

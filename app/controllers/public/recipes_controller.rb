@@ -9,7 +9,7 @@ class Public::RecipesController < ApplicationController
   end
 
   def show
-    @recipe = Recipe.find(params[:id]).includes(:user)
+    @recipe = Recipe.find(params[:id])
   end
 
   def create
