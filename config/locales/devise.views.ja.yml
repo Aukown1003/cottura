@@ -22,11 +22,6 @@ ja:
           attributes: 
             content:
               blank: "が入力されていません。"
-    attributes:
-      recipe:
-        title: "レシピ名"
-        content: "レシピ紹介"
-        total time: "調理時間"
       
         user:
           attributes:

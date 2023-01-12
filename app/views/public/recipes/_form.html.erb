@@ -2,7 +2,7 @@
   <%= render 'layouts/error_messages', resource: f.object %>
   <div class="row">
     <div class="col-12 text-center mb-5">
-      <%= f.text_field :title, placeholder: "レシピ名(32文字以内)", maxlength: "32", class:"recipe-name", required:"required"%>
+      <%= f.text_field :title, placeholder: "レシピ名(32文字以内)", maxlength: "32", class:"recipe-name" %>
     </div>
 
     <div class="col-md-6 text-center my-auto">
@@ -27,8 +27,9 @@
     <div class="col-md-6">
       <div class="mb-3">
         <h5 class="fw-bold border-bottom border-secondary mb-3">レシピ紹介</h5>
-        <%= f.text_area :content, placeholder: "簡単なレシピ紹介を入力！(140文字以内)", maxlength: "140", class:"w-100 recipe-content textArea", required:"required", rows: 1%>
+        <%= f.text_area :content, placeholder: "簡単なレシピ紹介を入力！(140文字以内)", maxlength: "140", class:"w-100 recipe-content textArea", rows: 1%>
       </div>
+      <!--, required:"required"-->
 
       <div class="selectdiv mb-3">
         <h5 class="fw-bold border-bottom border-secondary mb-3">調理時間</h5>

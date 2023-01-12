@@ -14,7 +14,9 @@ Rails.application.routes.draw do
       get "unsubscribe"=>"users#unsubscribe"
       patch "withdrawal"=>"users#withdrawal"
     end
-    resources :recipes
+    resources :recipes do
+      get "recalculation" => "recipes#recalculation"
+    end
   end
 
   # registrationsは後で削除

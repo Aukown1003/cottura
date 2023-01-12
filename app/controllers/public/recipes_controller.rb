@@ -30,8 +30,28 @@ class Public::RecipesController < ApplicationController
 
   def edit
   end
-  
+
   def destroy
+  end
+
+  def recalculation
+
+    arry = {}
+    params[:recipe].each do |key, value|
+      unless value.empty?
+        arry.store(key, value)
+      end
+    end
+    get_recipe_id = arry.first[0]
+    get_quantity = arry.first[1]
+    a = RecipeIngredient.find(get_recipe_id).quantity
+    # binding.pry
+     c = get_quantity.to_f / a.to_f
+    session[:recalculation] = c
+    # arry.each do |id, val|
+    # end
+
+    redirect_to request.referer
   end
 
   private
