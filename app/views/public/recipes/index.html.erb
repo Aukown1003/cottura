@@ -1,7 +1,28 @@
-<h1>Public::Recipes#index</h1>
-<p>Find me in app/views/public/recipes/index.html.erb</p>
+<div class="container  my-5">
+  <div class="row">
+    <% @recipes.each do |recipe| %>
+    <div class="index-item col-sm-6 col-md-4 col-lg-3 col-xxl-2 mb-2">
 
-<% @recipes.each do |recipe| %>
-  <%= recipe.title %><br>
-  <%= recipe.total_time %>
-<% end %>
+      <div class="index-item-parts bg-success text-white rounded">
+        <div class="text-center pt-2">
+          <%= link_to image_tag(recipe.get_recipe_image(200, 200)), recipe_path(recipe.id), class:"img-fluid" %>
+        </div>
+        <group>
+          <div class="fw-bold text-truncate mt-1 px-2 px-sm-4 ps-xl-4 px-md-2">
+            <%= link_to recipe.title, recipe_path(recipe.id) %>
+          </div>
+
+          <div class="px-2 px-sm-4 ps-xl-4 px-md-2">
+            <%= recipe.total_time %>
+          </div>
+
+          <div class="mb-2 pb-2 pX-2 px-sm-4 ps-xl-4 px-md-2">
+            ここにレビュー機能
+          </div>
+        </group>
+      </div>
+
+    </div>
+    <% end %>
+  </div>
+</div>

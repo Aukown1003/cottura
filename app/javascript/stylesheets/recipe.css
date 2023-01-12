@@ -34,6 +34,7 @@
   display: block;
 }
 
+
 /*newページ使用*/
 .input-image{
   display: none;
@@ -108,6 +109,7 @@ display: none;
   padding: 0.25rem;
   font-size: 16px;
   line-height: 1.75;
+  border: 2px solid #cccccc;
   color: #333;
   text-align: center;
   background-color: #ffffff;
@@ -163,5 +165,38 @@ display: none;
 @media (max-width:991px)  {
   .selectdiv{
     font-size: 12px;
+  }
+}
+
+@media (min-width:1400px) {
+  .index-row{
+    justify-content: center;
+  }
+  .index-item{
+    width: 17vw;
+  }
+  .index-item-parts{
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
+@media (min-width:1200px) and (max-width:1400px) {
+  .index-item-parts{
+    width: 90%;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width:576px) {
+  .index-item{
+    width: 50%;
+  }
+}
+
+@media (max-width:480px) {
+  .index-item{
+    width: 57%;
+    margin: 0 auto;
   }
 }

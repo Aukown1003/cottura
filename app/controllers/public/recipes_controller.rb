@@ -4,17 +4,22 @@ class Public::RecipesController < ApplicationController
   end
 
   def index
-    # @recipes = Recipe.all
-    @recipes = Recipe.includes(:user)
+    @recipes = Recipe.all
+    # @recipes = Recipe.includes(:user)
   end
 
   def show
-    @recipe = Recipe.find(params[:id])
+    @recipe = Recipe.find(params[:id]).includes(:user)
   end
 
   def create
     ActiveRecord::Base.transaction do
       @recipe = current_user.recipes.new(recipe_params)
+      # binding.pry
+      if @recipe.recipe_ingredients == [] || @recipe.recipe_steps == []
+        redirect_to new_recipe_path, alert: "材料または作り方が未入力です。"
+        return
+      end
       if @recipe.save
         redirect_to root_path, notice: "投稿しました"
       else

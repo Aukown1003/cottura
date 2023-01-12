@@ -29,6 +29,22 @@ class Recipe < ApplicationRecord
     image.variant(resize_to_fill: [width, height]).processed
   end
   
+  # 時間表示メソッド
+  # def self.time_data
+  #   data = .total_time
+  #   if data < 60
+  #     data = "#{data}分"
+  #   elsif data % 60 == 0
+  #     hour =  data / 60
+  #     data = "#{hour}時間"
+  #   else
+  #     hour = data / 60
+  #     min = data % 60
+  #     data = "#{hour}時間" + "#{min}分"
+  #   end
+  #   return data
+  # end
+  
   # 調理時間作成メソッド
   def self.select_time_data
     # 登録したい時間
