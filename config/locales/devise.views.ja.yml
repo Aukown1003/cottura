@@ -1,7 +1,33 @@
 ja:
   activerecord:
     errors:
+      messages:
+        record_invalid: "投稿に失敗しました: %{errors}"
       models:
+        recipe:
+          attributes: 
+            title:
+              blank: "が入力されていません。"
+            content:
+              blank: "が入力されていません。"
+            total_time:
+              blank: "が未選択です。"
+        recipe_ingredient:
+          attributes: 
+            name:
+              blank: "が入力されていません。"
+            quantity:
+              blank: "が入力されていません。"
+        recipe_step:
+          attributes: 
+            content:
+              blank: "が入力されていません。"
+    attributes:
+      recipe:
+        title: "レシピ名"
+        content: "レシピ紹介"
+        total time: "調理時間"
+      
         user:
           attributes:
             name:

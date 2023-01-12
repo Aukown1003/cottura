@@ -14,11 +14,13 @@ class Public::RecipesController < ApplicationController
 
   def create
     ActiveRecord::Base.transaction do
-      recipe = current_user.recipes.new(recipe_params)
-      # binding.pry
-      recipe.save!
+      @recipe = current_user.recipes.new(recipe_params)
+      if @recipe.save
+        redirect_to root_path, notice: "投稿しました"
+      else
+        render 'new'
+      end
     end
-    redirect_to root_path, notice: "投稿しました"
   end
 
   def edit
@@ -35,8 +37,9 @@ class Public::RecipesController < ApplicationController
         :content,
         :total_time,
         :is_open,
+        :image,
         recipe_ingredients_attributes: [:id, :name, :quantity, :unit_id, :_destroy],
-        recipe_steps_attributes: [:id, :content, :_destroy]
+        recipe_steps_attributes: [:id, :content, :image, :_destroy]
         )
   end
 
