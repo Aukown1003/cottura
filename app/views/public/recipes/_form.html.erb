@@ -6,10 +6,14 @@
     </div>
 
     <div class="col-md-6 text-center my-auto">
-      <!--クラス名、id変更禁止(javascript使用)-->
+        <!--クラス名、id変更禁止(javascript使用)-->
       <div class="preview">
         <div id="preview">
-          <img src="/assets/no_image_item" alt="default-image" class="img-fluid default-image">
+          <% if current_page?(new_recipe_path)%> 
+             <img src="/assets/no_image_item" alt="default-image" class="img-fluid default-image">
+          <% else %>
+            <%= image_tag @recipe.get_recipe_image(480, 480) %>
+          <% end %>
         </div>
       </div>
 
@@ -74,7 +78,11 @@
     <!--タグ追加機能をここに追加-->
 
     <div class="col-12 mt-3 text-center">
-      <%= f.submit "レシピを投稿する", class:"btn btn-lg btn-secondary" %>
+      <% if current_page?(new_recipe_path) %> 
+        <%= f.submit "レシピを投稿する", class:"btn btn-lg btn-secondary" %>
+      <% else %>
+        <%= f.submit "編集したレシピを保存する", class:"btn btn-lg btn-secondary" %>
+      <% end %>
     </div>
 
   </div>
@@ -126,6 +134,7 @@ class addFields {
     let newFields = regexp ? link.dataset.fields.replace(regexp, time) : null
     newFields ? link.insertAdjacentHTML('beforebegin', newFields) : null
     
+    // 以下カスタマイズ草案
     var getId = "recipe_recipe_steps_attributes_" + time + "_image"
     console.log(getId)
   }
@@ -165,7 +174,7 @@ window.addEventListener('turbolinks:load', () => new removeFields())
 
 
   // もしurlにnewが含まれていれば実行。後でeditも足す
-if (document.URL.match(/new/)){
+if (document.URL.match(/new/)|| document.URL.match(/edit/)){
   document.addEventListener('turbolinks:load', () => {
     const createImageHTML = (blob) => {
       const imageElement = document.getElementById('preview');

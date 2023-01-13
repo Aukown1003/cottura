@@ -1,4 +1,7 @@
 class Public::RecipesController < ApplicationController
+  before_action :authenticate_user!, except: [:index,:show]
+  before_action :user_check, only: [:edit, :update, :destroy]
+  
   def new
     @recipe = Recipe.new
   end
@@ -29,13 +32,30 @@ class Public::RecipesController < ApplicationController
   end
 
   def edit
+    @recipe = Recipe.find(params[:id])
+  end
+  
+  def update
+    @recipe = Recipe.find(params[:id])
+    if @recipe.recipe_ingredients == [] || @recipe.recipe_steps == []
+      redirect_to request.referer, alert: "材料または作り方が未入力です。"
+      return
+    end
+    if @recipe.update(recipe_params)
+      redirect_to root_path
+    else
+      flash.now[:alert] = "編集に失敗しました"
+      render :edit
+    end
   end
 
   def destroy
+    @recipe = Recipe.find(params[:id])
+    # @recipe.destroy
+    redirect_to recipes_path
   end
 
   def recalculation
-
     arry = {}
     params[:recipe].each do |key, value|
       unless value.empty?
@@ -55,6 +75,7 @@ class Public::RecipesController < ApplicationController
   end
 
   private
+  
   def recipe_params
       params.require(:recipe).permit(
         :user_id,
@@ -67,5 +88,11 @@ class Public::RecipesController < ApplicationController
         recipe_steps_attributes: [:id, :content, :image, :_destroy]
         )
   end
-
+  
+  def user_check
+    user_id = Recipe.find(params[:id]).user_id
+    if user_id =! current_user.id
+      redirect_to root_path, alert: '他の会員のレシピの更新、削除はできません。'
+    end
+  end
 end

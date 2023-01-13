@@ -1,26 +1,35 @@
 class Recipe < ApplicationRecord
-  
+
   has_one_attached :image
-  
+
   #アソシエーション
   belongs_to :user
-  
+
   has_many :recipe_ingredients
   accepts_nested_attributes_for :recipe_ingredients, allow_destroy: true
-  
+
   has_many :recipe_steps
   accepts_nested_attributes_for :recipe_steps, allow_destroy: true
-  
+
   # バリデーション
   validates :user_id, presence: true
   validates :title, presence: true, length: {maximum: 32}
   validates :content, presence: true, length: {maximum: 140}
   validates :total_time, presence: true
   validates :is_open, presence: true
-  
-  
-  
+
+
+
   def get_recipe_image(width, height)
+    unless image.attached?
+      file_path = Rails.root.join('app/assets/images/no_image_item.png')
+      image.attach(io: File.open(file_path), filename: 'default-recipe-image.png', content_type: 'image/png')
+    end
+    image.variant(resize_to_limit: [width, height]).processed
+    # image.variant(resize_to_fill: [width, height]).processed
+  end
+
+  def get_recipe_index_image(width, height)
     unless image.attached?
       file_path = Rails.root.join('app/assets/images/no_image_item.png')
       image.attach(io: File.open(file_path), filename: 'default-recipe-image.png', content_type: 'image/png')
@@ -28,30 +37,32 @@ class Recipe < ApplicationRecord
     # image.variant(resize_to_limit: [width, height]).processed
     image.variant(resize_to_fill: [width, height]).processed
   end
-  
+
   # 時間表示メソッド
-  # def self.time_data
-  #   data = .total_time
-  #   if data < 60
-  #     data = "#{data}分"
-  #   elsif data % 60 == 0
-  #     hour =  data / 60
-  #     data = "#{hour}時間"
-  #   else
-  #     hour = data / 60
-  #     min = data % 60
-  #     data = "#{hour}時間" + "#{min}分"
-  #   end
-  #   return data
-  # end
-  
+  def view_time_data
+    data = total_time
+    hour_min = 60
+
+    if data < hour_min
+      data = "#{data}分"
+    elsif data % hour_min == 0
+      hour =  data / hour_min
+      data = "#{hour}時間"
+    else
+      hour = data / hour_min
+      min = data % hour_min
+      data = "#{hour}時間" + "#{min}分"
+    end
+    return data
+  end
+
   # 調理時間作成メソッド
   def self.select_time_data
     # 登録したい時間
     hour = 7
     # 何分刻みで登録するか
     min = 15
-    
+
     # 配列の作成
     data = []
     count = hour * (60 / min)
@@ -69,5 +80,5 @@ class Recipe < ApplicationRecord
     }
     return data
   end
-  
+
 end

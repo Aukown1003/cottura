@@ -1,6 +1,27 @@
-  <div class="row">
-    <div class="col text-center m-1 text-bg-secondary" style="width: 200px;">resipe_index</div>
-    <div class="col text-center m-1 text-bg-secondary" style="width: 200px;">resipe_index</div>
-    <div class="col text-center m-1 text-bg-secondary" style="width: 200px;">resipe_index</div>
-    <div class="col text-center m-1 text-bg-secondary" style="width: 200px;">resipe_index</div>
+  <div class="row mt-2">
+    <% @user.recipes.each do |recipe| %>
+    <div class="group neumorphism index-item col-sm-6 col-md-4 col-lg-3 col-xxl-2 mb-2">
+
+      <div class="box index-item-parts bg-secondary text-white rounded">
+        <div class="text-center pt-2">
+          <%= link_to image_tag(recipe.get_recipe_index_image(200, 200)), recipe_path(recipe.id), class:"img-fluid" %>
+        </div>
+        <group>
+          <div class="fw-bold text-truncate mt-1 px-2 px-sm-4 ps-xl-4 px-md-2">
+            <%= link_to recipe.title, recipe_path(recipe.id), class: "link-light" %>
+          </div>
+
+          <div class="px-2 px-sm-4 ps-xl-4 px-md-2">
+            <%= recipe.view_time_data %>
+          </div>
+
+          <div class="mb-2 pb-2 pX-2 px-sm-4 ps-xl-4 px-md-2">
+            ここにレビュー機能
+          </div>
+        </group>
+      </div>
+
+    </div>
+    <% end %>
   </div>
+</div>

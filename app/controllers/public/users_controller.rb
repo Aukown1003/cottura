@@ -1,5 +1,5 @@
 class Public::UsersController < ApplicationController
-  before_action :user_check, only: %i[edit update destroy]
+  before_action :user_check, only: [:edit, :update, :destroy]
   
   def show
     @user = User.find(params[:id])
