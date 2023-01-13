@@ -1,0 +1,16 @@
+ja:
+  activerecord:
+    models:
+      recipe: "レシピの"
+      recipe_ingredient: "材料の"
+      recipe_step: "作り方の"
+    attributes:
+      recipe:
+        title: "レシピ名"
+        content: "レシピ紹介"
+        total time: "調理時間"
+      recipe_ingredient:
+        quantity: "分量"
+        name: "材料名"
+      recipe_step:
+        content: "詳細"

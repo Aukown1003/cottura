@@ -8,8 +8,12 @@ class User < ApplicationRecord
 
   # バリデーション
   validates :name, presence: true
+  validates :email, presence: true
+  
+  # アソシエーション
+  has_many :recipes, dependent: :destroy
 
-  # ユーザーステータスメソッド
+  # ユーザーアカウント状態メソッド
   def active?
     if self.is_active == true
       "有効"
@@ -18,7 +22,7 @@ class User < ApplicationRecord
     end
   end
 
-  # 画像のリサイズ、及びデフォルト画像の設定
+  # 画像のリサイズ、及びデフォルト画像の設定メソッド
   def get_user_image(width, height)
     unless image.attached?
       file_path = Rails.root.join('app/assets/images/no_image_user.png')

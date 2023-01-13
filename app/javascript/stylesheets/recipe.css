@@ -1,0 +1,235 @@
+/*showページ使用*/
+.field_with_errors {
+  display: contents;
+}
+/*ユーザー画像を丸く*/
+.user_profile_image{
+  border-radius: 50%;
+  border: 3px solid black;
+}
+
+/*タブ機能*/
+.tab-group{
+  display: flex;
+  justify-content: center;
+}
+.tab{
+  flex-grow: 1;
+  padding: 5px;
+  list-style: none;
+  border: solid 1px #CCC;
+  text-align: center;
+  cursor: pointer;
+}
+
+.panel{
+  display: none;
+}
+.tab.is-active{
+  background: #F00;
+  color: #FFF;
+  transition: all 0.2s ease-out;
+}
+.panel.is-show{
+  display: block;
+}
+
+
+/*newページ使用*/
+.input-image{
+  display: none;
+}
+
+.default-image{
+  width: 500px;
+  object-fit: cover;
+}
+
+.new-img{
+  width: 500px;
+  object-fit: cover;
+}
+
+/*step用のサンプル画像CSS*/
+.step-sample-image{
+	width: 90px;
+	height: 90px;
+}
+.step-sample-image img{
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.recipe_step_iamage_field{
+  margin-left: 6vw;
+}
+
+
+/*材料、作り方のリンクのcss*/
+.add_fields{
+  display: inline-block;
+  background: #6c757d;
+  width: 30%;
+  text-align: center;
+  border-radius: 10px;
+  margin-top: 10px;
+  padding: 10px 5px;
+  color: white;
+  text-decoration: none;
+}
+
+a.add_fields:hover,a.add_fields:visited{
+  color : white;
+}
+
+.recipe_step > .add_fields{
+  display: block;
+  margin: 0 auto;
+}
+
+/*削除アイコン*/
+.remove-field-btn{
+  margin: auto 0 auto 7px;
+}
+
+.small-font{
+  font-size: 16px;
+}
+
+/*セレクトボックス*/
+select::-ms-expand {
+display: none;
+}
+
+.selectdiv select {
+  display: block;
+  width: 100%;
+  height: 40px;
+  padding: 0.25rem;
+  font-size: 16px;
+  line-height: 1.75;
+  border: 2px solid #cccccc;
+  color: #333;
+  text-align: center;
+  background-color: #ffffff;
+  background-image: none;
+  border-radius: 10px;
+  -ms-word-break: normal;
+  word-break: normal;
+  font-weight: bold;
+}
+
+/*投稿時フォームの罫線、サイズ*/
+.recipe-name,.recipe-content,.ingredient-name,.ingredient-quantity,.step-content,.ingredient-quantity{
+  border: none;
+  border-bottom: 2px solid #cccccc;
+}
+
+.recipe-name{
+  font-size: 27px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.ingredient-name,.ingredient-quantity{
+  width: 30%;
+}
+/*recipe_indexページのCSS*/
+
+.neumorphism .box {
+  background-color: rgb(190, 205, 214);
+  transition: box-shadow 0.5s;
+  box-shadow:
+    10px 10px 30px rgba(18, 47, 61, 0.6),
+    -10px -10px 30px rgba(248, 253, 255, 0.9),
+    inset 10px 10px 30px transparent,
+    inset -10px -10px 30px transparent;
+}
+.neumorphism .box:hover {
+  box-shadow:
+    10px 10px 30px transparent,
+    -10px -10px 30px transparent,
+    
+    inset 10px 10px 30px rgba(18, 47, 61, 0.5),
+    /*10px 10px 15px #BFC7D9, 10px 10px 15px #E5EFFF*/
+    inset -10px -10px 30px rgba(248, 253, 255, 0.9);
+}
+
+/*recipe_showページのCSS*/
+@media (min-width:992px) {
+  .recipe-show{
+    padding-left: 13rem;
+  }
+}
+@media (min-width:768px) and (max-width:991px) {
+  .recipe-show{
+    padding-left: 10rem;
+  }
+}
+
+/*メディクリ*/
+
+@media (min-width:1400px)  {
+  .ingredient-name{
+    width: 48%;
+  }
+  .ingredient-quantity{
+    width: 33%;
+  }
+}
+
+
+@media (min-width:1200px) and (max-width:1399px) {
+  .ingredient-name{
+    width: 48%;
+  }
+}
+
+@media (min-width:992px) and (max-width:1199px) {
+  .ingredient-name{
+    width: 40%;
+  }
+  .ingredient-quantity{
+    width: 33%;
+  }
+}
+
+@media (max-width:991px)  {
+  .selectdiv{
+    font-size: 12px;
+  }
+}
+
+@media (min-width:1400px) {
+  .index-row{
+    justify-content: center;
+  }
+  .index-item{
+    width: 17vw;
+  }
+  .index-item-parts{
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
+@media (min-width:1200px) and (max-width:1400px) {
+  .index-item-parts{
+    width: 90%;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width:576px) {
+  .index-item{
+    width: 50%;
+  }
+}
+
+@media (max-width:480px) {
+  .index-item{
+    width: 57%;
+    margin: 0 auto;
+  }
+}

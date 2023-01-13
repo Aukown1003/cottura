@@ -1,0 +1,145 @@
+<%= form_with model: @recipe, url: recipe_recalculation_path(@recipe.id), method: :get do |f| %>
+<div class="container  my-5">
+  <div class="row">
+
+    <div class="col-md-10 md-4 mb-md-5 text-center recipe-show">
+      <h1>
+        <%= @recipe.title %>
+      </h1>
+    </div>
+
+    <div class="col-md-2 text-center mt-4 mt-md-0 mb-4 mb-md-5">
+      <div class="">
+        <%= image_tag @recipe.user.get_user_image(50,50) %>
+        <%= @recipe.user.name %>
+      </div>
+    </div>
+    
+    <% if @recipe.user.id == current_user.id %>
+      <div class="col-12 d-flex justify-content-end">
+        <%= link_to "レシピ編集", edit_recipe_path(@recipe.id), class: "btn btn-success me-3" %>
+        <%= link_to "レシピ削除", recipe_path(@recipe.id), method: :delete, data: { confirm: '削除してもよろしいですか？' }, class: "btn btn-danger" %>
+      </div>
+    <% end %>
+
+    <div class="col-md-6 text-center my-auto">
+      <%= image_tag @recipe.get_recipe_image(480, 480), class: "img-fluid" %>
+      <div>レビュー機能をここに</div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="mb-3">
+        <h5 class="fw-bold border-bottom border-secondary mb-3">レシピ紹介</h5>
+        <p class="p-2"><%= safe_join(@recipe.content.split("\n"),tag(:br)) %></p>
+      </div>
+
+      <div class="mb-3">
+        <h5 class="fw-bold border-bottom border-secondary mb-3">調理時間</h5>
+        <span class="p-2"><%= @recipe.view_time_data %></span>
+      </div>
+
+      <div class="mb-3">
+        <h5 class="fw-bold border-bottom border-secondary mb-3">材料一覧</h5>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>材料名</th>
+              <th class="text-end">分量</th>
+              <th style="width: 7%;"></th>
+              <th style="width: 19%;"></th>
+            </tr>
+          </thead>
+
+          <% @recipe.recipe_ingredients.each do |ingredient| %>
+          <tbody>
+            <tr class="align-middle">
+              <td><%= ingredient.name %></td>
+              <% if ingredient.unit.name == "大さじ" || ingredient.unit.name == "小さじ"%>
+                <td class="text-end"><%= ingredient.unit.name %></td>
+                <% if session[:recalculation].present? %>
+                  <td class="text-start"><%= (ingredient.quantity.to_i * session[:recalculation]).round(1) %></td>
+                <% else %>
+                  <td class="text-start"><%= ingredient.quantity %></td>
+                <% end %>
+              <% else %>
+                <% if session[:recalculation].present? %>
+                  <td class="text-end"><%= (ingredient.quantity.to_i * session[:recalculation]).round(1) %></td>
+                <% else %>
+                  <td class="text-end"><%= ingredient.quantity %></td>
+                <% end %>
+                <td class="text-start"><%= ingredient.unit.name %></td>
+              <% end %>
+
+              <td class="">
+                <%= f.text_field (ingredient.id).to_s,  placeholder: "分量", class:"ingredient-quantity d-block mx-auto text-center w-100"%>
+              </td>
+
+            </tr>
+          </tbody>
+          <% end %>
+          <tbody>
+            <!--border border-whiteは後で修正、border noneに-->
+            <tr class="text-center border border-white">
+              <td colspan="3"　class="text-end"><%= link_to "分量のリセット", recipe_path(@recipe.id), class:"btn btn-secondary" %></td>
+              <td><%= f.submit "再計算", class:"btn btn-primary" %></td>
+            </tr>
+          </tbody>
+        </table>
+        <% if session[:recalculation].present? %>
+          <% session[:recalculation] = nil %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <h5 class="fw-bold border-bottom border-secondary mb-3">作り方</h5>
+      <table class="table table-hover table-borderless">
+        <thead>
+          <tr>
+            <th style="width: 10%;"></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% counter = 1 %>
+          <% @recipe.recipe_steps.each do |step| %>
+            <tr class="align-middle border-bottom">
+              <% if step.image.attached? %>
+                <td><%= image_tag step.get_recipe_image(90, 90) %></td>
+              <% else %>
+                <td style="width: 90px; height: 108px;"></td>
+              <% end %>
+              <td class="text-start bottom-0">
+                <h6><%= "Step.#{counter}" %></h6>
+                <%= step.content %>
+              </td>
+            </tr>
+          <% counter = counter.to_i + 1 %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <input id="allow-drinks" type="checkbox"/>
+<%= f.text_field :test,  id:"textField" %>
+<%= f.text_field :test2, id:"textField_s" %>
+</div>
+<% end %>
+
+<script>
+
+let changeText = document.getElementById("allow-drinks");
+let drinkSelect = document.getElementById("textField_s");
+
+changeText.addEventListener("change", function(event) {
+  if (event.target.checked) {
+    drinkSelect.disabled = false;
+  } else {
+    drinkSelect.disabled = true;
+  }
+}, false);
+
+</script>

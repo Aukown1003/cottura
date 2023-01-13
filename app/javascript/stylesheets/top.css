@@ -1,37 +1,4 @@
-/*ユーザー画像を丸く*/
-.user_profile_image{
-  border-radius: 50%;
-  border: 3px solid black;
-}
-
-/*タブ機能*/
-.tab-group{
-  display: flex;
-  justify-content: center;
-}
-.tab{
-  flex-grow: 1;
-  padding:5px;
-  list-style:none;
-  border:solid 1px #CCC;
-  text-align:center;
-  cursor:pointer;
-}
-
-.panel{
-  display:none;
-}
-.tab.is-active{
-  background:#F00;
-  color:#FFF;
-  transition: all 0.2s ease-out;
-}
-.panel.is-show{
-  display:block;
-}
-/*ここまで*/
-
-/*以下完成済み*/
+/*画像処理*/
 .top_image_form{
   position: relative;
 }
