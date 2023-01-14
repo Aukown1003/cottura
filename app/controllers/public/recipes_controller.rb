@@ -65,8 +65,7 @@ class Public::RecipesController < ApplicationController
     get_recipe_id = arry.first[0]
     get_quantity = arry.first[1]
     a = RecipeIngredient.find(get_recipe_id).quantity
-    # binding.pry
-     c = get_quantity.to_f / a.to_f
+    c = (BigDecimal(get_quantity.to_s) / a).to_f
     session[:recalculation] = c
     # arry.each do |id, val|
     # end
@@ -82,6 +81,7 @@ class Public::RecipesController < ApplicationController
         :title,
         :content,
         :total_time,
+        :category_id,
         :is_open,
         :image,
         recipe_ingredients_attributes: [:id, :name, :quantity, :unit_id, :_destroy],

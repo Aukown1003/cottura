@@ -4,11 +4,12 @@ class Recipe < ApplicationRecord
 
   #アソシエーション
   belongs_to :user
+  belongs_to :category
 
-  has_many :recipe_ingredients
+  has_many :recipe_ingredients, dependent: :destroy
   accepts_nested_attributes_for :recipe_ingredients, allow_destroy: true
 
-  has_many :recipe_steps
+  has_many :recipe_steps, dependent: :destroy
   accepts_nested_attributes_for :recipe_steps, allow_destroy: true
 
   # バリデーション

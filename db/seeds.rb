@@ -6,14 +6,39 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 # サンプル
-Admin.create!(
-  [
-    {
-      email: 'test@admin',
-      password: '111111',
-    }
-  ]
-)
+# Unit.create!(
+#   [
+#     {
+#       name: 'g',
+#     },
+#     {
+#       name: 'ml',
+#     },
+#     {
+#       name: 'l',
+#     },
+#     {
+#       name: '本',
+#     },
+#     {
+#       name: '個',
+#     },
+#     {
+#       name: '大さじ',
+#     },
+#     {
+#       name: '小さじ',
+#     },
+#   ]
+# )
+# Admin.create!(
+#   [
+#     {
+#       email: 'test@admin',
+#       password: '111111',
+#     }
+#   ]
+# )
 # Category.create!(
 #   [
 #     {

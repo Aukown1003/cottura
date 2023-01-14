@@ -57,13 +57,13 @@
               <% if ingredient.unit.name == "大さじ" || ingredient.unit.name == "小さじ"%>
                 <td class="text-end"><%= ingredient.unit.name %></td>
                 <% if session[:recalculation].present? %>
-                  <td class="text-start"><%= (ingredient.quantity.to_i * session[:recalculation]).round(1) %></td>
+                  <td class="text-start"><%= (BigDecimal(ingredient.quantity.to_s) * session[:recalculation]).round(1) %></td>
                 <% else %>
                   <td class="text-start"><%= ingredient.quantity %></td>
                 <% end %>
               <% else %>
                 <% if session[:recalculation].present? %>
-                  <td class="text-end"><%= (ingredient.quantity.to_i * session[:recalculation]).round(1) %></td>
+                  <td class="text-end"><%= (BigDecimal(ingredient.quantity.to_s) * session[:recalculation]).round(1) %></td>
                 <% else %>
                   <td class="text-end"><%= ingredient.quantity %></td>
                 <% end %>
@@ -107,7 +107,7 @@
           <% @recipe.recipe_steps.each do |step| %>
             <tr class="align-middle border-bottom">
               <% if step.image.attached? %>
-                <td><%= image_tag step.get_recipe_image(90, 90) %></td>
+                <td><%= image_tag step.get_recipe_step_image(90, 90) %></td>
               <% else %>
                 <td style="width: 90px; height: 108px;"></td>
               <% end %>
@@ -123,23 +123,10 @@
     </div>
   </div>
 
-  <input id="allow-drinks" type="checkbox"/>
-<%= f.text_field :test,  id:"textField" %>
-<%= f.text_field :test2, id:"textField_s" %>
 </div>
 <% end %>
 
 <script>
 
-let changeText = document.getElementById("allow-drinks");
-let drinkSelect = document.getElementById("textField_s");
-
-changeText.addEventListener("change", function(event) {
-  if (event.target.checked) {
-    drinkSelect.disabled = false;
-  } else {
-    drinkSelect.disabled = true;
-  }
-}, false);
 
 </script>
