@@ -14,7 +14,7 @@
         <%= @recipe.user.name %>
       </div>
     </div>
-    
+
     <% if @recipe.user.id == current_user.id %>
       <div class="col-12 d-flex justify-content-end">
         <%= link_to "レシピ編集", edit_recipe_path(@recipe.id), class: "btn btn-success me-3" %>
@@ -127,6 +127,22 @@
 <% end %>
 
 <script>
+  const elements = document.getElementsByClassName('ingredient-quantity')
+  for(i = 0; i < elements.length; i++) {
+    elements[i].addEventListener('change', () => {
 
-
+      Array.prototype.forEach.call(elements, (element) => {
+        if (!element.value) {
+          element.disabled = true
+        }
+      })
+      
+      const inputValues = Array.prototype.map.call(elements, e => e.value)
+      if(inputValues.filter(e => e).length == 0) {
+        Array.prototype.forEach.call(elements, (element) => {
+          element.disabled = false
+        })
+      }
+    })
+  }
 </script>

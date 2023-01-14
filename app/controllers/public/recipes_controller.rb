@@ -85,7 +85,8 @@ class Public::RecipesController < ApplicationController
         :is_open,
         :image,
         recipe_ingredients_attributes: [:id, :name, :quantity, :unit_id, :_destroy],
-        recipe_steps_attributes: [:id, :content, :image, :_destroy]
+        recipe_steps_attributes: [:id, :content, :image, :_destroy],
+        tags_attributes: [:id, :name, :_destroy],
         )
   end
   

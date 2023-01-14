@@ -1,4 +1,4 @@
-<%= form_with(model: @recipe, local: true) do |f| %>
+<%= form_with(model: recipe, local: true) do |f| %>
   <%= render 'layouts/error_messages', resource: f.object %>
   <div class="row">
     <div class="col-12 text-center mb-5">
@@ -9,8 +9,8 @@
         <!--クラス名、id変更禁止(javascript使用)-->
       <div class="preview">
         <div id="preview">
-          <% if current_page?(new_recipe_path)%> 
-             <img src="/assets/no_image_item" alt="default-image"　id="recipe_image" class="img-fluid default-image">
+          <% if current_page?(new_recipe_path)%>
+             <img src="/assets/no_image_item" alt="default-image" id="recipe_image" class="img-fluid default-image">
           <% else %>
             <%= image_tag @recipe.get_recipe_image(480, 480) %>
           <% end %>
@@ -68,6 +68,16 @@
       </div>
     </div>
 
+    <div class="col-md-12">
+      <h5 class="fw-bold border-bottom border-secondary mb-3">作り方</h5>
+      <div class="tag">
+        <%= f.fields_for :tags do |tag| %>
+          <%= render "tag_fields", f: tag %>
+        <% end %>
+        <%= link_to_add_fields "タグの追加", f, :tags %>
+      </div>
+    </div>
+
     <div class="col-md-12 border-bottom border-secondary pb-4">
        <h5 class="fw-bold border-bottom border-secondary mt-3 mb-4">公開状況</h5>
        <div class="radio_button_group">
@@ -81,11 +91,9 @@
          </label>
       </div>
     </div>
-    
-    <!--タグ追加機能をここに追加-->
 
     <div class="col-12 mt-3 text-center">
-      <% if current_page?(new_recipe_path) %> 
+      <% if current_page?(new_recipe_path) %>
         <%= f.submit "レシピを投稿する", class:"btn btn-lg btn-secondary" %>
       <% else %>
         <%= f.submit "編集したレシピを保存する", class:"btn btn-lg btn-secondary" %>
@@ -115,7 +123,7 @@ window.addEventListener('turbolinks:load', () => {
     this.style.height = `${this.scrollHeight}px`;
   }
 });
-  
+
 
   // 項目追加
   class addFields {
@@ -123,7 +131,7 @@ window.addEventListener('turbolinks:load', () => {
       this.links = document.querySelectorAll('.add_fields')
       this.iterateLinks()
     }
-  
+
     iterateLinks() {
       if (this.links.length === 0) return
       this.links.forEach(link => {
@@ -132,7 +140,7 @@ window.addEventListener('turbolinks:load', () => {
         })
       })
     }
-  
+
     handleClick(link, e) {
       if (!link || !e) return
       e.preventDefault()
@@ -141,7 +149,7 @@ window.addEventListener('turbolinks:load', () => {
       let regexp = linkId ? new RegExp(linkId, 'g') : null
       let newFields = regexp ? link.dataset.fields.replace(regexp, time) : null
       newFields ? link.insertAdjacentHTML('beforebegin', newFields) : null
-      
+
       // 以下カスタマイズ草案
       var getId = "recipe_recipe_steps_attributes_" + time + "_image"
       console.log(getId)
@@ -156,7 +164,7 @@ window.addEventListener('turbolinks:load', () => new addFields())
     constructor() {
       this.iterateLinks()
     }
-  
+
     iterateLinks() {
       document.addEventListener('click', e => {
         if (e.target && e.target.className == 'remove_fields') {
@@ -164,7 +172,7 @@ window.addEventListener('turbolinks:load', () => new addFields())
         }
       })
     }
-  
+
     handleClick(link, e) {
       if (!link || !e) return
       e.preventDefault()
@@ -204,12 +212,12 @@ if (document.URL.match(/new/)|| document.URL.match(/edit/)){
         if (imageContent){
           imageContent.remove();
         }
-  
+
         const file = e.target.files[0];
         const blob = window.URL.createObjectURL(file);
         createImageHTML(blob);
         });
-     } 
+     }
 
   });
 }
