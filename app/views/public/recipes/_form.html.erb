@@ -1,5 +1,4 @@
 <%= form_with(model: recipe, local: true) do |f| %>
-  <%= render 'layouts/error_messages', resource: f.object %>
   <div class="row">
     <div class="col-12 text-center mb-5">
       <%= f.text_field :title, placeholder: "レシピ名(32文字以内)", maxlength: "32", class:"recipe-name", required:"required" %>
@@ -10,7 +9,7 @@
       <div class="preview">
         <div id="preview">
           <% if current_page?(new_recipe_path)%>
-             <img src="/assets/no_image_item" alt="default-image" id="recipe_image" class="img-fluid default-image">
+             <img src="/assets/no_image_item" alt="default-image" class="img-fluid default-image">
           <% else %>
             <%= image_tag @recipe.get_recipe_image(480, 480) %>
           <% end %>
@@ -61,23 +60,25 @@
       </div>
     </div>
 
-    <div class="col-md-12 border-bottom border-secondary pb-4">
+    <div class="col-md-12 pb-4">
       <h5 class="fw-bold border-bottom border-secondary mt-3 mb-4">カテゴリ選択</h5>
       <div class="radio_button_group">
          <%= f.collection_select(:category_id, Category.all, :id, :name, {}) %>
       </div>
     </div>
-
-    <div class="col-md-12">
-      <h5 class="fw-bold border-bottom border-secondary mb-3">作り方</h5>
-      <div class="tag">
-        <%= f.fields_for :tags do |tag| %>
-          <%= render "tag_fields", f: tag %>
-        <% end %>
-        <%= link_to_add_fields "タグの追加", f, :tags %>
-      </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-12 tags">
+      <h5 class="fw-bold border-bottom border-secondary mb-3">タグ作成</h5>
     </div>
-
+      <%= f.fields_for :tags do |tag| %>
+        <%= render "tag_fields", f: tag %>
+      <% end %>
+      <%= link_to_add_fields "タグの追加", f, :tags %>
+  </div>
+  
+  <div class="row">
     <div class="col-md-12 border-bottom border-secondary pb-4">
        <h5 class="fw-bold border-bottom border-secondary mt-3 mb-4">公開状況</h5>
        <div class="radio_button_group">
@@ -99,7 +100,6 @@
         <%= f.submit "編集したレシピを保存する", class:"btn btn-lg btn-secondary" %>
       <% end %>
     </div>
-
   </div>
 <% end %>
 

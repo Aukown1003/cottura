@@ -1,4 +1,3 @@
-<%= form_with model: @recipe, url: recipe_recalculation_path(@recipe.id), method: :get do |f| %>
 <div class="container  my-5">
   <div class="row">
 
@@ -40,6 +39,7 @@
 
       <div class="mb-3">
         <h5 class="fw-bold border-bottom border-secondary mb-3">材料一覧</h5>
+        <%= form_with model: @recipe, url: recipe_recalculation_path(@recipe.id), method: :get do |f| %>
         <table class="table">
           <thead>
             <tr>
@@ -49,7 +49,7 @@
               <th style="width: 19%;"></th>
             </tr>
           </thead>
-
+        
           <% @recipe.recipe_ingredients.each do |ingredient| %>
           <tbody>
             <tr class="align-middle">
@@ -69,11 +69,9 @@
                 <% end %>
                 <td class="text-start"><%= ingredient.unit.name %></td>
               <% end %>
-
               <td class="">
                 <%= f.text_field (ingredient.id).to_s,  placeholder: "分量", class:"ingredient-quantity d-block mx-auto text-center w-100"%>
               </td>
-
             </tr>
           </tbody>
           <% end %>
@@ -85,6 +83,7 @@
             </tr>
           </tbody>
         </table>
+        <% end %>
         <% if session[:recalculation].present? %>
           <% session[:recalculation] = nil %>
         <% end %>
@@ -109,7 +108,7 @@
               <% if step.image.attached? %>
                 <td><%= image_tag step.get_recipe_step_image(90, 90) %></td>
               <% else %>
-                <td style="width: 90px; height: 108px;"></td>
+                <!--<td style="width: 90px; height: 108px;"></td>-->
               <% end %>
               <td class="text-start bottom-0">
                 <h6><%= "Step.#{counter}" %></h6>
@@ -124,7 +123,7 @@
   </div>
 
 </div>
-<% end %>
+
 
 <script>
   const elements = document.getElementsByClassName('ingredient-quantity')
