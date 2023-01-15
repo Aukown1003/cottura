@@ -13,7 +13,7 @@ class Public::RecipesController < ApplicationController
     # add_data.each do |f|
     #   data << f
     # end
-    
+
     add_data = params[:category_id]
     if session[:category_id].present?
       data = session[:category_id]
@@ -21,7 +21,7 @@ class Public::RecipesController < ApplicationController
     else
       data = [] << add_data
     end
-      
+
     data.uniq!
     session[:category_id] = data
     redirect_to recipes_path
@@ -33,15 +33,23 @@ class Public::RecipesController < ApplicationController
 
   def index
     # 後でis_open falseを除くように
+    @recipes = Recipe.all.includes(:recipe_steps).includes(:recipe_ingredients)
     if session[:category_id].present?
-      @recipes = Recipe.where(category: session[:category_id])
+      @recipes = @recipes.where(category: session[:category_id])
       @categories = Category.where(id: session[:category_id])
-    else
-      @recipes = Recipe.all
     end
     @genres = Genre.all
-    # @recipes = Recipe.includes(:user)
-    # binding.pry
+    # byebug
+    if params[:search].present?
+      keyword = params[:search].split(/ |　/).uniq.compact
+      @recipes.each do |recipe|
+       recipe.assign_attributes(payload: (recipe.recipe_steps.pluck(:content).join + recipe.recipe_ingredients.pluck(:name).join + recipe.title))
+      end
+      @recipes = @recipes.select do |o|
+        result = keyword.map{ |k| o.payload.include?(k) }
+        result.compact.uniq.size == 1 && result.compact.uniq.first == true
+      end
+    end
   end
 
   def show
