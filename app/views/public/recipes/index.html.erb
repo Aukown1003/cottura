@@ -1,14 +1,44 @@
 <div class="container-fluid p-0">
   <div class="row">
-    <%= form_with url: search_recipe_path, method: :get, id:"categorySearchForm" do |f| %>
+    <div class="col-12">
+      <%= form_with url: search_recipe_path, method: :get do |f| %>
+        <%= f.text_field :title, placeholder: "検索ワード", required:"required" %>
+        <%= f.button type: "submit", class: "btn btn-secondary" do %>
+          <i class="fas fa-search"></i>
+        <% end %>
+        <%#= f.submit class:"btn btn-secondary" %>
+      <% end %>
+    </div>
+    <% if session[:category_id].present? %>
+      <div class="col-12 py-1">
+        <% @categories.each do |category| %>
+          <sapn class>
+            <%= link_to category_id_delete_recipe_path(destroy_category_id: category.id), method: :delete, class:"btn btn-dark px-2 rounded-0" do %>
+              <%= category.name %><span class="ms-1"><i class="fas fa-times"></i></span>
+            <% end %>
+          </span>
+        <% end %>
+        <%= link_to "全てのカテゴリーを削除", category_id_all_delete_recipe_path, method: :delete, class:"btn btn-danger rounded-0" %>
+    
+        <!--<%#= form_with url: category_id_delete_recipe_path, method: :delete do |f| %>-->
+        <!--  <%#= f.collection_check_boxes(:destroy_category_id, @categories, :id, :name) do |b| %>-->
+        <!--    <%#= b.label { b.check_box + b.text } %>-->
+        <!--  <%# end %>-->
+        <!--  <%#= link_to "全てのカテゴリーを削除", category_id_all_delete_recipe_path, method: :delete, class:"btn btn-danger" %>-->
+        <!--  <div class="mt-3"><%#= f.submit "削除" %></div>-->
+        <!--<%# end %>-->
+      </div>
+    <% end %>
+
+    <%= form_with url: search_recipe_path, method: :get do |f| %>
       <div class="d-flex justify-content-around">
         <% @genres.each do |genre| %>
-          <div class="col gnavi__list bg-secondary text-white">
-            <h5 class="text-center pt-3"><%= genre.name %></h5>
+          <div class="col gnavi__list py-2 my-auto bg-secondary text-white border border-white">
+            <h5 class="text-center m-0"><%= genre.name %><span class="ps-2"><i class="fas fa-caret-square-down"></i></span></h5>
             <ul class="dropdown__lists">
               <% genre.categories.each do |category| %>
-              <li class="dropdown__list">
-                <%= link_to category.name, search_recipe_path(category_id: category.id), class:"btn btn btn-light" %>
+              <li class="dropdown__list border-bottom border-dark">
+                <%= link_to category.name, search_recipe_path(category_id: category.id), class:"btn btn btn-light rounded-0" %>
               </li>
               <% end %>
               <!--<%#= f.collection_check_boxes(:category_id, genre.categories, :id, :name) do |b| %>-->
@@ -25,27 +55,9 @@
       </div>
       <%#= f.submit "絞り込み表示", class:"btn btn-primary w-100" %>
     <% end %>
-      
+
   </div>
 </div>
-
-<% if session[:category_id].present? %>
-  <div>
-    <% @categories.each do |category| %>
-      <sapn class>
-        <%= link_to category.name, category_id_delete_recipe_path(destroy_category_id: category.id), method: :delete, class:"btn btn-secondary" %>
-      </span>
-    <% end %>
-              
-    <%= form_with url: category_id_delete_recipe_path, method: :delete do |f| %>
-      <%= f.collection_check_boxes(:destroy_category_id, @categories, :id, :name) do |b| %>
-        <%= b.label { b.check_box + b.text } %>
-      <% end %>
-      <%= link_to "全てのカテゴリーを削除", category_id_all_delete_recipe_path, method: :delete, class:"btn btn-danger" %>
-      <div class="mt-3"><%= f.submit "削除" %></div>
-    <% end %>
-  </div>
-<% end %>
 
 </div>
 
@@ -77,14 +89,3 @@
     <% end %>
   </div>
 </div>
-
-<script>
-  // const elements = document.getElementsByClassName("category_id")
-  // const form = document.getElementById('categorySearchForm')
-  // for(let i = 0; i < elements.length; i++) {
-  //   elements[i].addEventListener('change', ()=> {
-  //     // document.forms[form].submit();
-  //     this.form.submit();
-  //   })
-  // }
-</script>
