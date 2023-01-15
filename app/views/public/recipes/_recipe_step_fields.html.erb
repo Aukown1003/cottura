@@ -5,11 +5,11 @@
       <% if current_page?(new_recipe_path) %>
         <img src="/assets/no_image_item" alt="default-image" class="img-fluid">
       <% else %>
-        <!--< %= image_tag f.get_recipe_image(100, 100) %>-->
+        <%= image_tag f.object.get_recipe_step_image(90,90) %>
       <% end %>
     </div>
     
-    <%= f.text_field :content, placeholder: "作り方をここに記述！", class:"step-content w-75", required:"required"%>
+    <%= f.text_field :content, placeholder: "作り方をここに記述！", class:"step-content w-75"%>
     <%= link_to '#', class: "remove-field-btn" do %>
       <%= image_tag 'ifn0498', class:"remove_fields" %>
     <% end %>

@@ -1,14 +1,47 @@
 class Public::RecipesController < ApplicationController
   before_action :authenticate_user!, except: [:index,:show]
   before_action :user_check, only: [:edit, :update, :destroy]
-  
+
+  def search
+    # binding.pry
+    # if session[:category_id].present?
+    #   data = session[:category_id]
+    # else
+    #   data = []
+    # end
+    # add_data = params[:category_id].reject(&:empty?)
+    # add_data.each do |f|
+    #   data << f
+    # end
+    
+    add_data = params[:category_id]
+    if session[:category_id].present?
+      data = session[:category_id]
+      data << add_data
+    else
+      data = [] << add_data
+    end
+      
+    data.uniq!
+    session[:category_id] = data
+    redirect_to recipes_path
+  end
+
   def new
     @recipe = Recipe.new
   end
 
   def index
-    @recipes = Recipe.all
+    # 後でis_open falseを除くように
+    if session[:category_id].present?
+      @recipes = Recipe.where(category: session[:category_id])
+      @categories = Category.where(id: session[:category_id])
+    else
+      @recipes = Recipe.all
+    end
+    @genres = Genre.all
     # @recipes = Recipe.includes(:user)
+    # binding.pry
   end
 
   def show
@@ -34,7 +67,7 @@ class Public::RecipesController < ApplicationController
   def edit
     @recipe = Recipe.find(params[:id])
   end
-  
+
   def update
     @recipe = Recipe.find(params[:id])
     if @recipe.recipe_ingredients == [] || @recipe.recipe_steps == []
@@ -51,7 +84,24 @@ class Public::RecipesController < ApplicationController
 
   def destroy
     @recipe = Recipe.find(params[:id])
-    # @recipe.destroy
+    @recipe.destroy
+    redirect_to recipes_path
+  end
+
+  def category_id_delete
+    data = session[:category_id]
+    delete_data = params[:destroy_category_id]
+    data.delete(delete_data)
+    # delete_data = params[:destroy_category_id].reject(&:empty?)
+    # delete_data.each do |f|
+    #   category_id_data.delete(f)
+    # end
+    session[:category_id] = data
+    redirect_to recipes_path
+  end
+
+  def category_id_all_delete
+    session[:category_id] = nil
     redirect_to recipes_path
   end
 
@@ -65,34 +115,35 @@ class Public::RecipesController < ApplicationController
     get_recipe_id = arry.first[0]
     get_quantity = arry.first[1]
     a = RecipeIngredient.find(get_recipe_id).quantity
-    # binding.pry
-     c = get_quantity.to_f / a.to_f
+    c = (BigDecimal(get_quantity.to_s) / a).to_f
     session[:recalculation] = c
     # arry.each do |id, val|
     # end
-
     redirect_to request.referer
   end
 
   private
-  
+
   def recipe_params
       params.require(:recipe).permit(
         :user_id,
         :title,
         :content,
         :total_time,
+        :category_id,
         :is_open,
         :image,
         recipe_ingredients_attributes: [:id, :name, :quantity, :unit_id, :_destroy],
-        recipe_steps_attributes: [:id, :content, :image, :_destroy]
+        recipe_steps_attributes: [:id, :content, :image, :_destroy],
+        tags_attributes: [:id, :name, :_destroy],
         )
   end
-  
+
   def user_check
     user_id = Recipe.find(params[:id]).user_id
     if user_id =! current_user.id
       redirect_to root_path, alert: '他の会員のレシピの更新、削除はできません。'
     end
   end
+
 end

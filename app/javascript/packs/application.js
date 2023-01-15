@@ -16,6 +16,7 @@ import '@fortawesome/fontawesome-free/js/all'
 import "../stylesheets/header"
 import "../stylesheets/top"
 import "../stylesheets/recipe"
+import "../stylesheets/recipe_index"
 
 Rails.start()
 Turbolinks.start()

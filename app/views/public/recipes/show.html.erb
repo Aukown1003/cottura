@@ -1,4 +1,3 @@
-<%= form_with model: @recipe, url: recipe_recalculation_path(@recipe.id), method: :get do |f| %>
 <div class="container  my-5">
   <div class="row">
 
@@ -14,7 +13,7 @@
         <%= @recipe.user.name %>
       </div>
     </div>
-    
+
     <% if @recipe.user.id == current_user.id %>
       <div class="col-12 d-flex justify-content-end">
         <%= link_to "レシピ編集", edit_recipe_path(@recipe.id), class: "btn btn-success me-3" %>
@@ -40,6 +39,7 @@
 
       <div class="mb-3">
         <h5 class="fw-bold border-bottom border-secondary mb-3">材料一覧</h5>
+        <%= form_with model: @recipe, url: recipe_recalculation_path(@recipe.id), method: :get do |f| %>
         <table class="table">
           <thead>
             <tr>
@@ -49,7 +49,7 @@
               <th style="width: 19%;"></th>
             </tr>
           </thead>
-
+        
           <% @recipe.recipe_ingredients.each do |ingredient| %>
           <tbody>
             <tr class="align-middle">
@@ -57,23 +57,21 @@
               <% if ingredient.unit.name == "大さじ" || ingredient.unit.name == "小さじ"%>
                 <td class="text-end"><%= ingredient.unit.name %></td>
                 <% if session[:recalculation].present? %>
-                  <td class="text-start"><%= (ingredient.quantity.to_i * session[:recalculation]).round(1) %></td>
+                  <td class="text-start"><%= (BigDecimal(ingredient.quantity.to_s) * session[:recalculation]).round(1) %></td>
                 <% else %>
                   <td class="text-start"><%= ingredient.quantity %></td>
                 <% end %>
               <% else %>
                 <% if session[:recalculation].present? %>
-                  <td class="text-end"><%= (ingredient.quantity.to_i * session[:recalculation]).round(1) %></td>
+                  <td class="text-end"><%= (BigDecimal(ingredient.quantity.to_s) * session[:recalculation]).round(1) %></td>
                 <% else %>
                   <td class="text-end"><%= ingredient.quantity %></td>
                 <% end %>
                 <td class="text-start"><%= ingredient.unit.name %></td>
               <% end %>
-
               <td class="">
                 <%= f.text_field (ingredient.id).to_s,  placeholder: "分量", class:"ingredient-quantity d-block mx-auto text-center w-100"%>
               </td>
-
             </tr>
           </tbody>
           <% end %>
@@ -85,6 +83,7 @@
             </tr>
           </tbody>
         </table>
+        <% end %>
         <% if session[:recalculation].present? %>
           <% session[:recalculation] = nil %>
         <% end %>
@@ -107,9 +106,9 @@
           <% @recipe.recipe_steps.each do |step| %>
             <tr class="align-middle border-bottom">
               <% if step.image.attached? %>
-                <td><%= image_tag step.get_recipe_image(90, 90) %></td>
+                <td><%= image_tag step.get_recipe_step_image(90, 90) %></td>
               <% else %>
-                <td style="width: 90px; height: 108px;"></td>
+                <!--<td style="width: 90px; height: 108px;"></td>-->
               <% end %>
               <td class="text-start bottom-0">
                 <h6><%= "Step.#{counter}" %></h6>
@@ -123,23 +122,26 @@
     </div>
   </div>
 
-  <input id="allow-drinks" type="checkbox"/>
-<%= f.text_field :test,  id:"textField" %>
-<%= f.text_field :test2, id:"textField_s" %>
 </div>
-<% end %>
+
 
 <script>
+  const elements = document.getElementsByClassName('ingredient-quantity')
+  for(i = 0; i < elements.length; i++) {
+    elements[i].addEventListener('change', () => {
 
-let changeText = document.getElementById("allow-drinks");
-let drinkSelect = document.getElementById("textField_s");
-
-changeText.addEventListener("change", function(event) {
-  if (event.target.checked) {
-    drinkSelect.disabled = false;
-  } else {
-    drinkSelect.disabled = true;
+      Array.prototype.forEach.call(elements, (element) => {
+        if (!element.value) {
+          element.disabled = true
+        }
+      })
+      
+      const inputValues = Array.prototype.map.call(elements, e => e.value)
+      if(inputValues.filter(e => e).length == 0) {
+        Array.prototype.forEach.call(elements, (element) => {
+          element.disabled = false
+        })
+      }
+    })
   }
-}, false);
-
 </script>

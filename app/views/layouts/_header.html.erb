@@ -23,7 +23,7 @@
             </li>
 
             <li class="nav-item mb-1 mb-lg-0">
-              <%= link_to new_recipe_path, class: 'nav-link text-dark btn me-2' do %>
+              <%= link_to new_recipe_path, class: 'nav-link text-dark btn me-2', 'data-turbolinks': false do %>
                 <i class="fas fa-pencil-alt"></i><%= "レシピを書く" %>
               <% end %>
             </li>
@@ -53,7 +53,7 @@
             </li>
 
             <li class="nav-item  mb-1 mb-lg-0">
-              <%= link_to root_path, class: 'nav-link text-dark btn me-2' do %>
+              <%= link_to admin_genres_path, class: 'nav-link text-dark btn me-2' do %>
                 <i class="fas fa-tags"></i><%= "タグ一覧" %>
               <% end %>
             </li>

@@ -6,6 +6,81 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 # サンプル
+# Unit.create!(
+#   [
+#     {
+#       name: 'g',
+#     },
+#     {
+#       name: 'ml',
+#     },
+#     {
+#       name: 'l',
+#     },
+#     {
+#       name: '本',
+#     },
+#     {
+#       name: '個',
+#     },
+#     {
+#       name: '大さじ',
+#     },
+#     {
+#       name: '小さじ',
+#     },
+#   ]
+# )
+# Admin.create!(
+#   [
+#     {
+#       email: 'test@admin',
+#       password: '111111',
+#     }
+#   ]
+# )
+# Category.create!(
+#   [
+#     {
+#       genre_id: '1',
+#       name: '牛肉',
+#     },
+#     {
+#       genre_id: '1',
+#       name: '豚肉',
+#     },
+#     {
+#       genre_id: '1',
+#       name: '鶏肉',
+#     },
+#     {
+#       genre_id: '1',
+#       name: 'ジビエ',
+#     },
+#     {
+#       genre_id: '2',
+#       name: 'マグロ',
+#     },
+#     {
+#       genre_id: '2',
+#       name: 'ヒラメ',
+#     },
+#     {
+#       genre_id: '2',
+#       name: 'アジ',
+#     },
+#     {
+#       genre_id: '2',
+#       name: 'サンマ',
+#     },
+#     {
+#       genre_id: '2',
+#       name: 'スズキ',
+#     },
+#   ]
+# )
+
+
 # Recipe.create!(
 #   [
 #     {

@@ -14,8 +14,15 @@ Rails.application.routes.draw do
       get "unsubscribe"=>"users#unsubscribe"
       patch "withdrawal"=>"users#withdrawal"
     end
+    
     resources :recipes do
       get "recalculation" => "recipes#recalculation"
+    end
+    
+    resource :recipe, only: [:search] do
+      get "search" => "recipes#search"
+      delete "category_id_delete" => "recipes#category_id_delete"
+      delete "category_id_all_delete" => "recipes#category_id_all_delete"
     end
   end
 
@@ -27,6 +34,8 @@ Rails.application.routes.draw do
   namespace :admin do
     root to: 'homes#top'
     resources :users, except: [:new, :create]
+    resources :genres, except: [:new] 
+    resources :categories
     #以下adminはすべてこの中に
   end
 

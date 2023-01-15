@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_10_055148) do
+ActiveRecord::Schema.define(version: 2023_01_14_082413) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -52,11 +52,25 @@ ActiveRecord::Schema.define(version: 2023_01_10_055148) do
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
   end
 
+  create_table "categories", force: :cascade do |t|
+    t.integer "genre_id", null: false
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["genre_id"], name: "index_categories_on_genre_id"
+  end
+
+  create_table "genres", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "recipe_ingredients", force: :cascade do |t|
     t.integer "recipe_id", null: false
     t.integer "unit_id", null: false
     t.string "name", null: false
-    t.integer "quantity", null: false
+    t.float "quantity", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["recipe_id"], name: "index_recipe_ingredients_on_recipe_id"
@@ -73,13 +87,23 @@ ActiveRecord::Schema.define(version: 2023_01_10_055148) do
 
   create_table "recipes", force: :cascade do |t|
     t.integer "user_id", null: false
+    t.integer "category_id", null: false
     t.string "title", null: false
     t.string "content", null: false
     t.integer "total_time", null: false
     t.boolean "is_open", default: true, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["category_id"], name: "index_recipes_on_category_id"
     t.index ["user_id"], name: "index_recipes_on_user_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.integer "recipe_id", null: false
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["recipe_id"], name: "index_tags_on_recipe_id"
   end
 
   create_table "units", force: :cascade do |t|
@@ -105,8 +129,11 @@ ActiveRecord::Schema.define(version: 2023_01_10_055148) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "categories", "genres"
   add_foreign_key "recipe_ingredients", "recipes"
   add_foreign_key "recipe_ingredients", "units"
   add_foreign_key "recipe_steps", "recipes"
+  add_foreign_key "recipes", "categories"
   add_foreign_key "recipes", "users"
+  add_foreign_key "tags", "recipes"
 end
