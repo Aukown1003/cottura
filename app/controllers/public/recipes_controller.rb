@@ -41,13 +41,12 @@ class Public::RecipesController < ApplicationController
     end
     # include出来る
     @genres = Genre.all
-    
+
     # 以下検索ロジック
     if params[:search].present?
       keyword = params[:search].split(/ |　/).uniq.compact
       @recipes.each do |recipe|
-        # タグもたさないと
-       recipe.assign_attributes(payload: (recipe.recipe_steps.pluck(:content).join + recipe.recipe_ingredients.pluck(:name).join + recipe.title))
+       recipe.assign_attributes(payload: (recipe.recipe_steps.pluck(:content).join + recipe.recipe_ingredients.pluck(:name).join + recipe.tags.pluck(:name).join + recipe.title))
       end
       @recipes = @recipes.select do |o|
         result = keyword.map{ |k| o.payload.include?(k) }

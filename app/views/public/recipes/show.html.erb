@@ -125,6 +125,16 @@
         </tbody>
       </table>
     </div>
+    
+    <div class="row">
+      <h5 class="col-12 fw-bold border-bottom border-secondary mb-3">タグ一覧</h5>
+      <% @recipe.tags.each do |tag| %>
+        <div class="col">
+          <p class="rounded-2 p-1 m-0"><span class="ps-2"><i class="fas fa-tag"></i></span><span class="ps-2"><%= tag.name %></span></p>
+        </div>
+      <% end %>
+    </div>
+    
   </div>
 
 </div>
