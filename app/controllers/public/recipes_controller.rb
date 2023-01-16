@@ -1,5 +1,5 @@
 class Public::RecipesController < ApplicationController
-  before_action :authenticate_user!, except: [:index,:show]
+  before_action :authenticate_user!, except: [:index, :show, :search, :category_id_delete, :category_id_all_delete]
   before_action :user_check, only: [:edit, :update, :destroy]
 
   def search
@@ -36,13 +36,17 @@ class Public::RecipesController < ApplicationController
     @recipes = Recipe.all.includes(:recipe_steps).includes(:recipe_ingredients)
     if session[:category_id].present?
       @recipes = @recipes.where(category: session[:category_id])
+      # includeできる？
       @categories = Category.where(id: session[:category_id])
     end
+    # include出来る
     @genres = Genre.all
-    # byebug
+    
+    # 以下検索ロジック
     if params[:search].present?
       keyword = params[:search].split(/ |　/).uniq.compact
       @recipes.each do |recipe|
+        # タグもたさないと
        recipe.assign_attributes(payload: (recipe.recipe_steps.pluck(:content).join + recipe.recipe_ingredients.pluck(:name).join + recipe.title))
       end
       @recipes = @recipes.select do |o|
