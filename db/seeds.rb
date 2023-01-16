@@ -31,55 +31,7 @@
 #     },
 #   ]
 # )
-# Admin.create!(
-#   [
-#     {
-#       email: 'test@admin',
-#       password: '111111',
-#     }
-#   ]
-# )
-# Category.create!(
-#   [
-#     {
-#       genre_id: '1',
-#       name: '牛肉',
-#     },
-#     {
-#       genre_id: '1',
-#       name: '豚肉',
-#     },
-#     {
-#       genre_id: '1',
-#       name: '鶏肉',
-#     },
-#     {
-#       genre_id: '1',
-#       name: 'ジビエ',
-#     },
-#     {
-#       genre_id: '2',
-#       name: 'マグロ',
-#     },
-#     {
-#       genre_id: '2',
-#       name: 'ヒラメ',
-#     },
-#     {
-#       genre_id: '2',
-#       name: 'アジ',
-#     },
-#     {
-#       genre_id: '2',
-#       name: 'サンマ',
-#     },
-#     {
-#       genre_id: '2',
-#       name: 'スズキ',
-#     },
-#   ]
-# )
-
+# 
 
 # Recipe.create!(
 #   [

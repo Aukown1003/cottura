@@ -1,6 +1,7 @@
 class Recipe < ApplicationRecord
 
   has_one_attached :image
+  attribute :payload, :text
 
   #アソシエーション
   belongs_to :user
