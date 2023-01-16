@@ -33,11 +33,6 @@
       </div>
 
       <div class="mb-3">
-        <h5 class="fw-bold border-bottom border-secondary mb-3">カテゴリー</h5>
-        <span class="p-2"><%= @recipe.category.name %></span>
-      </div>
-
-      <div class="mb-3">
         <h5 class="fw-bold border-bottom border-secondary mb-3">調理時間</h5>
         <span class="p-2"><%= @recipe.view_time_data %></span>
       </div>
@@ -72,7 +67,7 @@
                 <% else %>
                   <td class="text-end"><%= ingredient.quantity %></td>
                 <% end %>
-                <td class="text-start"><%= ingredient.unit.name %></td>
+                <td class="text-end"><%= ingredient.unit.name %></td>
               <% end %>
               <td class="">
                 <%= f.text_field (ingredient.id).to_s,  placeholder: "分量", class:"ingredient-quantity d-block mx-auto text-center w-100"%>
@@ -126,7 +121,13 @@
       </table>
     </div>
     
-    <div class="row">
+    <div class="mb-3">
+      <h5 class="fw-bold border-bottom border-secondary mb-3">カテゴリー</h5>
+      <span class="p-2"><%= @recipe.category.name %></span>
+    </div>
+    
+    <% unless @recipe.tags.empty? %>
+    <div class="tag-gro">
       <h5 class="col-12 fw-bold border-bottom border-secondary mb-3">タグ一覧</h5>
       <% @recipe.tags.each do |tag| %>
         <div class="col">
@@ -134,13 +135,38 @@
         </div>
       <% end %>
     </div>
+    <% end %>
     
+    <%= form_with model: @review, url: reviews_path(@recipe.id), method: :post, local: true do |f| %>
+      <h5 class="col-12 fw-bold border-bottom border-secondary mb-3">評価</h5>
+      <div class="col-12">
+        <%= f.hidden_field :recipe_id, value: @recipe.id %>
+        <div id="recipe_review" class ="mb-3"></div> 
+        <%= f.text_area :content, class: "textarea" %><br>
+        <%= f.submit "レビューを投稿", class: "btn btn-secondary" %>
+      </div>
+    <% end %>
+    
+    <% unless @recipe.reviews.empty? %>
+    <% end %>
   </div>
-
 </div>
 
-
 <script>
+
+  document.addEventListener('turbolinks:load', function() {  //turbolinksをoffに
+    $('#recipe_review').empty();
+    let elem = document.querySelector('#recipe_review'); //recipe_reviewは設定したid
+    let opt = { //opt(option)として以下を設定
+      starOn: "<%= asset_path('star-on.png') %>", //('')内に先程imageフォルダに入れた星の画像へのパスと参照名を記載
+      starOff: "<%= asset_path('star-off.png') %>", //app/assets/imagesを参照している状態
+      starHalf: "<%= asset_path('star-half.png') %>", //仮にimages/rate_imagesフォルダを作成し、その中に画像を入れた場合は('rate_images/画像名')と記述
+      scoreName: 'review[score]', ////登録するモデル名とカラム名を記述
+      half: false,
+    };
+    raty(elem,opt);
+  });
+  
   const elements = document.getElementsByClassName('ingredient-quantity')
   for(i = 0; i < elements.length; i++) {
     elements[i].addEventListener('change', () => {

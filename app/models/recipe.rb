@@ -6,6 +6,7 @@ class Recipe < ApplicationRecord
   #アソシエーション
   belongs_to :user
   belongs_to :category
+  has_many :reviews, dependent: :destroy
 
   has_many :recipe_ingredients, dependent: :destroy
   accepts_nested_attributes_for :recipe_ingredients, allow_destroy: true
