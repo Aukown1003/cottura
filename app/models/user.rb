@@ -13,6 +13,7 @@ class User < ApplicationRecord
   # アソシエーション
   has_many :recipes, dependent: :destroy
   has_many :reviews, dependent: :destroy
+  has_many :favorites, dependent: :destroy
 
   # ユーザーアカウント状態メソッド
   def active?
