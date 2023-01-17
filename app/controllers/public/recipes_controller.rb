@@ -1,5 +1,5 @@
 class Public::RecipesController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :search, :category_id_delete, :category_id_all_delete]
+  before_action :authenticate_user!, except: [:index, :show, :recalculation, :search, :category_id_delete, :category_id_all_delete]
   before_action :user_check, only: [:edit, :update, :destroy]
 
   def search
@@ -41,14 +41,20 @@ class Public::RecipesController < ApplicationController
     end
     # include出来る
     @genres = Genre.all
-    
+
     # 以下検索ロジック
     if params[:search].present?
+      binding.pry
+      # params[:search] => "文字 文字"
+      # .split(/ |　/) => ["文字","文字"] スペースで区切って配列に
+      # .uniq => 重複を削除
+      # .compact => nillが含まれるものを削除
       keyword = params[:search].split(/ |　/).uniq.compact
+      # assign_attributesでpayloadにデータを追加
       @recipes.each do |recipe|
-        # タグもたさないと
-       recipe.assign_attributes(payload: (recipe.recipe_steps.pluck(:content).join + recipe.recipe_ingredients.pluck(:name).join + recipe.title))
+       recipe.assign_attributes(payload: (recipe.recipe_steps.pluck(:content).join + recipe.recipe_ingredients.pluck(:name).join + recipe.tags.pluck(:name).join + recipe.title))
       end
+      # レシピを一つづつ見て、payloadにkeywordが含まれているものだけを取得する
       @recipes = @recipes.select do |o|
         result = keyword.map{ |k| o.payload.include?(k) }
         result.compact.uniq.size == 1 && result.compact.uniq.first == true
@@ -58,6 +64,7 @@ class Public::RecipesController < ApplicationController
 
   def show
     @recipe = Recipe.find(params[:id])
+    @review = Review.new
   end
 
   def create
@@ -69,7 +76,7 @@ class Public::RecipesController < ApplicationController
         return
       end
       if @recipe.save
-        redirect_to root_path, notice: "投稿しました"
+        redirect_to root_path, notice: "レシピを投稿しました"
       else
         render 'new'
       end
@@ -126,9 +133,9 @@ class Public::RecipesController < ApplicationController
     end
     get_recipe_id = arry.first[0]
     get_quantity = arry.first[1]
-    a = RecipeIngredient.find(get_recipe_id).quantity
-    c = (BigDecimal(get_quantity.to_s) / a).to_f
-    session[:recalculation] = c
+    ingredient_quantity = RecipeIngredient.find(get_recipe_id).quantity
+    ratio = (BigDecimal(get_quantity.to_s) / ingredient_quantity).to_f
+    session[:recalculation] = ratio
     # arry.each do |id, val|
     # end
     redirect_to request.referer

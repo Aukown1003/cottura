@@ -24,6 +24,8 @@ Rails.application.routes.draw do
       delete "category_id_delete" => "recipes#category_id_delete"
       delete "category_id_all_delete" => "recipes#category_id_all_delete"
     end
+    
+    resources :reviews, only: [:create, :destroy]
   end
 
   # registrationsは後で削除

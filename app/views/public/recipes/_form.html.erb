@@ -54,7 +54,7 @@
       <h5 class="fw-bold border-bottom border-secondary mb-3">作り方 <span class="fw-light small-font">※画像は表示イメージです</span></h5>
       <div class="recipe_step">
         <%= f.fields_for :recipe_steps do |step| %>
-          <%= render "recipe_step_fields", f: step %>
+          <%= render "recipe_step_fields", f: step%>
         <% end %>
         <%= link_to_add_fields "作り方の追加", f, :recipe_steps %>
       </div>

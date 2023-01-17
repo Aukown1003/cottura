@@ -7,7 +7,8 @@
       <h2 class="mb-2 mt-3 mt-sm-0"><%= @user.name %>のキッチン</h2>
       <p><%= safe_join(@user.content.split("\n"),tag(:br)) %></p>
       <!--<p>< %= @user.content %></p>-->
-      <% if @user.id == current_user.id && @user.email != 'guest@example.com' %>
+      <% if current_user == nil || @user.id != current_user.id || @user.email == 'guest@example.com'%>
+      <% else %>
         <div class="d-flex justify-content-evenly justify-content-sm-start">
           <div class="m-1">
             <%= link_to "プロフィール編集", edit_user_path, class:"btn btn-sm btn-success" %>
@@ -17,6 +18,9 @@
           </div>
         </div>
       <% end %>
+      <%# if @user.id == current_user.id && @user.email != 'guest@example.com' %>
+
+      <%# end %>
     </div>
   </div>
   
