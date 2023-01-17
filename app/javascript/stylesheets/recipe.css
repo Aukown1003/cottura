@@ -169,6 +169,11 @@ display: none;
   }
 }
 
+.input-review{
+  border: none;
+  border-bottom: 2px solid #cccccc;
+}
+
 /*メディクリ*/
 
 @media (min-width:1400px)  {

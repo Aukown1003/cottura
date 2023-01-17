@@ -14,16 +14,29 @@
       </div>
     </div>
 
-    <% if @recipe.user.id == current_user.id %>
-      <div class="col-12 d-flex justify-content-end">
+    <% if current_user == nil || @recipe.user.id != current_user.id %>
+    <% else %>
+      <div class="col-12 d-flex justify-content-end mb-3">
         <%= link_to "レシピ編集", edit_recipe_path(@recipe.id), class: "btn btn-success me-3" %>
         <%= link_to "レシピ削除", recipe_path(@recipe.id), method: :delete, data: { confirm: '削除してもよろしいですか？' }, class: "btn btn-danger" %>
       </div>
     <% end %>
 
-    <div class="col-md-6 text-center my-auto">
+    <div class="col-md-6 mb-3 my-md-auto  text-center">
       <%= image_tag @recipe.get_recipe_image(480, 480), class: "img-fluid" %>
-      <div>レビュー機能をここに</div>
+
+      <div class="d-flex justify-content-center mt-3">
+        <span class="me-2"><%= @recipe.reviews.average(:score).to_f.round(1) %></span>
+        <div id="review_<%= @recipe.id %>"></div>
+        <span class="ms-2">(<%= @recipe.reviews.count %>)</span>
+      </div>
+
+      <% unless @recipe.reviews.empty? %>
+      <div class="mt-2">
+        <%= link_to "レビューを読む", { anchor: "review_contents" }, class: 'btn btn-sm btn-secondary' %>
+      </div>
+      <% end %>
+
     </div>
 
     <div class="col-md-6">
@@ -49,7 +62,7 @@
               <th style="width: 19%;"></th>
             </tr>
           </thead>
-        
+
           <% @recipe.recipe_ingredients.each do |ingredient| %>
           <tbody>
             <tr class="align-middle">
@@ -120,12 +133,12 @@
         </tbody>
       </table>
     </div>
-    
+
     <div class="mb-3">
       <h5 class="fw-bold border-bottom border-secondary mb-3">カテゴリー</h5>
       <span class="p-2"><%= @recipe.category.name %></span>
     </div>
-    
+
     <% unless @recipe.tags.empty? %>
     <div class="tag-gro">
       <h5 class="col-12 fw-bold border-bottom border-secondary mb-3">タグ一覧</h5>
@@ -136,28 +149,73 @@
       <% end %>
     </div>
     <% end %>
-    
-    <%= form_with model: @review, url: reviews_path(@recipe.id), method: :post, local: true do |f| %>
-      <h5 class="col-12 fw-bold border-bottom border-secondary mb-3">評価</h5>
-      <div class="col-12">
-        <%= f.hidden_field :recipe_id, value: @recipe.id %>
-        <div id="recipe_review" class ="mb-3"></div> 
-        <%= f.text_area :content, class: "textarea" %><br>
-        <%= f.submit "レビューを投稿", class: "btn btn-secondary" %>
+
+    <% if current_user == nil || @recipe.user.id != current_user.id %>
+    <% else %>
+      <%= form_with model: @review, url: reviews_path(@recipe.id), method: :post, local: true do |f| %>
+        <h5 class="col-12 fw-bold border-bottom border-secondary mb-3">評価</h5>
+        <div class="col-12">
+          <%= f.hidden_field :recipe_id, value: @recipe.id %>
+          <div id="recipe_review" class ="mb-3"></div>
+          <%= f.text_area :content, placeholder: "レビューを入力", maxlength: "140", class:"w-100 textArea input-review  mb-2", required:"required", rows: 1 %>
+          <%= f.submit "レビューを投稿", class: "btn btn-secondary mb-3" %>
+        </div>
+      <% end %>
+    <% end %>
+
+    <% unless @recipe.reviews.empty? %>
+      <div class="col-12" id="review_contents">
+        <h5 class="fw-bold border-bottom border-secondary mb-3">レビュー<span class="ms-2">(<%= @recipe.reviews.count %>件)</span></h5>
+        <% @recipe.reviews.each do |review| %>
+          <div class="review_content my-3">
+            <%= render "/public/recipes/review_show", review: review %>
+            <div class="mb-1">投稿者：<%= review.user.name %></div>
+            <div class="mb-1"><%#= review.content %></div>
+            <div class="mb-1"><%= safe_join(review.content.split("\n"),tag(:br)) %></div>
+            <div class="mb-1"><%= review.created_at.strftime("%Y年%m月%d日") %></div>
+          </div>
+        <% end %>
       </div>
     <% end %>
-    
-    <% unless @recipe.reviews.empty? %>
-    <% end %>
+
   </div>
 </div>
 
 <script>
 
+  window.addEventListener('turbolinks:load', () => {
+    const textareaEls = document.querySelectorAll("textarea");
+  
+    textareaEls.forEach((textareaEl) => {
+      textareaEl.setAttribute("style", `height: ${textareaEl.scrollHeight}px;`);
+      textareaEl.addEventListener("input", setTextareaHeight);
+    });
+  
+    function setTextareaHeight() {
+      this.style.height = "auto";
+      this.style.height = `${this.scrollHeight}px`;
+    }
+  });
+
+
+  document.addEventListener('turbolinks:load', function() {
+    $('#review_<%= @recipe.id %>').empty();
+    let raty_<%= @recipe.id %> = document.querySelector('#review_<%= @recipe.id %>');
+    let option_<%= @recipe.id %> = {
+      starOn: "<%= asset_path('star-on.png') %>",
+      starOff: "<%= asset_path('star-off.png') %>",
+      starHalf: "<%= asset_path('star-half.png') %>",
+      readOnly: true,
+      score: <%= @recipe.reviews.average(:score).to_f.round(1) %>,
+    };
+    raty(raty_<%= @recipe.id %> ,option_<%= @recipe.id %>);
+  });
+
+
   document.addEventListener('turbolinks:load', function() {  //turbolinksをoffに
     $('#recipe_review').empty();
-    let elem = document.querySelector('#recipe_review'); //recipe_reviewは設定したid
-    let opt = { //opt(option)として以下を設定
+    const elem = document.querySelector('#recipe_review'); //recipe_reviewは設定したid
+    const opt = { //opt(option)として以下を設定
       starOn: "<%= asset_path('star-on.png') %>", //('')内に先程imageフォルダに入れた星の画像へのパスと参照名を記載
       starOff: "<%= asset_path('star-off.png') %>", //app/assets/imagesを参照している状態
       starHalf: "<%= asset_path('star-half.png') %>", //仮にimages/rate_imagesフォルダを作成し、その中に画像を入れた場合は('rate_images/画像名')と記述
@@ -166,7 +224,7 @@
     };
     raty(elem,opt);
   });
-  
+
   const elements = document.getElementsByClassName('ingredient-quantity')
   for(i = 0; i < elements.length; i++) {
     elements[i].addEventListener('change', () => {
@@ -176,7 +234,7 @@
           element.disabled = true
         }
       })
-      
+
       const inputValues = Array.prototype.map.call(elements, e => e.value)
       if(inputValues.filter(e => e).length == 0) {
         Array.prototype.forEach.call(elements, (element) => {

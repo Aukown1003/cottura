@@ -1,5 +1,5 @@
 class Public::RecipesController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :search, :category_id_delete, :category_id_all_delete]
+  before_action :authenticate_user!, except: [:index, :show, :recalculation, :search, :category_id_delete, :category_id_all_delete]
   before_action :user_check, only: [:edit, :update, :destroy]
 
   def search
