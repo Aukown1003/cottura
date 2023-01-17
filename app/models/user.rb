@@ -9,11 +9,12 @@ class User < ApplicationRecord
   # バリデーション
   validates :name, presence: true
   validates :email, presence: true
-  
+
   # アソシエーション
   has_many :recipes, dependent: :destroy
   has_many :reviews, dependent: :destroy
   has_many :favorites, dependent: :destroy
+  has_many :favorited_recipes, through: :favorites, source: :recipe
 
   # ユーザーアカウント状態メソッド
   def active?

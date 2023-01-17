@@ -7,7 +7,7 @@
 
     <div class="col-md-2 text-center mt-4 mt-md-0 mb-4 mb-md-5">
       <div class="">
-        <%= image_tag @recipe.user.get_user_image(50,50) %>
+        <%= image_tag @recipe.user.get_user_image(50,50), alt: "ユーザー画像", class:"user_profile_image" %>
         <%= @recipe.user.name %>
       </div>
     </div>
@@ -176,7 +176,7 @@
             <div class="mb-1">投稿者：<%= review.user.name %></div>
             <div class="mb-1"><%= safe_join(review.content.split("\n"),tag(:br)) %></div>
             <div class="mb-1"><%= review.created_at.strftime("%Y年%m月%d日") %></div>
-            <% if current_user == nil || @recipe.user.id != current_user.id %>
+            <% if current_user == nil || review.user.id != current_user.id %>
             <% else %>
               <div class="mb-1"><%= link_to "このコメントを削除", review_path(review.id), method: :delete, class:"btn btn-sm btn-danger" %></div>
             <% end %>

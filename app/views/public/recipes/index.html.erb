@@ -21,7 +21,7 @@
           </label>
         <% end %>
         <%= link_to "全てのカテゴリーを削除", category_id_all_delete_recipe_path, method: :delete, class:"ms-1 tag_labels btn btn-danger rounded-1" %>
-    
+
         <!--<%#= form_with url: category_id_delete_recipe_path, method: :delete do |f| %>-->
         <!--  <%#= f.collection_check_boxes(:destroy_category_id, @categories, :id, :name) do |b| %>-->
         <!--    <%#= b.label { b.check_box + b.text } %>-->
@@ -66,28 +66,7 @@
 <div class="container my-5">
   <div class="row">
     <% @recipes.each do |recipe| %>
-    <div class="group neumorphism index-item col-sm-6 col-md-4 col-lg-3 col-xxl-2 mb-2">
-
-      <div class="box index-item-parts bg-secondary text-white rounded">
-        <div class="text-center pt-2">
-          <%= link_to image_tag(recipe.get_recipe_index_image(200, 200)), recipe_path(recipe.id), class:"img-fluid" %>
-        </div>
-        <div>
-          <div class="fw-bold text-truncate mt-1 px-2 px-sm-4 ps-xl-4 px-md-2">
-            <%= link_to recipe.title, recipe_path(recipe.id), class: "link-light" %>
-          </div>
-
-          <div class="px-2 px-sm-4 ps-xl-4 px-md-2">
-            <%= recipe.view_time_data %>
-          </div>
-
-          <div class="mb-2 pb-2 pX-2 px-sm-4 ps-xl-4 px-md-2">
-            <%= render "/public/recipes/review", recipe: recipe %>
-          </div>
-        </div>
-      </div>
-
-    </div>
+      <%= render "/public/recipes/recipe_lists", recipe: recipe %>
     <% end %>
   </div>
 </div>
