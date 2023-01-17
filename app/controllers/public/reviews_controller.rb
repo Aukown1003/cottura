@@ -3,14 +3,13 @@ class Public::ReviewsController < ApplicationController
   
   def create
     @review = current_user.reviews.new(review_params)
-    # binding.pry
     if params[:review][:score].empty? || params[:review][:content].empty?
       @recipe = Recipe.find_by(id: params[:review][:recipe_id])
-      flash.now[:alert] = 'レビューの投稿に失敗しました'
+      flash.now[:alert] = '未入力の項目があり、レビューの投稿に失敗しました'
       render template: "public/recipes/show"
     else
       @review.save
-      redirect_to root_path
+      redirect_to recipe_path(id: params[:review][:recipe_id]), notice: "レビューを投稿しました。"
     end
     
     # if @review.save
@@ -23,7 +22,9 @@ class Public::ReviewsController < ApplicationController
   end
   
   def destroy
-    
+    review = Review.find(params[:id])
+    review.destroy
+    redirect_to request.referer, notice: "レビューを削除しました。"
   end
   
   private

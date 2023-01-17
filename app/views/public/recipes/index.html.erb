@@ -1,17 +1,18 @@
 <div class="container-fluid p-0">
   <div class="row">
-      
+    <div class="col-12 search-form">
       <%= form_with url: recipes_path, method: :get, class:"w-50 mx-auto my-2" do |f| %>
-      <div class="col-12 text-center d-flex">
+      <div class="text-center d-flex">
         <%= f.search_field :search, class: 'form-control rounded-0', placeholder: '検索したい言葉を入力、複数ある場合は半角スペースを挿入', value: params[:search] %>
         <%= f.button type: "submit", class: "btn btn-secondary rounded-0" do %>
           <i class="fas fa-search"></i>
         <% end %>
       </div>
       <% end %>
+    </div>
 
     <% if session[:category_id].present? %>
-      <div class="col-12 py-1">
+      <div class="col-12 search-category pb-2">
         <% @categories.each do |category| %>
           <label class="tag_labels rounded-2 ms-1">
             <%= link_to category_id_delete_recipe_path(destroy_category_id: category.id), method: :delete, class:"btn btn-dark px-2" do %>

@@ -10,7 +10,7 @@ class Admin::UsersController < ApplicationController
 
   def update
     user = User.find(params[:id])
-    user.update!(admin_user_params)
+    user.update(admin_user_params)
     redirect_to request.referer
   end
 
