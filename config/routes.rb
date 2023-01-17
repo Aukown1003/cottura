@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     
     resources :recipes do
       get "recalculation" => "recipes#recalculation"
+      resource :favorites, only: [:create, :destroy]
     end
     
     resource :recipe, only: [:search] do
@@ -26,6 +27,7 @@ Rails.application.routes.draw do
     end
     
     resources :reviews, only: [:create, :destroy]
+    
   end
 
   # registrationsは後で削除

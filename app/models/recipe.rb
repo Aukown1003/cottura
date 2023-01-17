@@ -27,7 +27,9 @@ class Recipe < ApplicationRecord
   validates :total_time, presence: true
   validates :is_open, presence: true
 
-
+  def favorited_by(user)
+    favorites.exists?(user_id: user.id)
+  end
 
   def get_recipe_image(width, height)
     unless image.attached?

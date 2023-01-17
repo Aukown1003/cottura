@@ -17,9 +17,9 @@
       </div>
 
       <label class="mt-3 mb-3 mb-md-3">
-        <%= f.label :image, class: "d-block align-middle btn btn-secondary" do %>
+        <%= f.label :image, class: "d-flex align-items-center btn btn-secondary" do %>
           <i class="fas fa-camera fa-2x "></i>
-          <span class="">写真を追加</span>
+          <span class="ps-2 pt-1">写真を追加</span>
         <!--クラス名変更禁止(css使用)-->
           <%= f.file_field :image, accept: "image/*", class: "input-image" %>
         <% end %>
