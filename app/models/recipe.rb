@@ -1,5 +1,6 @@
 class Recipe < ApplicationRecord
-
+  #after_update :update_recipe_any_ingredients
+  #after_update :update_recipe_any_steps
   has_one_attached :image
   attribute :payload, :text
 
@@ -25,6 +26,37 @@ class Recipe < ApplicationRecord
   validates :content, presence: true, length: {maximum: 140}
   validates :total_time, presence: true
   validates :is_open, presence: true
+  #validate :recipe_any_ingredients
+  #validate :recipe_any_steps
+  validates :recipe_ingredients, length: {minimum: 1 } 
+  validates :recipe_steps, length: {minimum: 1 }
+
+  # def recipe_any_ingredients
+  #   errors.add(:base, :no_ingredients) if recipe_ingredients.blank?
+  # end
+  # def update_recipe_any_ingredients
+  #   recipe_ingredients.reload
+  #   pp '----------'
+  #   pp recipe_ingredients.count
+  #   if recipe_ingredients.blank?
+  #     errors.add(:base, :no_ingredients)
+  #     raise ActiveRecord::RecordInvalid
+  #   end
+  # end
+
+  # def recipe_any_steps
+  #   errors.add(:base, :no_steps) if recipe_steps.blank?
+  # end
+
+  # def update_recipe_any_steps
+  #   recipe_steps.reload
+  #   pp '----------'
+  #   pp recipe_steps.count
+  #   if recipe_steps.blank?
+  #     errors.add(:base, :no_steps)
+  #     raise ActiveRecord::RecordInvalid
+  #   end
+  # end
 
   def favorited_by(user)
     favorites.exists?(user_id: user.id)
@@ -46,6 +78,7 @@ class Recipe < ApplicationRecord
     end
     # image.variant(resize_to_limit: [width, height]).processed
     image.variant(resize_to_fill: [width, height]).processed
+
   end
 
   # 時間表示メソッド

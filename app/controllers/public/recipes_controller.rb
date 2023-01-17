@@ -43,10 +43,10 @@ class Public::RecipesController < ApplicationController
     ActiveRecord::Base.transaction do
       @recipe = current_user.recipes.new(recipe_params)
       # binding.pry
-      if @recipe.recipe_ingredients == [] || @recipe.recipe_steps == []
-        redirect_to new_recipe_path, alert: "材料または作り方が未入力です。"
-        return
-      end
+      # if @recipe.recipe_ingredients == [] || @recipe.recipe_steps == []
+      #   redirect_to new_recipe_path, alert: "材料または作り方が未入力です。"
+      #   return
+      # end
       if @recipe.save
         redirect_to root_path, notice: "レシピを投稿しました"
       else
@@ -60,16 +60,18 @@ class Public::RecipesController < ApplicationController
   end
 
   def update
-    @recipe = Recipe.find(params[:id])
-    if @recipe.recipe_ingredients == [] || @recipe.recipe_steps == []
-      redirect_to request.referer, alert: "材料または作り方が未入力です。"
-      return
-    end
-    if @recipe.update(recipe_params)
+    ActiveRecord::Base.transaction do
+      @recipe = Recipe.find(params[:id])
+      # binding.pry
+      # if @recipe.recipe_ingredients == [] || @recipe.recipe_steps == []
+      #   redirect_to request.referer, alert: "材料または作り方が未入力です。"
+      #   return
+      # end
+      @recipe.update!(recipe_params)
       redirect_to root_path
-    else
-      flash.now[:alert] = "編集に失敗しました"
-      render :edit
+    rescue ActiveRecord::RecordInvalid
+        flash.now[:alert] = "編集に失敗しました"
+        render :edit
     end
   end
 
@@ -78,7 +80,7 @@ class Public::RecipesController < ApplicationController
     @recipe.destroy
     redirect_to recipes_path
   end
-  
+
   def search
     # binding.pry
     # if session[:category_id].present?

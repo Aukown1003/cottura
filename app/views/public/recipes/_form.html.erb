@@ -8,10 +8,10 @@
         <!--クラス名、id変更禁止(javascript使用)-->
       <div class="preview">
         <div id="preview">
-          <% if current_page?(new_recipe_path)%>
+          <% unless recipe.image.attached? %>
              <img src="/assets/no_image_item" alt="default-image" class="img-fluid default-image">
           <% else %>
-            <%= image_tag @recipe.get_recipe_image(480, 480) %>
+            <%= image_tag recipe.get_recipe_image(480, 480) %>
           <% end %>
         </div>
       </div>
