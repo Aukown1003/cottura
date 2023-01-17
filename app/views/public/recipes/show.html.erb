@@ -119,7 +119,7 @@
               <% if step.image.attached? %>
                 <td><%= image_tag step.get_recipe_step_image(90, 90) %></td>
               <% else %>
-                <!--<td style="width: 90px; height: 108px;"></td>-->
+                <td style="width: 90px; height: 108px;"></td>
               <% end %>
               <td class="text-start bottom-0">
                 <h6><%= "Step.#{counter}" %></h6>
@@ -138,13 +138,15 @@
     </div>
 
     <% unless @recipe.tags.empty? %>
-    <div class="tag-gro">
+    <div class="tag-group mb-3">
       <h5 class="col-12 fw-bold border-bottom border-secondary mb-3">タグ一覧</h5>
+      <div class="tags d-flex">
       <% @recipe.tags.each do |tag| %>
         <div class="col">
           <p class="rounded-2 p-1 m-0"><span class="ps-2"><i class="fas fa-tag"></i></span><span class="ps-2"><%= tag.name %></span></p>
         </div>
       <% end %>
+      </div>
     </div>
     <% end %>
 
