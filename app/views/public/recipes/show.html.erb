@@ -7,12 +7,16 @@
 
     <div class="col-md-2 text-center mt-4 mt-md-0 mb-4 mb-md-5">
       <div class="">
-        <%= image_tag @recipe.user.get_user_image(50,50) %>
+        <%= image_tag @recipe.user.get_user_image(50,50), alt: "ユーザー画像", class:"user_profile_image" %>
         <%= @recipe.user.name %>
       </div>
     </div>
 
-    <% if current_user == nil || @recipe.user.id != current_user.id %>
+    <% if current_user == nil %>
+    <% elsif @recipe.user.id != current_user.id %>
+      <div class="col-12 text-end mb-2" id="js-recipe_favorite_<%= @recipe.id %>">
+        <%= render 'public/favorites/form', recipe: @recipe %>
+      </div>
     <% else %>
       <div class="col-12 d-flex justify-content-end mb-3">
         <%= link_to "レシピ編集", edit_recipe_path(@recipe.id), class: "btn btn-success me-3" %>
@@ -150,7 +154,7 @@
     </div>
     <% end %>
 
-    <% if current_user == nil || @recipe.user.id != current_user.id %>
+    <% if current_user == nil || @recipe.user.id == current_user.id %>
     <% else %>
       <%= form_with model: @review, url: reviews_path(@recipe.id), method: :post, local: true do |f| %>
         <h5 class="col-12 fw-bold border-bottom border-secondary mb-3">レビュー入力</h5>
@@ -172,7 +176,7 @@
             <div class="mb-1">投稿者：<%= review.user.name %></div>
             <div class="mb-1"><%= safe_join(review.content.split("\n"),tag(:br)) %></div>
             <div class="mb-1"><%= review.created_at.strftime("%Y年%m月%d日") %></div>
-            <% if current_user == nil || @recipe.user.id != current_user.id %>
+            <% if current_user == nil || review.user.id != current_user.id %>
             <% else %>
               <div class="mb-1"><%= link_to "このコメントを削除", review_path(review.id), method: :delete, class:"btn btn-sm btn-danger" %></div>
             <% end %>
@@ -188,12 +192,12 @@
 
   window.addEventListener('turbolinks:load', () => {
     const textareaEls = document.querySelectorAll("textarea");
-  
+
     textareaEls.forEach((textareaEl) => {
       textareaEl.setAttribute("style", `height: ${textareaEl.scrollHeight}px;`);
       textareaEl.addEventListener("input", setTextareaHeight);
     });
-  
+
     function setTextareaHeight() {
       this.style.height = "auto";
       this.style.height = `${this.scrollHeight}px`;

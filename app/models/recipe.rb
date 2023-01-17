@@ -17,6 +17,8 @@ class Recipe < ApplicationRecord
   has_many :tags, dependent: :destroy
   accepts_nested_attributes_for :tags, allow_destroy: true
 
+  has_many :favorites, dependent: :destroy
+
   # バリデーション
   validates :user_id, presence: true
   validates :title, presence: true, length: {maximum: 32}
@@ -24,7 +26,9 @@ class Recipe < ApplicationRecord
   validates :total_time, presence: true
   validates :is_open, presence: true
 
-
+  def favorited_by(user)
+    favorites.exists?(user_id: user.id)
+  end
 
   def get_recipe_image(width, height)
     unless image.attached?

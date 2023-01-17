@@ -17,6 +17,7 @@ import "../stylesheets/header"
 import "../stylesheets/top"
 import "../stylesheets/recipe"
 import "../stylesheets/recipe_index"
+import "../stylesheets/favorites"
 
 Rails.start()
 Turbolinks.start()

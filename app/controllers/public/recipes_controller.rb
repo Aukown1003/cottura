@@ -2,49 +2,21 @@ class Public::RecipesController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show, :recalculation, :search, :category_id_delete, :category_id_all_delete]
   before_action :user_check, only: [:edit, :update, :destroy]
 
-  def search
-    # binding.pry
-    # if session[:category_id].present?
-    #   data = session[:category_id]
-    # else
-    #   data = []
-    # end
-    # add_data = params[:category_id].reject(&:empty?)
-    # add_data.each do |f|
-    #   data << f
-    # end
-
-    add_data = params[:category_id]
-    if session[:category_id].present?
-      data = session[:category_id]
-      data << add_data
-    else
-      data = [] << add_data
-    end
-
-    data.uniq!
-    session[:category_id] = data
-    redirect_to recipes_path
-  end
-
   def new
     @recipe = Recipe.new
   end
 
   def index
-    # 後でis_open falseを除くように
-    @recipes = Recipe.all.includes(:recipe_steps).includes(:recipe_ingredients)
+    # @recipes = Recipe.all.includes(:recipe_steps).includes(:recipe_ingredients)
+     @recipes = Recipe.where(is_open: true).includes(:recipe_steps, :recipe_ingredients)
     if session[:category_id].present?
       @recipes = @recipes.where(category: session[:category_id])
-      # includeできる？
       @categories = Category.where(id: session[:category_id])
     end
-    # include出来る
-    @genres = Genre.all
+    @genres = Genre.all.includes(:categories)
 
     # 以下検索ロジック
     if params[:search].present?
-      binding.pry
       # params[:search] => "文字 文字"
       # .split(/ |　/) => ["文字","文字"] スペースで区切って配列に
       # .uniq => 重複を削除
@@ -63,7 +35,7 @@ class Public::RecipesController < ApplicationController
   end
 
   def show
-    @recipe = Recipe.find(params[:id])
+    @recipe = Recipe.includes(:recipe_ingredients, :recipe_steps, :tags, :reviews).find(params[:id])
     @review = Review.new
   end
 
@@ -106,6 +78,31 @@ class Public::RecipesController < ApplicationController
     @recipe.destroy
     redirect_to recipes_path
   end
+  
+  def search
+    # binding.pry
+    # if session[:category_id].present?
+    #   data = session[:category_id]
+    # else
+    #   data = []
+    # end
+    # add_data = params[:category_id].reject(&:empty?)
+    # add_data.each do |f|
+    #   data << f
+    # end
+
+    add_data = params[:category_id]
+    if session[:category_id].present?
+      data = session[:category_id]
+      data << add_data
+    else
+      data = [] << add_data
+    end
+
+    data.uniq!
+    session[:category_id] = data
+    redirect_to recipes_path
+  end
 
   def category_id_delete
     data = session[:category_id]
@@ -136,8 +133,6 @@ class Public::RecipesController < ApplicationController
     ingredient_quantity = RecipeIngredient.find(get_recipe_id).quantity
     ratio = (BigDecimal(get_quantity.to_s) / ingredient_quantity).to_f
     session[:recalculation] = ratio
-    # arry.each do |id, val|
-    # end
     redirect_to request.referer
   end
 

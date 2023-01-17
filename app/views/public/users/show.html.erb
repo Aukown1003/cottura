@@ -6,7 +6,6 @@
     <div class="col-sm-7 text-center text-sm-start offset-sm-1">
       <h2 class="mb-2 mt-3 mt-sm-0"><%= @user.name %>のキッチン</h2>
       <p><%= safe_join(@user.content.split("\n"),tag(:br)) %></p>
-      <!--<p>< %= @user.content %></p>-->
       <% if current_user == nil || @user.id != current_user.id || @user.email == 'guest@example.com'%>
       <% else %>
         <div class="d-flex justify-content-evenly justify-content-sm-start">
@@ -33,10 +32,10 @@
     <!--タブを切り替えて表示するコンテンツ-->
     <div class="panel-group mt-2">
       <div class="panel tab-A is-show">
-        <%= render 'public/users/recipe_list' %>
+        <%= render 'public/users/post_recipe_lists' %>
       </div>
       <div class="panel tab-B">
-        <%= render 'public/users/a' %>
+        <%= render 'public/users/favorites_recipes' %>
       </div>
     </div>
   </div>
