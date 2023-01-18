@@ -120,14 +120,14 @@ function inputChange(){
     categoryForm.disabled = false ;
   }
 }
-//   $(function() {
-//   $('#recipe_genre_id').change(function() {
-//     $.get({
-//       url: "#{recipe_search_category}",
-//       data: { genre_id: $('#recipe_genre_id').has('option:selected').val() }
-//     });
-//   });
-// });
+  $(function() {
+  $('#recipe_genre_id').change(function() {
+    $.get({
+      url: "<%= search_category_recipe_path %>",
+      data: { genre_id: $('#recipe_genre_id').has('option:selected').val() }
+    });
+  });
+});
 
 
 

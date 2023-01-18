@@ -1,17 +1,16 @@
-<%= javascript_pack_tag 'review_show', 'data-turbolinks-track': 'reload' %>
-<div id="review_<%= review.id %>" class="mb-1"></div>
+<div id="review_show_<%= review.id %>" class="mb-1"></div>
 
 <script>
-document.addEventListener('turbolinks:load', function() {
-  $('#review_<%= review.id %>').empty();
-  let raty_<%= review.id %> = document.querySelector('#review_<%= review.id %>');
-  let option_<%= review.id %> = {
-    starOn: "<%= asset_path('star-on.png') %>",
-    starOff: "<%= asset_path('star-off.png') %>",
-    starHalf: "<%= asset_path('star-half.png') %>",
-    readOnly: true,
-    score: <%= review.score %>,
-  };
-  raty(raty_<%= review.id %> ,option_<%= review.id %>);
-});
+  document.addEventListener('turbolinks:load', function() {
+    $('#review_show_<%= review.id %>').empty();
+    let raty_<%= review.id %> = document.querySelector('#review_show_<%= review.id %>');
+    let option_<%= review.id %> = {
+      starOn: "<%= asset_path('star-on.png') %>",
+      starOff: "<%= asset_path('star-off.png') %>",
+      starHalf: "<%= asset_path('star-half.png') %>",
+      readOnly: true,
+      score: <%= review.score %>,
+    };
+    raty(raty_<%= review.id %> ,option_<%= review.id %>);
+  });
 </script>

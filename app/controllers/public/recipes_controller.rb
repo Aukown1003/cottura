@@ -87,7 +87,7 @@ class Public::RecipesController < ApplicationController
 
   def search_category
     @category = Category.where(genre_id: params[:genre_id])
-    binding.pry
+    # binding.pry
   end
 
   def search
