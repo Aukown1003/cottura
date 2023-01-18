@@ -5,11 +5,12 @@ class Public::RecipesController < ApplicationController
   def new
     @recipe = Recipe.new
     @genre = Genre.all
+    @category = Category.all
   end
 
   def index
     # @recipes = Recipe.all.includes(:recipe_steps).includes(:recipe_ingredients)
-     @recipes = Recipe.where(is_open: true).includes(:recipe_steps, :recipe_ingredients)
+    @recipes = Recipe.where(is_open: true).includes(:recipe_steps, :recipe_ingredients)
     if session[:category_id].present?
       @recipes = @recipes.where(category: session[:category_id])
       @categories = Category.where(id: session[:category_id])
@@ -25,7 +26,7 @@ class Public::RecipesController < ApplicationController
       keyword = params[:search].split(/ |　/).uniq.compact
       # assign_attributesでpayloadにデータを追加
       @recipes.each do |recipe|
-       recipe.assign_attributes(payload: (recipe.recipe_steps.pluck(:content).join + recipe.recipe_ingredients.pluck(:name).join + recipe.tags.pluck(:name).join + recipe.title))
+        recipe.assign_attributes(payload: (recipe.recipe_steps.pluck(:content).join + recipe.recipe_ingredients.pluck(:name).join + recipe.tags.pluck(:name).join + recipe.title))
       end
       # レシピを一つづつ見て、payloadにkeywordが含まれているものだけを取得する
       @recipes = @recipes.select do |o|
@@ -82,6 +83,11 @@ class Public::RecipesController < ApplicationController
     @recipe = Recipe.find(params[:id])
     @recipe.destroy
     redirect_to recipes_path
+  end
+
+  def search_category
+    @category = Category.where(genre_id: params[:genre_id])
+    binding.pry
   end
 
   def search

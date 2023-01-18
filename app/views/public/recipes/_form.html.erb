@@ -62,13 +62,12 @@
 
     <div class="col-md-12 pb-4">
       <h5 class="fw-bold border-bottom border-secondary mt-3 mb-4">ジャンル、カテゴリ選択</h5>
-      <%#= f.collection_select(:genre_id, @genre, :id, :name, include_blank: "ジャンルを選択してください") %>
-      <%# @genre.each do |genre| %>
-        <%#= f.collection_select(:category_id, genre.categories, :id, :name, include_blank: "カテゴリーを選択してください")%>
-      <%# end %>
+
+      <%= f.collection_select(:genre_id, @genre, :id, :name, include_blank: "ジャンルを選択してください") %>
+      <%= f.collection_select(:category_id, @category.all, :id, :name, {include_blank: "カテゴリーを選択してください"}, disabled: true )%>
 
       <div class="radio_button_group">
-        <%= f.collection_select(:category_id, Category.all, :id, :name, {}) %>
+        <%#= f.collection_select(:category_id, Category.all, :id, :name, {}) %>
       </div>
     </div>
   </div>
@@ -108,7 +107,29 @@
   </div>
 <% end %>
 
+
 <script>
+let genreForm = document.getElementById('recipe_genre_id')
+let categoryForm = document.getElementById('recipe_category_id')
+genreForm.onchange = inputChange;
+function inputChange(){
+  console.log(genreForm.value)
+  if(genreForm.value == ''){
+    categoryForm.disabled = true ;
+  }else{
+    categoryForm.disabled = false ;
+  }
+}
+//   $(function() {
+//   $('#recipe_genre_id').change(function() {
+//     $.get({
+//       url: "#{recipe_search_category}",
+//       data: { genre_id: $('#recipe_genre_id').has('option:selected').val() }
+//     });
+//   });
+// });
+
+
 
 // テキストエリアの可変処理
 window.addEventListener('turbolinks:load', () => {

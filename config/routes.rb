@@ -17,7 +17,9 @@ Rails.application.routes.draw do
     
     resources :recipes do
       get "recalculation" => "recipes#recalculation"
+      get "search_category" => "recipes#search_category"
       resource :favorites, only: [:create, :destroy]
+      resources :reports, only: [:new, :create]
     end
     
     resource :recipe, only: [:search] do
