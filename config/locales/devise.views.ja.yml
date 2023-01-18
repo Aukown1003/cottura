@@ -12,6 +12,12 @@ ja:
               blank: "が入力されていません。"
             total_time:
               blank: "が未選択です。"
+            recipe_ingredients:
+              too_short: "は一つ以上入力してください。"
+            recipe_steps:
+              too_short: "は一つ以上入力してください。"
+            category:
+              required: "が選択されていません。"
         recipe_ingredient:
           attributes: 
             name:
@@ -22,7 +28,6 @@ ja:
           attributes: 
             content:
               blank: "が入力されていません。"
-      
         user:
           attributes:
             name:

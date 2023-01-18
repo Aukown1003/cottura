@@ -38,6 +38,7 @@ class Public::RecipesController < ApplicationController
   def show
     @recipe = Recipe.includes(:recipe_ingredients, :recipe_steps, :tags, :reviews).find(params[:id])
     @review = Review.new
+    impressionist(@recipe, nil, unique: [:ip_address])
   end
 
   def create
@@ -51,7 +52,8 @@ class Public::RecipesController < ApplicationController
       if @recipe.save
         redirect_to root_path, notice: "レシピを投稿しました"
       else
-        render 'new'
+        @genre = Genre.all
+        render :new
       end
     end
   end
