@@ -4,6 +4,7 @@ class Public::RecipesController < ApplicationController
 
   def new
     @recipe = Recipe.new
+    @genre = Genre.all
   end
 
   def index
