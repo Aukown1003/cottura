@@ -61,14 +61,11 @@
     </div>
 
     <div class="col-md-12 pb-4">
-      <h5 class="fw-bold border-bottom border-secondary mt-3 mb-4">カテゴリ選択</h5>
+      <h5 class="fw-bold border-bottom border-secondary mt-3 mb-4">ジャンル、カテゴリ選択</h5>
       <%= f.collection_select(:genre_id, @genre, :id, :name, include_blank: "ジャンルを選択してください") %>
-      <%= f.select :category_id, [], include_blank: "カテゴリーを選択してください", class: "default-category-select"%>
       <% @genre.each do |genre| %>
-        <templete{id: "category-of-genre#{genre.id}"}>
         <%= f.collection_select(:category_id, genre.categories, :id, :name, include_blank: "カテゴリーを選択してください")%>
       <% end %>
-
 
       <%# <div class="radio_button_group">
         <%= f.collection_select(:category_id, Category.all, :id, :name, {}) %>
@@ -112,14 +109,6 @@
 <% end %>
 
 <script>
-
-window.addEventListener('turbolinks:load', () => new createSelectBox())
-class createSelectBox{
-  let categoryVal = document.getElementById("category"),value
-  if (categoryVal !== ""){
-    let selectedTemplate = document.getElementById("genre-of-category")
-  }
-}
 
 // テキストエリアの可変処理
 window.addEventListener('turbolinks:load', () => {
