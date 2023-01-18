@@ -62,13 +62,13 @@
 
     <div class="col-md-12 pb-4">
       <h5 class="fw-bold border-bottom border-secondary mt-3 mb-4">ジャンル、カテゴリ選択</h5>
-
-      <%= f.collection_select(:genre_id, @genre, :id, :name, include_blank: "ジャンルを選択してください") %>
-      <%= f.collection_select(:category_id, @category.all, :id, :name, {include_blank: "ジャンルを選択後入力可能になります"}, disabled: true )%>
-
-      <div class="radio_button_group">
-        <%#= f.collection_select(:category_id, Category.all, :id, :name, {}) %>
-      </div>
+      <% if recipe.category.present? %>
+        <%= f.collection_select(:genre_id, @genre, :id, :name, {}, selected: recipe.category.genre ) %>
+        <%= f.collection_select(:category_id, @category.all, :id, :name, {include_blank: "ジャンルを選択後入力可能になります"}, selected: recipe.category )%>
+      <% else %>
+        <%= f.collection_select(:genre_id, @genre, :id, :name, include_blank: "ジャンルを選択してください") %>
+        <%= f.collection_select(:category_id, @category.all, :id, :name, {include_blank: "ジャンルを選択後入力可能になります"}, disabled: true )%>
+      <% end %>
     </div>
   </div>
 

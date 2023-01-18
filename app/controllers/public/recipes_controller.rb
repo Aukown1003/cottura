@@ -61,6 +61,8 @@ class Public::RecipesController < ApplicationController
 
   def edit
     @recipe = Recipe.find(params[:id])
+    @genre = Genre.all
+    @category = Category.all
   end
 
   def update
