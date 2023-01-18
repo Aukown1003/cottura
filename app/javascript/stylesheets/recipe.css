@@ -136,6 +136,10 @@ display: none;
 .ingredient-name,.ingredient-quantity{
   width: 30%;
 }
+
+.recipe_step_inputBox .textArea {
+  padding-top: 58px;
+}
 /*recipe_indexページのCSS*/
 
 .neumorphism .box {
