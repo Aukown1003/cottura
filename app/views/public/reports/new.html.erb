@@ -12,7 +12,7 @@
       該当レシピ、投稿者に対し、不適切、サイト規約に違反していると思われる部分を入力の上送信してください。<br>
       当該レシピ、投稿者がポリシーに違反していると判断された場合、レシピの削除やユーザー登録の抹消など、違反の内容に応じた措置を行います。
     </div>
-    <%= form_with model: @report, url: recipe_reports_path(@recipe.id) do |f| %>
+    <%= form_with model: @report, url: reports_path(@recipe.id), method: :post do |f| %>
     <div class="col-md-8 mx-auto mb-3">
       <%= f.hidden_field :recipe_id, value: @recipe.id %>
       <%= f.text_area :content, placeholder: "違反内容をここに入力", class:"w-100 textArea", required:"required", rows: 3 %>

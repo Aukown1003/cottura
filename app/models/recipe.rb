@@ -19,6 +19,7 @@ class Recipe < ApplicationRecord
   accepts_nested_attributes_for :tags, allow_destroy: true
 
   has_many :favorites, dependent: :destroy
+  has_many :reports, dependent: :destroy
 
   # バリデーション
   validates :user_id, presence: true

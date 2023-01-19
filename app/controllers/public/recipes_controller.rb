@@ -56,13 +56,9 @@ class Public::RecipesController < ApplicationController
   end
 
   def edit
-<<<<<<< Updated upstream
-    @recipe = Recipe.find(params[:id])
-=======
     @recipe = Recipe.includes(:category).find(params[:id])
     @genre = Genre.all
     @category = Category.where(genre_id: @recipe.category.genre.id)
->>>>>>> Stashed changes
   end
 
   def update

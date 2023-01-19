@@ -21,7 +21,7 @@
           <%= render 'public/favorites/form', recipe: @recipe %>
         </div>
         <div class="report_icon ms-2">
-          <%= link_to new_recipe_report_path(@recipe.id), class:"btn btn-outline-secondary" do %>
+          <%= link_to new_reports_path(id: @recipe.id), class:"btn btn-outline-secondary" do %>
             <span class=""><i class="far fa-flag fa-lg"></i></span>
             <p class="report_comment">レシピを管理者へ報告</p>
           <% end %>
