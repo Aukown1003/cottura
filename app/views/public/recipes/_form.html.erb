@@ -109,13 +109,15 @@
 
 
 <script>
-let genreForm = document.getElementById('recipe_genre_id')
-let categoryForm = document.getElementById('recipe_category_id')
+let genreForm = document.getElementById('recipe_genre_id');
+let categoryForm = document.getElementById('recipe_category_id');
+let categoryValue = categoryForm.options[0];
 genreForm.onchange = inputChange;
 function inputChange(){
   console.log(genreForm.value)
   if(genreForm.value == ''){
-    categoryForm.disabled = true ;
+    categoryForm.disabled = true;
+    categoryForm.insertBefore(categoryValue, categoryForm.options[0]);
   } else {
     categoryForm.disabled = false ;
   }

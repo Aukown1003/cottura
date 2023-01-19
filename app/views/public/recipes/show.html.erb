@@ -13,27 +13,27 @@
         <% end %>
       </div>
     </div>
-
-    <% if current_user == nil %>
-    <% elsif @recipe.user.id != current_user.id %>
-      <div class="col-12 d-flex justify-content-end mb-2" id="js-recipe_favorite_<%= @recipe.id %>">
-        <div class>
-          <%= render 'public/favorites/form', recipe: @recipe %>
+    <%# 分岐処理はここを参照 %>
+    <% if user_signed_in? || admin_signed_in? %>
+      <% if current_admin.present? || @recipe.user.id == current_user.id %>
+        <div class="col-12 d-flex justify-content-end mb-3">
+          <%= link_to "レシピ編集", edit_recipe_path(@recipe.id), class: "btn btn-success me-3" %>
+          <%= link_to "レシピ削除", recipe_path(@recipe.id), method: :delete, data: { confirm: '削除してもよろしいですか？' }, class: "btn btn-danger" %>
         </div>
-        <div class="report_icon ms-2">
-          <%= link_to new_reports_path(id: @recipe.id), class:"btn btn-outline-secondary" do %>
-            <span class=""><i class="far fa-flag fa-lg"></i></span>
-            <p class="report_comment">レシピを管理者へ報告</p>
-          <% end %>
+      <% else %>
+        <div class="col-12 d-flex justify-content-end mb-2" id="js-recipe_favorite_<%= @recipe.id %>">
+          <div class>
+            <%= render 'public/favorites/form', recipe: @recipe %>
+          </div>
+          <div class="report_icon ms-2">
+            <%= link_to new_reports_path(id: @recipe.id), class:"btn btn-outline-secondary" do %>
+              <span class=""><i class="far fa-flag fa-lg"></i></span>
+              <p class="report_comment">レシピを管理者へ報告</p>
+            <% end %>
+          </div>
         </div>
-      </div>
-    <% else %>
-      <div class="col-12 d-flex justify-content-end mb-3">
-        <%= link_to "レシピ編集", edit_recipe_path(@recipe.id), class: "btn btn-success me-3" %>
-        <%= link_to "レシピ削除", recipe_path(@recipe.id), method: :delete, data: { confirm: '削除してもよろしいですか？' }, class: "btn btn-danger" %>
-      </div>
+      <% end %>
     <% end %>
-
     <div class="col-md-6 mb-3 my-md-auto  text-center">
       <%= image_tag @recipe.get_recipe_image(480, 480), class: "img-fluid" %>
 
@@ -231,25 +231,12 @@
 
   document.addEventListener('turbolinks:load', function() {
     $('#recipe_review').empty();
-<<<<<<< Updated upstream
-    const elem = document.querySelector('#recipe_review'); //recipe_reviewは設定したid
-    const opt = { //opt(option)として以下を設定
-      starOn: "<%= asset_path('star-on.png') %>", //('')内に先程imageフォルダに入れた星の画像へのパスと参照名を記載
-      starOff: "<%= asset_path('star-off.png') %>", //app/assets/imagesを参照している状態
-      starHalf: "<%= asset_path('star-half.png') %>", //仮にimages/rate_imagesフォルダを作成し、その中に画像を入れた場合は('rate_images/画像名')と記述
-      scoreName: 'review[score]', ////登録するモデル名とカラム名を記述
-<<<<<<< .merge_file_nqL5Ux
-      half: false,
-=======
     const elem = document.querySelector('#recipe_review');
     const opt = {
       starOn: "<%= asset_path('star-on.png') %>",
       starOff: "<%= asset_path('star-off.png') %>",
       starHalf: "<%= asset_path('star-half.png') %>",
       scoreName: 'review[score]',
->>>>>>> Stashed changes
-=======
->>>>>>> .merge_file_8uNQsW
     };
     raty(elem,opt);
   });
