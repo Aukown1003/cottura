@@ -39,8 +39,9 @@ Rails.application.routes.draw do
   namespace :admin do
     root to: 'homes#top'
     resources :users, except: [:new, :create]
-    resources :genres, except: [:new] 
+    resources :genres, except: [:new]
     resources :categories
+    resource :reports, only: [:show, :destroy]
     #以下adminはすべてこの中に
   end
 

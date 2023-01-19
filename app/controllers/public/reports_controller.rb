@@ -1,5 +1,4 @@
 class Public::ReportsController < ApplicationController
-<<<<<<< .merge_file_sSyPSK
   def new
     @report = Report.new
     @recipe = Recipe.find(params[:id])
@@ -19,6 +18,4 @@ class Public::ReportsController < ApplicationController
   def report_params
     params.require(:report).permit(:user_id, :recipe_id, :content)
   end
-=======
->>>>>>> .merge_file_OXQn3U
 end

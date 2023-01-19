@@ -60,15 +60,9 @@ class Public::RecipesController < ApplicationController
   end
 
   def edit
-<<<<<<< .merge_file_Tv3jNy
     @recipe = Recipe.includes(:category).find(params[:id])
     @genre = Genre.all
     @category = Category.where(genre_id: @recipe.category.genre.id)
-=======
-    @recipe = Recipe.find(params[:id])
-    @genre = Genre.all
-    @category = Category.all
->>>>>>> .merge_file_prVb1O
   end
 
   def update

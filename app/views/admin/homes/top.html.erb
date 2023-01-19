@@ -8,12 +8,24 @@
         <thead>
           <tr class="align-middle">
             <th>対象者</th>
+            <th>対象レシピ名</th>
             <!--文字数制限かけて表示-->
             <th>違反内容</th>
             <th>報告者</th>
             <th>報告日時</th>
           </tr>
         </thead>
+        <% @reports.each do |report| %>
+        <tbody>
+          <tr>
+            <td><%= report.recipe.user.name %></td>
+            <td><%= report.recipe.title %></td>
+            <td><%= report.content %></td>
+            <td><%= report.user.name %></td>
+            <td><%= report.created_at.strftime("%Y年%m月%d日 %H:%M") %>
+          </tr>
+        </tbody>
+        <% end %>
       </table>
     </div>
   </div>
