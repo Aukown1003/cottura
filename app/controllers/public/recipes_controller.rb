@@ -4,11 +4,13 @@ class Public::RecipesController < ApplicationController
 
   def new
     @recipe = Recipe.new
+    @genre = Genre.all
+    @category = Category.all
   end
 
   def index
     # @recipes = Recipe.all.includes(:recipe_steps).includes(:recipe_ingredients)
-     @recipes = Recipe.where(is_open: true).includes(:recipe_steps, :recipe_ingredients)
+    @recipes = Recipe.where(is_open: true).includes(:recipe_steps, :recipe_ingredients)
     if session[:category_id].present?
       @recipes = @recipes.where(category: session[:category_id])
       @categories = Category.where(id: session[:category_id])
@@ -24,7 +26,7 @@ class Public::RecipesController < ApplicationController
       keyword = params[:search].split(/ |　/).uniq.compact
       # assign_attributesでpayloadにデータを追加
       @recipes.each do |recipe|
-       recipe.assign_attributes(payload: (recipe.recipe_steps.pluck(:content).join + recipe.recipe_ingredients.pluck(:name).join + recipe.tags.pluck(:name).join + recipe.title))
+        recipe.assign_attributes(payload: (recipe.recipe_steps.pluck(:content).join + recipe.recipe_ingredients.pluck(:name).join + recipe.tags.pluck(:name).join + recipe.title))
       end
       # レシピを一つづつ見て、payloadにkeywordが含まれているものだけを取得する
       @recipes = @recipes.select do |o|
@@ -37,6 +39,7 @@ class Public::RecipesController < ApplicationController
   def show
     @recipe = Recipe.includes(:recipe_ingredients, :recipe_steps, :tags, :reviews).find(params[:id])
     @review = Review.new
+    impressionist(@recipe, nil, unique: [:ip_address])
   end
 
   def create
@@ -50,15 +53,22 @@ class Public::RecipesController < ApplicationController
       if @recipe.save
         redirect_to root_path, notice: "レシピを投稿しました"
       else
-        render 'new'
+        @genre = Genre.all
+        render :new
       end
     end
   end
 
   def edit
+<<<<<<< .merge_file_Tv3jNy
     @recipe = Recipe.includes(:category).find(params[:id])
     @genre = Genre.all
     @category = Category.where(genre_id: @recipe.category.genre.id)
+=======
+    @recipe = Recipe.find(params[:id])
+    @genre = Genre.all
+    @category = Category.all
+>>>>>>> .merge_file_prVb1O
   end
 
   def update
@@ -81,6 +91,11 @@ class Public::RecipesController < ApplicationController
     @recipe = Recipe.find(params[:id])
     @recipe.destroy
     redirect_to recipes_path
+  end
+
+  def search_category
+    @category = Category.where(genre_id: params[:genre_id])
+    # binding.pry
   end
 
   def search

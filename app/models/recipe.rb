@@ -3,6 +3,7 @@ class Recipe < ApplicationRecord
   #after_update :update_recipe_any_steps
   has_one_attached :image
   attribute :payload, :text
+  is_impressionable counter_cache: true
 
   #アソシエーション
   belongs_to :user
@@ -29,8 +30,8 @@ class Recipe < ApplicationRecord
   validates :is_open, presence: true
   #validate :recipe_any_ingredients
   #validate :recipe_any_steps
-  validates :recipe_ingredients, length: {minimum: 1 } 
-  validates :recipe_steps, length: {minimum: 1 }
+  validates :recipe_ingredients, length: {minimum: 1}
+  validates :recipe_steps, length: {minimum: 1}
 
   # def recipe_any_ingredients
   #   errors.add(:base, :no_ingredients) if recipe_ingredients.blank?

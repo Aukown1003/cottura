@@ -9,7 +9,7 @@
       <div class="preview">
         <div id="preview">
           <% unless recipe.image.attached? %>
-             <img src="/assets/no_image_item" alt="default-image" class="img-fluid default-image">
+            <img src="/assets/no_image_item" alt="default-image" class="img-fluid default-image">
           <% else %>
             <%= image_tag recipe.get_recipe_image(480, 480) %>
           <% end %>
@@ -61,13 +61,17 @@
     </div>
 
     <div class="col-md-12 pb-4">
-      <h5 class="fw-bold border-bottom border-secondary mt-3 mb-4">カテゴリ選択</h5>
-      <div class="radio_button_group">
-         <%= f.collection_select(:category_id, Category.all, :id, :name, {}) %>
-      </div>
+      <h5 class="fw-bold border-bottom border-secondary mt-3 mb-4">ジャンル、カテゴリ選択</h5>
+      <% if recipe.category.present? %>
+        <%= f.collection_select(:genre_id, @genre, :id, :name, {}, selected: recipe.category.genre ) %>
+        <%= f.collection_select(:category_id, @category.all, :id, :name, {include_blank: "ジャンルを選択後入力可能になります"}, selected: recipe.category )%>
+      <% else %>
+        <%= f.collection_select(:genre_id, @genre, :id, :name, include_blank: "ジャンルを選択してください") %>
+        <%= f.collection_select(:category_id, @category.all, :id, :name, {include_blank: "ジャンルを選択後入力可能になります"}, disabled: true )%>
+      <% end %>
     </div>
   </div>
-  
+
   <div class="row">
     <div class="col-12 tags">
       <h5 class="fw-bold border-bottom border-secondary mb-3">タグ作成</h5>
@@ -77,19 +81,19 @@
       <% end %>
       <%= link_to_add_fields "タグの追加", f, :tags %>
   </div>
-  
+
   <div class="row">
     <div class="col-md-12 border-bottom border-secondary pb-4">
-       <h5 class="fw-bold border-bottom border-secondary mt-3 mb-4">公開状況</h5>
-       <div class="radio_button_group">
-         <label class="mx-0" style="width: 49%;">
-           <%= f.radio_button(:is_open, :true, checked: "checked", class:"btn-check") %>
-           <%= f.label :is_open, "公開", value: true, class:"btn btn-outline-secondary w-100" %>
-         </label>
+      <h5 class="fw-bold border-bottom border-secondary mt-3 mb-4">公開状況</h5>
+      <div class="radio_button_group">
+          <label class="mx-0" style="width: 49%;">
+            <%= f.radio_button(:is_open, :true, checked: "checked", class:"btn-check") %>
+            <%= f.label :is_open, "公開", value: true, class:"btn btn-outline-secondary w-100" %>
+        </label>
         <label class="mx-0" style="width: 49%;">
-           <%= f.radio_button(:is_open, :false, class:"btn-check") %>
-           <%= f.label :is_open, "非公開", value: false, class:"btn btn-outline-secondary w-100" %>
-         </label>
+          <%= f.radio_button(:is_open, :false, class:"btn-check") %>
+          <%= f.label :is_open, "非公開", value: false, class:"btn btn-outline-secondary w-100" %>
+        </label>
       </div>
     </div>
 
@@ -103,7 +107,29 @@
   </div>
 <% end %>
 
+
 <script>
+let genreForm = document.getElementById('recipe_genre_id')
+let categoryForm = document.getElementById('recipe_category_id')
+genreForm.onchange = inputChange;
+function inputChange(){
+  console.log(genreForm.value)
+  if(genreForm.value == ''){
+    categoryForm.disabled = true ;
+  } else {
+    categoryForm.disabled = false ;
+  }
+}
+  $(function() {
+  $('#recipe_genre_id').change(function() {
+    $.get({
+      url: "<%= search_category_recipe_path %>",
+      data: { genre_id: $('#recipe_genre_id').has('option:selected').val() }
+    });
+  });
+});
+
+
 
 // テキストエリアの可変処理
 window.addEventListener('turbolinks:load', () => {

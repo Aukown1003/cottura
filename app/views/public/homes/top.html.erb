@@ -12,9 +12,19 @@
           レシピを投稿したり検索したり出来ます
         </p>
       </div>
-      <div class="text-center mt-4">
+      <div class="text-center my-4 ">
         <%= link_to "レシピ一覧", root_path, class:"btn btn-lg btn-success"%>
       </div>
     </div>
+  </div>
+  <div class="row mt-3">
+    <h5 class="fw-bold border-bottom border-secondary mb-3">新着レシピ！</h5>
+    <% @new_recipes.each do |new_recipe| %>
+      <div class="col">
+        <%= link_to recipe_path(new_recipe.id) do %>
+          <%= render "/public/recipes/recipe_lists", recipe: new_recipe %>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 </div>
