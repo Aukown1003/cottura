@@ -18,12 +18,14 @@ Rails.application.routes.draw do
     resources :recipes do
       get "recalculation" => "recipes#recalculation"
       resource :favorites, only: [:create, :destroy]
+      resources :reports, only: [:new, :create]
     end
     
     resource :recipe, only: [:search] do
       get "search" => "recipes#search"
       delete "category_id_delete" => "recipes#category_id_delete"
       delete "category_id_all_delete" => "recipes#category_id_all_delete"
+      get "search_category" => "recipes#search_category"
     end
     
     resources :reviews, only: [:create, :destroy]

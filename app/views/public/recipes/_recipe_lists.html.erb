@@ -2,7 +2,8 @@
   <div class="box index-item-parts bg-secondary text-white rounded">
     <div class="recipe-image text-center pt-2">
       <% pp recipe %>
-      <%= link_to image_tag(recipe.get_recipe_index_image(200, 200)), recipe_path(recipe.id), class:"img-fluid" %>
+      <%# , 'data-turbolinks': false %>
+      <%= link_to image_tag(recipe.get_recipe_index_image(200, 200)), recipe_path(recipe.id), class:"img-fluid" , 'data-turbolinks': false %>
     </div>
     <div class="recipe-contents">
       <div class="fw-bold text-truncate mt-1 px-2 px-sm-4 ps-xl-4 px-md-2">

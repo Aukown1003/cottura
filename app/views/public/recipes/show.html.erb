@@ -1,14 +1,17 @@
 <div class="container  my-5">
   <div class="row">
 
-    <div class="col-md-10 md-4 mb-md-5 text-center recipe-show">
+    <div class="col-md-9 col-lg-10 md-4 mb-md-5 text-center recipe-show">
       <h1><%= @recipe.title %></h1>
     </div>
 
-    <div class="col-md-2 text-center mt-4 mt-md-0 mb-4 mb-md-5">
-      <div class="">
-        <%= image_tag @recipe.user.get_user_image(50,50), alt: "ユーザー画像", class:"user_profile_image" %>
-        <%= @recipe.user.name %>
+    <div class="col-md-3 col-lg-2 text-center mt-4 mt-md-0 mb-4 mb-md-5">
+      <div class="d-flex align-items-center">
+        <%= link_to user_path(@recipe.user.id) do %>
+          <%= image_tag @recipe.user.get_user_image(50,50), alt: "ユーザー画像", class:"user_profile_image" %>
+          <span class="ps-2"><%= @recipe.user.name %></span>
+        <% end %>
+        <span class="ms-auto"><i class="fas fa-ellipsis-v fa-2x"></i></span>
       </div>
     </div>
 
@@ -49,7 +52,7 @@
 
       <div class="mb-3">
         <h5 class="fw-bold border-bottom border-secondary mb-3">調理時間</h5>
-        <span class="p-2"><%= @recipe.view_time_data %></span>
+        <p class="p-2"><i class="fas fa-clock"></i><span class="ps-2"><%= @recipe.view_time_data %></span></p>
       </div>
 
       <div class="mb-3">
@@ -172,8 +175,8 @@
         <h5 class="fw-bold border-bottom border-secondary mb-3">レビュー<span class="ms-2">(<%= @recipe.reviews.count %>件)</span></h5>
         <% @recipe.reviews.each do |review| %>
           <div class="review_content my-3">
-            <%= render "/public/recipes/review_show", review: review %>
-            <div class="mb-1">投稿者：<%= review.user.name %></div>
+            <%= render "public/recipes/review_show", review: review %>
+            <div class="mb-1"><%= link_to "投稿者：#{review.user.name}", user_path(review.user.id) %></div>
             <div class="mb-1"><%= safe_join(review.content.split("\n"),tag(:br)) %></div>
             <div class="mb-1"><%= review.created_at.strftime("%Y年%m月%d日") %></div>
             <% if current_user == nil || review.user.id != current_user.id %>
@@ -227,7 +230,6 @@
       starOff: "<%= asset_path('star-off.png') %>", //app/assets/imagesを参照している状態
       starHalf: "<%= asset_path('star-half.png') %>", //仮にimages/rate_imagesフォルダを作成し、その中に画像を入れた場合は('rate_images/画像名')と記述
       scoreName: 'review[score]', ////登録するモデル名とカラム名を記述
-      half: false,
     };
     raty(elem,opt);
   });
