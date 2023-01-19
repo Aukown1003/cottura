@@ -1,0 +1,45 @@
+<%= render 'layouts/error_messages', resource: @recipe %>
+<div class="container my-5">
+  <div class="row">
+    <div class="col-12 text-center mb-3">
+      <h1>管理者への報告</h1>
+    </div>
+    <div class="col-md-8 mx-auto mb-3">
+      <span>レシピ名：<%= @recipe.title %></span><br>
+      <span>投稿者：<%= @recipe.user.name %></span>
+    </div>
+    <div class="col-md-8 mx-auto mb-3">
+      該当レシピ、投稿者に対し、不適切、サイト規約に違反していると思われる部分を入力の上送信してください。<br>
+      当該レシピ、投稿者がポリシーに違反していると判断された場合、レシピの削除やユーザー登録の抹消など、違反の内容に応じた措置を行います。
+    </div>
+    <%= form_with model: @report, url: recipe_reports_path(@recipe.id) do |f| %>
+    <div class="col-md-8 mx-auto mb-3">
+      <%= f.hidden_field :recipe_id, value: @recipe.id %>
+      <%= f.text_area :content, placeholder: "違反内容をここに入力", class:"w-100 textArea", required:"required", rows: 3 %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-6 text-end">
+      <%= link_to "レシピに戻る", recipe_path(@recipe.id), class: "btn btn-success" %>
+    </div>
+    <div class="col-6">
+      <%= f.submit "報告する", class: "btn btn-danger" %>
+    <% end %>
+  </div>
+</div>
+
+<script>
+  window.addEventListener('turbolinks:load', () => {
+    const textareaEls = document.querySelectorAll("textarea");
+
+    textareaEls.forEach((textareaEl) => {
+      textareaEl.setAttribute("style", `height: ${textareaEl.scrollHeight}px;`);
+      textareaEl.addEventListener("input", setTextareaHeight);
+    });
+
+    function setTextareaHeight() {
+      this.style.height = "auto";
+      this.style.height = `${this.scrollHeight}px`;
+    }
+  });
+</script>

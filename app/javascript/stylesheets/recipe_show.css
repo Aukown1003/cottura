@@ -1,0 +1,36 @@
+
+.profile-link a {
+  text-decoration: none;
+}
+
+.report_icon {
+  position: relative;
+}
+
+.report_comment {
+  position: absolute;
+  display: none;
+  padding: 7px 10px;
+  margin-top: 18px;
+  min-width: 186px;
+  max-width: 100%;
+  color: #fff;
+  font-size: 16px;
+  background: #ffc107;
+  left: -135px;
+  border-radius: 5px;
+}
+
+.report_comment:before {
+  content: "";
+  position: absolute;
+  top: -26px;
+  left: 86%;
+  margin-left: -15px;
+  border: 15px solid transparent;
+  border-bottom: 19px solid #ffc107;
+}
+
+.report_icon :hover + .report_comment {
+  display: block;
+}
