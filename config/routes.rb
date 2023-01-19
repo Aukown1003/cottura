@@ -41,7 +41,7 @@ Rails.application.routes.draw do
     resources :users, except: [:new, :create]
     resources :genres, except: [:new]
     resources :categories
-    resource :reports, only: [:show, :destroy]
+    resources :reports, only: [:show, :destroy]
     #以下adminはすべてこの中に
   end
 

@@ -1,9 +1,9 @@
 <div class="container my-4">
   <div class="row mb-3">
-    <div class="col-sm-8 mx-auto">
+    <div class="col-md-10 mx-auto">
       <h2>管理者画面</h2>
       <h5 class="mt-5">レポート一覧</h5>
-      
+
       <table class="table">
         <thead>
           <tr class="align-middle">
@@ -13,16 +13,18 @@
             <th>違反内容</th>
             <th>報告者</th>
             <th>報告日時</th>
+            <th></th>
           </tr>
         </thead>
         <% @reports.each do |report| %>
         <tbody>
-          <tr>
+          <tr class="align-middle">
             <td><%= report.recipe.user.name %></td>
             <td><%= report.recipe.title %></td>
-            <td><%= report.content %></td>
-            <td><%= report.user.name %></td>
+            <td class="text-truncate" style="max-width: 200px;"><%= link_to report.content, admin_report_path(id: report.id) %></td>
+            <td><%= link_to report.user.name, admin_user_path(id: report.user.id) %></td>
             <td><%= report.created_at.strftime("%Y年%m月%d日 %H:%M") %>
+            <td><%= link_to "削除", admin_report_path(id: report.id), method: :delete, class:"btn btn-danger" %></td>
           </tr>
         </tbody>
         <% end %>
