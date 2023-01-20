@@ -5,7 +5,7 @@ ja:
         record_invalid: "投稿に失敗しました: %{errors}"
       models:
         recipe:
-          attributes: 
+          attributes:
             title:
               blank: "が入力されていません。"
             content:
@@ -19,14 +19,18 @@ ja:
             category:
               required: "が選択されていません。"
         recipe_ingredient:
-          attributes: 
+          attributes:
             name:
               blank: "が入力されていません。"
             quantity:
               blank: "が入力されていません。"
         recipe_step:
-          attributes: 
+          attributes:
             content:
+              blank: "が入力されていません。"
+        tag:
+          attributes:
+            name:
               blank: "が入力されていません。"
         user:
           attributes:

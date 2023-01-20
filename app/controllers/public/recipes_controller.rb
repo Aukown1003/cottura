@@ -1,5 +1,6 @@
 class Public::RecipesController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :recalculation, :search, :category_id_delete, :category_id_all_delete]
+  # before_action :authenticate_user!, except: [:index, :show, :recalculation, :search, :category_id_delete, :category_id_all_delete]
+  before_action :authenticate_user!, only: [:new, :create]
   before_action :user_check, only: [:edit, :update, :destroy]
 
   def new
@@ -69,14 +70,15 @@ class Public::RecipesController < ApplicationController
   def update
     ActiveRecord::Base.transaction do
       @recipe = Recipe.find(params[:id])
-      # binding.pry
       # if @recipe.recipe_ingredients == [] || @recipe.recipe_steps == []
       #   redirect_to request.referer, alert: "材料または作り方が未入力です。"
       #   return
       # end
       @recipe.update!(recipe_params)
-      redirect_to root_path
+      redirect_to root_path, notice: "レシピを編集しました"
     rescue ActiveRecord::RecordInvalid
+        @genre = Genre.all
+        @category = Category.where(genre_id: @recipe.category.genre.id)
         flash.now[:alert] = "編集に失敗しました"
         render :edit
     end
@@ -170,9 +172,18 @@ class Public::RecipesController < ApplicationController
   end
 
   def user_check
-    user_id = Recipe.find(params[:id]).user_id
-    if user_id =! current_user.id
-      redirect_to root_path, alert: '他の会員のレシピの更新、削除はできません。'
+    # user_id = Recipe.find(params[:id]).user_id
+    # if user_id =! current_user.id
+    #   redirect_to root_path, alert: '他の会員のレシピの更新、削除はできません。'
+    # end
+    if admin_signed_in?
+    elsif user_signed_in?
+      user_id = Recipe.find(params[:id]).user_id
+      if user_id =! current_user.id
+        redirect_to root_path, alert: '他の会員のレシピの更新、削除はできません。'
+      end
+    else
+      redirect_to root_path, alert: '非ログイン時はこの処理を行えません'
     end
   end
 

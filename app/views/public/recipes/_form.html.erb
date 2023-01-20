@@ -35,7 +35,7 @@
 
       <div class="selectdiv mb-3">
         <h5 class="fw-bold border-bottom border-secondary mb-3">調理時間</h5>
-        <%= f.select :total_time, Recipe.select_time_data, { include_blank: '選択してください'}, { class: 'form-control' , required: true } %>
+        <%= f.select :total_time, Recipe.select_time_data, { include_blank: '選択してください'}, class: 'form-control' , required: true %>
       </div>
 
 
@@ -50,7 +50,7 @@
   </diV>
 
   <div class="row mt-4">
-    <div class="col-md-10 mx-auto">
+    <div class="col-md-10 mb-3 mx-auto">
       <h5 class="fw-bold border-bottom border-secondary mb-3">作り方 <span class="fw-light small-font">※画像は表示イメージです</span></h5>
       <div class="recipe_step">
         <%= f.fields_for :recipe_steps do |step| %>
@@ -60,20 +60,35 @@
       </div>
     </div>
 
-    <div class="col-md-10 pb-4 mx-auto">
-      <h5 class="fw-bold border-bottom border-secondary mt-3 mb-4">ジャンル、カテゴリ選択</h5>
+    <div class="col-md-10 mb-3 mx-auto">
+      <h5 class="fw-bold border-bottom border-secondary mt-3 mb-4">ジャンル選択</h5>
       <% if recipe.category.present? %>
-        <%= f.collection_select(:genre_id, @genre, :id, :name, {}, selected: recipe.category.genre ) %>
-        <%= f.collection_select(:category_id, @category.all, :id, :name, {include_blank: "ジャンルを選択後入力可能になります"}, selected: recipe.category )%>
+        <div class="selectdiv mb-3">
+          <%= f.collection_select(:genre_id, @genre, :id, :name, {}, selected: recipe.category.genre ) %>
+        </div>
       <% else %>
-        <%= f.collection_select(:genre_id, @genre, :id, :name, include_blank: "ジャンルを選択してください") %>
-        <%= f.collection_select(:category_id, @category.all, :id, :name, {include_blank: "ジャンルを選択後入力可能になります"}, disabled: true )%>
+        <div class="selectdiv mb-3">
+          <%= f.collection_select(:genre_id, @genre, :id, :name, include_blank: "ジャンルを選択してください") %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="col-md-10 mb-3 mx-auto">
+      <h5 class="fw-bold border-bottom border-secondary mt-3 mb-4">カテゴリ選択</h5>
+      <% if recipe.category.present? %>
+        <div class="selectdiv mb-3">
+          <%= f.collection_select(:category_id, @category.all, :id, :name, {include_blank: "ジャンルを選択後、選択可能になります"}, selected: recipe.category )%>
+        </div>
+      <% else %>
+        <div class="selectdiv mb-3">
+          <%= f.collection_select(:category_id, @category.all, :id, :name, {include_blank: "ジャンルを選択後、選択可能になります"}, disabled: true )%>
+        </div>
       <% end %>
     </div>
   </div>
 
   <div class="row">
-    <div class="col-md-10 mx-auto">
+    <div class="col-md-10 mb-3 mx-auto">
       <h5 class="fw-bold border-bottom border-secondary mb-3">タグ作成</h5>
       <div class="d-flex flex-wrap tags" >
         <%= f.fields_for :tags do |tag| %>
@@ -85,7 +100,7 @@
   </div>
 
   <div class="row">
-    <div class="col-md-12 border-bottom border-secondary pb-4">
+    <div class="col-md-10 border-bottom border-secondary pb-4 mx-auto">
       <h5 class="fw-bold border-bottom border-secondary mt-3 mb-4">公開状況</h5>
       <div class="radio_button_group">
           <label class="mx-0" style="width: 49%;">
@@ -99,11 +114,11 @@
       </div>
     </div>
 
-    <div class="col-12 mt-3 text-center">
+    <div class="col-md-10 mt-3 text-center mx-auto">
       <% if current_page?(new_recipe_path) %>
-        <%= f.submit "レシピを投稿する", class:"btn btn-lg btn-secondary" %>
+        <%= f.submit "レシピを投稿する", class:"sb-btn btn btn-lg btn-secondary" %>
       <% else %>
-        <%= f.submit "編集したレシピを保存する", class:"btn btn-lg btn-secondary" %>
+        <%= f.submit "編集したレシピを保存する", class:"sb-bnt btn btn-lg btn-secondary" %>
       <% end %>
     </div>
   </div>
@@ -116,7 +131,7 @@ let categoryForm = document.getElementById('recipe_category_id');
 let categoryValue = categoryForm.options[0];
 genreForm.onchange = inputChange;
 function inputChange(){
-  console.log(genreForm.value)
+  // console.log(genreForm.value)
   if(genreForm.value == ''){
     categoryForm.disabled = true;
     categoryForm.insertBefore(categoryValue, categoryForm.options[0]);
