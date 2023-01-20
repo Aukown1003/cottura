@@ -5,7 +5,7 @@
       <h1><%= @recipe.title %></h1>
     </div>
 
-    <div class="col-md-4 col-lg-2 p-0 mt-4 mt-md-0 mb-4 mb-md-5">
+    <div class="col-md-4 col-lg-2 p-0 mt-4 mt-md-0 mb-5 text-end">
       <div class="profile-link text-truncate">
         <%= link_to user_path(@recipe.user.id) do %>
           <%= image_tag @recipe.user.get_user_image(30,30), alt: "ユーザー画像", class:"user_profile_image" %>
@@ -55,6 +55,11 @@
       <div class="mb-3">
         <h5 class="fw-bold border-bottom border-secondary mb-3">レシピ紹介</h5>
         <p class="p-2"><%= safe_join(@recipe.content.split("\n"),tag(:br)) %></p>
+      </div>
+
+      <div class="mb-3">
+        <h5 class="fw-bold border-bottom border-secondary mb-3">ジャンル・カテゴリー</h5>
+        <span class="p-2"><%= @recipe.category.genre.name %><%= @recipe.category.name %></span>
       </div>
 
       <div class="mb-3">
@@ -117,8 +122,8 @@
   </div>
 
   <div class="row mt-4">
-    <div class="col-md-12">
-      <h5 class="fw-bold border-bottom border-secondary mb-3">作り方</h5>
+    <div class="col-md-11 mx-auto mb-3">
+      <h5 class="fw-bold border-bottom border-secondary">作り方</h5>
       <table class="table table-hover table-borderless">
         <thead>
           <tr>
@@ -137,7 +142,7 @@
               <% end %>
               <td class="text-start bottom-0">
                 <h6><%= "Step.#{counter}" %></h6>
-                <p><%= safe_join(step.content.split("\n"),tag(:br)) %></p>
+                <p class="mb-0"><%= safe_join(step.content.split("\n"),tag(:br)) %></p>
               </td>
             </tr>
           <% counter = counter.to_i + 1 %>
@@ -146,14 +151,9 @@
       </table>
     </div>
 
-    <div class="mb-3">
-      <h5 class="fw-bold border-bottom border-secondary mb-3">カテゴリー</h5>
-      <span class="p-2"><%= @recipe.category.name %></span>
-    </div>
-
     <% unless @recipe.tags.empty? %>
-    <div class="tag-group mb-3">
-      <h5 class="col-12 fw-bold border-bottom border-secondary mb-3">タグ一覧</h5>
+    <div class="col-md-11 tag-group mx-auto mb-3">
+      <h5 class="mx-auto fw-bold border-bottom border-secondary mb-3">タグ一覧</h5>
       <div class="tags d-flex">
       <% @recipe.tags.each do |tag| %>
         <div class="col">
@@ -167,8 +167,8 @@
     <% if current_user == nil || @recipe.user.id == current_user.id %>
     <% else %>
       <%= form_with model: @review, url: reviews_path(@recipe.id), method: :post, local: true do |f| %>
-        <h5 class="col-12 fw-bold border-bottom border-secondary mb-3">レビュー入力</h5>
-        <div class="col-12">
+        <div class="col-md-11">
+          <h5 class="fw-bold border-bottom border-secondary mb-3">レビュー入力</h5>
           <%= f.hidden_field :recipe_id, value: @recipe.id %>
           <div id="recipe_review" class ="mb-3"></div>
           <%= f.text_area :content, placeholder: "コメントをここに入力", maxlength: "140", class:"w-100 textArea input-review  mb-2", required:"required", rows: 1 %>
@@ -178,7 +178,7 @@
     <% end %>
 
     <% unless @recipe.reviews.empty? %>
-      <div class="col-12" id="review_contents">
+      <div class="col-md-11 mx-auto" id="review_contents">
         <h5 class="fw-bold border-bottom border-secondary mb-3">レビュー<span class="ms-2">(<%= @recipe.reviews.count %>件)</span></h5>
         <% @recipe.reviews.each do |review| %>
           <div class="review_content my-3">

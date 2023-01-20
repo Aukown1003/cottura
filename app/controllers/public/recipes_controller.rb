@@ -56,6 +56,7 @@ class Public::RecipesController < ApplicationController
         redirect_to root_path, notice: "レシピを投稿しました"
       else
         @genre = Genre.all
+        @category = Category.all
         render :new
       end
     end

@@ -1,5 +1,5 @@
 <div class="container my-4">
-  <div class="row mb-3">
+  <div class="row mb-5">
     <div class="col-sm-4 my-auto text-center text-sm-end mx-auto">
       <%= image_tag @user.get_user_image(200, 200), alt: "ユーザー画像", class:"user_profile_image"%>
     </div>
@@ -17,13 +17,10 @@
           </div>
         </div>
       <% end %>
-      <%# if @user.id == current_user.id && @user.email != 'guest@example.com' %>
-
-      <%# end %>
     </div>
   </div>
-  
-  <div class="tab-panel row">
+
+  <div class="tab-panel">
     <!--タブ-->
     <ul class="tab-group mb-0 p-0">
       <li class="tab tab-A is-active m-0">投稿したレシピ</li>

@@ -1,7 +1,5 @@
-<div class="d-flex">
   <div id="review_<%= recipe.id %>"></div>
-  <span class="ms-2"><%= recipe.reviews.average(:score).to_f.round(1) %>/ 5</span>
-</div>
+  <span class="ms-2"><%= recipe.reviews.average(:score).to_f.round(1) %>/ 5.0</span>
 
 <script>
 document.addEventListener('turbolinks:load', function() {

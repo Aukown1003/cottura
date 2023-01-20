@@ -64,9 +64,6 @@ a.add_fields:hover,a.add_fields:visited{
 }
 
 /*セレクトボックス*/
-/* select::-ms-expand {
-display: none;
-} */
 
 .selectdiv select {
   display: block;
@@ -104,4 +101,37 @@ display: none;
 
 .ingredient-name,.ingredient-quantity{
   width: 30%;
+}
+
+/*メディクリ*/
+
+@media (min-width:1400px)  {
+  .ingredient-name{
+    width: 48%;
+  }
+  .ingredient-quantity{
+    width: 33%;
+  }
+}
+
+
+@media (min-width:1200px) and (max-width:1399px) {
+  .ingredient-name{
+    width: 48%;
+  }
+}
+
+@media (min-width:992px) and (max-width:1199px) {
+  .ingredient-name{
+    width: 40%;
+  }
+  .ingredient-quantity{
+    width: 33%;
+  }
+}
+
+@media (max-width:991px)  {
+  .selectdiv{
+    font-size: 12px;
+  }
 }

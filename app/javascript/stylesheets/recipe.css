@@ -5,32 +5,8 @@
 /*ユーザー画像を丸く*/
 .user_profile_image{
   border-radius: 50%;
-  border: 3px solid black;
+  border: 2px solid black;
 }
-
-
-
-/*recipe_indexページのCSS*/
-
-/* .neumorphism .box {
-  background-color: rgb(190, 205, 214);
-  transition: box-shadow 0.5s;
-  box-shadow:
-    10px 10px 30px rgba(18, 47, 61, 0.6),
-    -10px -10px 30px rgba(248, 253, 255, 0.9),
-    inset 10px 10px 30px transparent,
-    inset -10px -10px 30px transparent;
-} */
-.neumorphism .box:hover {
-  box-shadow:
-    10px 10px 30px transparent,
-    -10px -10px 30px transparent,
-    
-    inset 10px 10px 30px rgba(18, 47, 61, 0.5),
-    /*10px 10px 15px #BFC7D9, 10px 10px 15px #E5EFFF*/
-    inset -10px -10px 30px rgba(248, 253, 255, 0.9);
-}
-
 /*recipe_showページのCSS*/
 @media (min-width:992px) {
   .recipe-show{
@@ -46,77 +22,4 @@
 .input-review{
   border: none;
   border-bottom: 2px solid #cccccc;
-}
-
-/*メディクリ*/
-
-@media (min-width:1400px)  {
-  .ingredient-name{
-    width: 48%;
-  }
-  .ingredient-quantity{
-    width: 33%;
-  }
-}
-
-
-@media (min-width:1200px) and (max-width:1399px) {
-  .ingredient-name{
-    width: 48%;
-  }
-}
-
-@media (min-width:992px) and (max-width:1199px) {
-  .ingredient-name{
-    width: 40%;
-  }
-  .ingredient-quantity{
-    width: 33%;
-  }
-}
-
-@media (max-width:991px)  {
-  .selectdiv{
-    font-size: 12px;
-  }
-}
-
-@media (min-width:1400px) {
-  .index-row{
-    justify-content: center;
-  }
-  .index-item{
-    width: 17vw;
-  }
-  .index-item-parts{
-    width: 100%;
-    margin: 0 auto;
-  }
-}
-
-@media (min-width:1200px) and (max-width:1400px) {
-  .index-item-parts{
-    width: 90%;
-    margin: 0 auto;
-  }
-}
-
-@media (max-width:576px) {
-  .index-item{
-    width: 50%;
-  }
-}
-
-@media (max-width:480px) {
-  .index-item{
-    width: 57%;
-    margin: 0 auto;
-  }
-}
-
-@media (max-width:418px) {
-  .index-item{
-    width: 75%;
-    margin: 0 auto;
-  }
 }
