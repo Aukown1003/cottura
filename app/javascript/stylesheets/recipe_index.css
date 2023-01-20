@@ -16,9 +16,7 @@
     position: relative;
     transition: all .3s;
 }
-/*.gnavi__list:hover {*/
-    /*background-color: #0071BB;*/
-/*}*/
+
 .gnavi__list:not(:first-child)::before {
     content: "";
     width: 1px;
@@ -29,9 +27,7 @@
     left: 0;
     transition: all .3s;
 }
-/*.gnavi__list:hover::before {*/
-    /*background-color: #0071BB;*/
-/*}*/
+
 .gnavi__list a {
     display: flex;
     justify-content: center;
@@ -45,9 +41,7 @@
     font-weight: 600;
     transition: all 1.3s;
 }
-/*.gnavi__list:hover a {*/
-    /*color: #fff;*/
-/*}*/
+
 .dropdown__lists {
     display: none;/*デフォルトでは非表示の状態にしておく*/
     width: 100%;
@@ -84,24 +78,3 @@
 .recipe-index-item :hover {
     
 }
-/*.dropdown__list:hover {*/
-
-/*}*/
-/*.dropdown__list a {*/
-/*    display: flex;*/
-/*    justify-content: center;*/
-/*    align-items: center;*/
-/*    color: #fff;*/
-/*    text-decoration: none;*/
-/*    position: relative;*/
-/*}*/
-/*.dropdown__list a::before {*/
-/*    content: '';*/
-/*    display: block;*/
-/*    width: 6px;*/
-/*    height: 6px;*/
-/*    transform: rotate(135deg);*/
-/*    position: absolute;*/
-/*    right: 15px;*/
-/*    top: calc(50% - 5px);*/
-/*}*/
