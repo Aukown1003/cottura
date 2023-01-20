@@ -25,16 +25,16 @@
   
   <div class="tab-panel row">
     <!--タブ-->
-    <ul class="tab-group mb-0">
-      <li class="tab tab-A is-active col mx-2">投稿したレシピ</li>
-      <li class="tab tab-B col mx-2">お気に入りレシピ</li>
+    <ul class="tab-group mb-0 p-0">
+      <li class="tab tab-A is-active m-0">投稿したレシピ</li>
+      <li class="tab tab-B no-active me-0">お気に入りレシピ</li>
     </ul>
     <!--タブを切り替えて表示するコンテンツ-->
-    <div class="panel-group mt-2">
+    <div class="panel-group p-3">
       <div class="panel tab-A is-show">
         <%= render 'public/users/post_recipe_lists' %>
       </div>
-      <div class="panel tab-B">
+      <div class="panel p-3 tab-B">
         <%= render 'public/users/favorites_recipes' %>
       </div>
     </div>
@@ -53,8 +53,10 @@
     // タブをクリックすると実行する関数
     function tabSwitch(){
       // タブのclassの値を変更
+      document.getElementsByClassName('is-active')[0].classList.add('no-active');
       document.getElementsByClassName('is-active')[0].classList.remove('is-active');
       this.classList.add('is-active');
+      this.classList.remove('no-active');
       // コンテンツのclassの値を変更
       document.getElementsByClassName('is-show')[0].classList.remove('is-show');
       const arrayTabs = Array.prototype.slice.call(tabs);
