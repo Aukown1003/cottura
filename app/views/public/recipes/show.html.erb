@@ -1,32 +1,39 @@
 <div class="container  my-5">
   <div class="row">
 
-    <div class="col-md-9 col-lg-10 md-4 mb-md-5 text-center recipe-show">
+    <div class="col-md-8 col-lg-10 md-4 mb-md-5 text-center recipe-show">
       <h1><%= @recipe.title %></h1>
     </div>
 
-    <div class="col-md-3 col-lg-2 text-center mt-4 mt-md-0 mb-4 mb-md-5">
-      <div class="d-flex align-items-center">
+    <div class="col-md-4 col-lg-2 p-0 mt-4 mt-md-0 mb-4 mb-md-5">
+      <div class="profile-link text-truncate">
         <%= link_to user_path(@recipe.user.id) do %>
-          <%= image_tag @recipe.user.get_user_image(50,50), alt: "ユーザー画像", class:"user_profile_image" %>
+          <%= image_tag @recipe.user.get_user_image(30,30), alt: "ユーザー画像", class:"user_profile_image" %>
           <span class="ps-2"><%= @recipe.user.name %></span>
         <% end %>
-        <span class="ms-auto"><i class="fas fa-ellipsis-v fa-2x"></i></span>
       </div>
     </div>
-
-    <% if current_user == nil %>
-    <% elsif @recipe.user.id != current_user.id %>
-      <div class="col-12 text-end mb-2" id="js-recipe_favorite_<%= @recipe.id %>">
-        <%= render 'public/favorites/form', recipe: @recipe %>
-      </div>
-    <% else %>
-      <div class="col-12 d-flex justify-content-end mb-3">
-        <%= link_to "レシピ編集", edit_recipe_path(@recipe.id), class: "btn btn-success me-3" %>
-        <%= link_to "レシピ削除", recipe_path(@recipe.id), method: :delete, data: { confirm: '削除してもよろしいですか？' }, class: "btn btn-danger" %>
-      </div>
+    <%# 分岐処理はここを参照 %>
+    <% if user_signed_in? || admin_signed_in? %>
+      <% if current_admin.present? || @recipe.user.id == current_user.id %>
+        <div class="col-12 d-flex justify-content-end mb-3">
+          <%= link_to "レシピ編集", edit_recipe_path(@recipe.id), class: "btn btn-success me-3" %>
+          <%= link_to "レシピ削除", recipe_path(@recipe.id), method: :delete, data: { confirm: '削除してもよろしいですか？' }, class: "btn btn-danger" %>
+        </div>
+      <% else %>
+        <div class="col-12 d-flex justify-content-end mb-2" id="js-recipe_favorite_<%= @recipe.id %>">
+          <div class>
+            <%= render 'public/favorites/form', recipe: @recipe %>
+          </div>
+          <div class="report_icon ms-2">
+            <%= link_to new_reports_path(id: @recipe.id), class:"btn btn-outline-secondary" do %>
+              <span class=""><i class="far fa-flag fa-lg"></i></span>
+              <p class="report_comment">レシピを管理者へ報告</p>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
     <% end %>
-
     <div class="col-md-6 mb-3 my-md-auto  text-center">
       <%= image_tag @recipe.get_recipe_image(480, 480), class: "img-fluid" %>
 
@@ -96,7 +103,7 @@
           <tbody>
             <!--border border-whiteは後で修正、border noneに-->
             <tr class="text-center border border-white">
-              <td colspan="3"　class="text-end"><%= link_to "分量のリセット", recipe_path(@recipe.id), class:"btn btn-secondary" %></td>
+              <td colspan="3" class="text-end"><%= link_to "分量のリセット", recipe_path(@recipe.id), class:"btn btn-secondary" %></td>
               <td><%= f.submit "再計算", class:"btn btn-primary" %></td>
             </tr>
           </tbody>
@@ -130,7 +137,7 @@
               <% end %>
               <td class="text-start bottom-0">
                 <h6><%= "Step.#{counter}" %></h6>
-                <%= step.content %>
+                <p><%= safe_join(step.content.split("\n"),tag(:br)) %></p>
               </td>
             </tr>
           <% counter = counter.to_i + 1 %>
@@ -222,14 +229,14 @@
   });
 
 
-  document.addEventListener('turbolinks:load', function() {  //turbolinksをoffに
+  document.addEventListener('turbolinks:load', function() {
     $('#recipe_review').empty();
-    const elem = document.querySelector('#recipe_review'); //recipe_reviewは設定したid
-    const opt = { //opt(option)として以下を設定
-      starOn: "<%= asset_path('star-on.png') %>", //('')内に先程imageフォルダに入れた星の画像へのパスと参照名を記載
-      starOff: "<%= asset_path('star-off.png') %>", //app/assets/imagesを参照している状態
-      starHalf: "<%= asset_path('star-half.png') %>", //仮にimages/rate_imagesフォルダを作成し、その中に画像を入れた場合は('rate_images/画像名')と記述
-      scoreName: 'review[score]', ////登録するモデル名とカラム名を記述
+    const elem = document.querySelector('#recipe_review');
+    const opt = {
+      starOn: "<%= asset_path('star-on.png') %>",
+      starOff: "<%= asset_path('star-off.png') %>",
+      starHalf: "<%= asset_path('star-half.png') %>",
+      scoreName: 'review[score]',
     };
     raty(elem,opt);
   });

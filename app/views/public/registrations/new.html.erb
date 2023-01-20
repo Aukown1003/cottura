@@ -1,20 +1,23 @@
 <%= render "layouts/error_messages", resource: resource %>
-<div class="container my-5">
+<div class="container-fluid px-4">
   <div class="row mb-3">
-    <div class="col-8 mx-auto">
+    <div class="image-container col-md-6 mx-auto">
+      <%= image_tag 'sign_up_image.jpg', class:"sign_up_image img-fluid" %>
+      <p class="sing_up_text">Create your account!</p>
+    </div>
+    <div class="col-md-6 mt-4  mx-auto">
       <%= form_with model: @user, url: user_registration_path do |f| %>
-        <h2 class="d-inline-block p-1 rounded-2 text-bg-secondary">新規会員登録</h2>
+        <h2 class="border-bottom border-2">新規会員登録</h2>
         
         <div class="mb-3 mt-3">
-          <%= f.label :image, "プロフィール画像(無くてもOK)", { class: "form-label"} %>
+          <%= f.label :image, "プロフィール画像", { class: "form-label"} %>
           <div class="input-group">
-            <span class="input-group-text"><i class="fas fa-image"></i></span>
             <%= f.file_field :image, { accept: "image/*", class: "form-control" } %>
           </div>
         </div>
         
         <div class="mb-3 mt-3">
-          <%= f.label :name, "ニックネーム", { class: "form-label"} %>
+          <%= f.label :name, "ニックネーム", { class: "form-label required"} %>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-user"></i></span>
             <%= f.text_field :name, { class: "form-control", autofocus: true, placeholder: "cottura!" } %>
@@ -22,7 +25,7 @@
         </div>
         
         <div class="mb-3">
-          <%= f.label :email, "メールアドレス", { class: "form-label"} %>
+          <%= f.label :email, "メールアドレス", { class: "form-label required"} %>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-envelope"></i></span>
             <%= f.email_field :email, { class: "form-control", autocomplete: "email", placeholder: "cottura@example.com" } %>
@@ -30,7 +33,7 @@
         </div>
         
         <div class="mb-3">
-          <%= f.label :content, "自己紹介", { class: "form-label"} %>
+          <%= f.label :content, "自己紹介", { class: "form-label required"} %>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-id-badge"></i></span>
             <%= f.text_area :content, { class: "form-control", placeholder: "簡単な自己紹介を入力", rows: 1} %>
@@ -38,7 +41,7 @@
         </div>
           
         <div class="mb-3">
-          <%= f.label :password, "パスワード(6文字以上)", { class: "form-label"} %>
+          <%= f.label :password, "パスワード(6文字以上)", { class: "form-label required"} %>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-lock"></i></span>
             <%= f.password_field :password, { class: "form-control", autocomplete: "new-password", placeholder: "password" } %>
@@ -46,23 +49,20 @@
         </div>
         
         <div class="mb-3">
-          <%= f.label :password_confirmation, "パスワード(確認用)", { class: "form-label"} %>
+          <%= f.label :password_confirmation, "パスワード(確認用)", { class: "form-label required"} %>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-lock"></i></span>
             <%= f.password_field :password_confirmation, { class: "form-control", autocomplete: "new-password", placeholder: "password_confirmation" } %>
           </div>
         </div>
         
-        <div> 
-          <%= f.submit "新規登録", class: "btn btn-lg btn-success" %>
+        <div class="mt-3">
+          <%= f.submit "新規登録", class: "btn btn-lg btn-success w-100" %>
         </div>
       <% end %>
-    </div>
-    
-    <div class="col-8 mt-5 mx-auto">
-      <h2 class="d-inline-block p-1 rounded-2 text-bg-secondary">既に登録済みの方</h2>
-      <div class="mt-3">
-        <%= render "public/shared/links" %>
+      <p class="text-center my-1">もしくは</p>
+      <div>
+        <%= link_to "ゲストログイン",  user_guest_sign_in_path, method: :post, class:"gest-btn btn btn-lg btn-warning w-100" %><br>
       </div>
     </div>
   </div>

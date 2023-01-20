@@ -37,6 +37,7 @@ class Public::RecipesController < ApplicationController
   end
 
   def show
+    # binding.pry
     @recipe = Recipe.includes(:recipe_ingredients, :recipe_steps, :tags, :reviews).find(params[:id])
     @review = Review.new
     impressionist(@recipe, nil, unique: [:ip_address])
@@ -60,9 +61,9 @@ class Public::RecipesController < ApplicationController
   end
 
   def edit
-    @recipe = Recipe.find(params[:id])
+    @recipe = Recipe.includes(:category).find(params[:id])
     @genre = Genre.all
-    @category = Category.all
+    @category = Category.where(genre_id: @recipe.category.genre.id)
   end
 
   def update
@@ -89,7 +90,9 @@ class Public::RecipesController < ApplicationController
 
   def search_category
     @category = Category.where(genre_id: params[:genre_id])
-    # binding.pry
+    if @category.empty?
+      @category = ["ジャンルを選択後入力可能になります"]
+    end
   end
 
   def search

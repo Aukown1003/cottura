@@ -18,7 +18,6 @@ Rails.application.routes.draw do
     resources :recipes do
       get "recalculation" => "recipes#recalculation"
       resource :favorites, only: [:create, :destroy]
-      resources :reports, only: [:new, :create]
     end
     
     resource :recipe, only: [:search] do
@@ -29,7 +28,7 @@ Rails.application.routes.draw do
     end
     
     resources :reviews, only: [:create, :destroy]
-    
+    resource :reports, only: [:new, :create]
   end
 
   # registrationsは後で削除
@@ -40,8 +39,9 @@ Rails.application.routes.draw do
   namespace :admin do
     root to: 'homes#top'
     resources :users, except: [:new, :create]
-    resources :genres, except: [:new] 
+    resources :genres, except: [:new]
     resources :categories
+    resources :reports, only: [:show, :destroy]
     #以下adminはすべてこの中に
   end
 

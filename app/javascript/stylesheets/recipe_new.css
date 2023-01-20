@@ -1,0 +1,106 @@
+/* レシピ画像 */
+.input-image{
+  display: none;
+}
+/* レシピ画像(デフォルト) */
+.default-image{
+  width: 500px;
+  object-fit: cover;
+}
+/* レシピ画像(新規) */
+.new-img{
+  width: 500px;
+  object-fit: cover;
+}
+
+/*step用のサンプル画像CSS*/
+.step-sample-image{
+	width: 90px;
+	height: 90px;
+}
+.step-sample-image img{
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.recipe_step_iamage_field{
+  margin-left: 6vw;
+}
+
+
+/*材料、作り方、タグ追加のボタンcss*/
+.add_fields{
+  display: inline-block;
+  background: #6c757d;
+  width: 30%;
+  text-align: center;
+  border-radius: 10px;
+  /*margin-top: 10px;*/
+  margin: auto 0;
+  padding: 10px 5px;
+  color: white;
+  text-decoration: none;
+}
+
+a.add_fields:hover,a.add_fields:visited{
+  color : white;
+}
+
+.recipe_step > .add_fields, .tags > .add_fields{
+  display: block;
+  margin: 0 auto;
+  width: 67%;
+}
+
+/*削除アイコン*/
+.remove-field-btn{
+  margin: auto 0 auto 7px;
+}
+
+.small-font{
+  font-size: 16px;
+}
+
+/*セレクトボックス*/
+select::-ms-expand {
+display: none;
+}
+
+.selectdiv select {
+  display: block;
+  width: 100%;
+  height: 40px;
+  padding: 0.25rem;
+  font-size: 16px;
+  line-height: 1.75;
+  border: 2px solid #cccccc;
+  color: #333;
+  text-align: center;
+  background-color: #ffffff;
+  background-image: none;
+  border-radius: 10px;
+  -ms-word-break: normal;
+  word-break: normal;
+  font-weight: bold;
+}
+
+/*投稿時フォームの罫線、サイズ*/
+.recipe-name,.recipe-content,.ingredient-name,.ingredient-quantity,.step-content,.ingredient-quantity{
+  border: none;
+  border-bottom: 2px solid #cccccc;
+}
+
+.recipe-name{
+  font-size: 27px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.ingredient-name,.ingredient-quantity{
+  width: 30%;
+}
+
+.recipe_step_inputBox .textArea {
+  padding-top: 58px;
+}
