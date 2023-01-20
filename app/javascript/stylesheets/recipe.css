@@ -142,7 +142,7 @@ display: none;
 }
 /*recipe_indexページのCSS*/
 
-.neumorphism .box {
+/* .neumorphism .box {
   background-color: rgb(190, 205, 214);
   transition: box-shadow 0.5s;
   box-shadow:
@@ -150,7 +150,7 @@ display: none;
     -10px -10px 30px rgba(248, 253, 255, 0.9),
     inset 10px 10px 30px transparent,
     inset -10px -10px 30px transparent;
-}
+} */
 .neumorphism .box:hover {
   box-shadow:
     10px 10px 30px transparent,
