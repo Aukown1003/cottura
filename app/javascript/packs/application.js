@@ -17,8 +17,9 @@ import "../stylesheets/header"
 import "../stylesheets/top"
 import "../stylesheets/recipe"
 import "../stylesheets/recipe_index"
-import "../stylesheets/favorites"
 import "../stylesheets/recipe_show"
+import "../stylesheets/recipe_new"
+import "../stylesheets/favorites"
 import "../stylesheets/sign_in_sign_up"
 
 Rails.start()

@@ -50,7 +50,7 @@
   </diV>
 
   <div class="row mt-4">
-    <div class="col-md-12">
+    <div class="col-md-10 mx-auto">
       <h5 class="fw-bold border-bottom border-secondary mb-3">作り方 <span class="fw-light small-font">※画像は表示イメージです</span></h5>
       <div class="recipe_step">
         <%= f.fields_for :recipe_steps do |step| %>
@@ -60,7 +60,7 @@
       </div>
     </div>
 
-    <div class="col-md-12 pb-4">
+    <div class="col-md-10 pb-4 mx-auto">
       <h5 class="fw-bold border-bottom border-secondary mt-3 mb-4">ジャンル、カテゴリ選択</h5>
       <% if recipe.category.present? %>
         <%= f.collection_select(:genre_id, @genre, :id, :name, {}, selected: recipe.category.genre ) %>
@@ -73,13 +73,15 @@
   </div>
 
   <div class="row">
-    <div class="col-12 tags">
+    <div class="col-md-10 mx-auto">
       <h5 class="fw-bold border-bottom border-secondary mb-3">タグ作成</h5>
+      <div class="d-flex flex-wrap tags" >
+        <%= f.fields_for :tags do |tag| %>
+          <%= render "tag_fields", f: tag %>
+        <% end %>
+        <%= link_to_add_fields "タグの追加", f, :tags %>
+      </div>
     </div>
-      <%= f.fields_for :tags do |tag| %>
-        <%= render "tag_fields", f: tag %>
-      <% end %>
-      <%= link_to_add_fields "タグの追加", f, :tags %>
   </div>
 
   <div class="row">
