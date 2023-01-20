@@ -21,6 +21,7 @@ import "../stylesheets/recipe_show"
 import "../stylesheets/recipe_new"
 import "../stylesheets/favorites"
 import "../stylesheets/sign_in_sign_up"
+import "../stylesheets/user_show"
 
 Rails.start()
 Turbolinks.start()

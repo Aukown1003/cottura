@@ -4,6 +4,7 @@ ja:
       recipe: "レシピの"
       recipe_ingredients: "材料の"
       recipe_steps: "作り方の"
+      tags: "タグの"
     attributes:
       recipe:
         title: "レシピ名"
@@ -17,3 +18,5 @@ ja:
         name: "材料名"
       recipe_steps:
         content: "作り方の詳細"
+      tags:
+        name: "タグ"

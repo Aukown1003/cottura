@@ -47,7 +47,7 @@ a.add_fields:hover,a.add_fields:visited{
   color : white;
 }
 
-.recipe_step > .add_fields, .tags > .add_fields{
+.recipe_step > .add_fields, .tags > .add_fields, .sb-btn{
   display: block;
   margin: 0 auto;
   width: 67%;
@@ -58,14 +58,12 @@ a.add_fields:hover,a.add_fields:visited{
   margin: auto 0 auto 7px;
 }
 
+/* 作り方の部分的小文字 */
 .small-font{
   font-size: 16px;
 }
 
 /*セレクトボックス*/
-select::-ms-expand {
-display: none;
-}
 
 .selectdiv select {
   display: block;
@@ -73,7 +71,7 @@ display: none;
   height: 40px;
   padding: 0.25rem;
   font-size: 16px;
-  line-height: 1.75;
+  /* line-height: 1.75; */
   border: 2px solid #cccccc;
   color: #333;
   text-align: center;
@@ -83,6 +81,10 @@ display: none;
   -ms-word-break: normal;
   word-break: normal;
   font-weight: bold;
+}
+
+.selectdiv :disabled {
+  background-color: darkgrey;
 }
 
 /*投稿時フォームの罫線、サイズ*/
@@ -101,6 +103,35 @@ display: none;
   width: 30%;
 }
 
-.recipe_step_inputBox .textArea {
-  padding-top: 58px;
+/*メディクリ*/
+
+@media (min-width:1400px)  {
+  .ingredient-name{
+    width: 48%;
+  }
+  .ingredient-quantity{
+    width: 33%;
+  }
+}
+
+
+@media (min-width:1200px) and (max-width:1399px) {
+  .ingredient-name{
+    width: 48%;
+  }
+}
+
+@media (min-width:992px) and (max-width:1199px) {
+  .ingredient-name{
+    width: 40%;
+  }
+  .ingredient-quantity{
+    width: 33%;
+  }
+}
+
+@media (max-width:991px)  {
+  .selectdiv{
+    font-size: 12px;
+  }
 }

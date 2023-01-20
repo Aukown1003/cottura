@@ -27,7 +27,7 @@ class Recipe < ApplicationRecord
   validates :title, presence: true, length: {maximum: 32}
   validates :content, presence: true, length: {maximum: 140}
   validates :total_time, presence: true
-  validates :is_open, presence: true
+  #validates :is_open, presence: true
   #validate :recipe_any_ingredients
   #validate :recipe_any_steps
   validates :recipe_ingredients, length: {minimum: 1}

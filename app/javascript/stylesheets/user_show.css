@@ -1,0 +1,44 @@
+/*タブ機能*/
+.tab-group{
+  display: flex;
+  justify-content: center;
+}
+.tab{
+  flex-grow: 1;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  padding: 8px;
+  list-style: none;
+  text-align: center;
+  cursor: pointer;
+}
+
+.panel{
+  display: none;
+}
+.tab.is-active{
+  background: #fff;
+  transition: all 0.2s ease-out;
+  border-top: 2px solid #446CB3;
+  border-right: 2px solid #446CB3;
+  border-left: 2px solid #446CB3;
+  font-weight: bold;
+}
+.panel.is-show{
+  display: block;
+}
+
+.panel-group {
+  background-color: #fff;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-right: 2px solid #446CB3;
+  border-left: 2px solid #446CB3;
+  border-bottom: 2px solid #446CB3;
+  min-height: 320px;
+}
+
+.tab.no-active{
+  background: #446CB3;
+  color: #fff;
+}
