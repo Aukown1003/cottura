@@ -1,0 +1,15 @@
+<%= render 'layouts/error_messages', resource: @recipe %>
+<div class="container my-5">
+  <%= render 'form', recipe: @recipe %>
+</div>
+
+<script>
+window.onload = addToNewUrl();
+  function addToNewUrl() {
+  let path = location.pathname;
+  let pattern = /^.*\/new.*$/
+
+  if(path.match(pattern)) return;
+  history.replaceState('', '', `${ path }/new`)
+}
+</script>

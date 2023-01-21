@@ -1,0 +1,68 @@
+.required::after {
+  content: " *";
+  color: red;
+  vertical-align: middle;
+}
+
+.gest-btn {
+  background-color: #e9ecef;
+  border-color: darkgray;
+}
+
+.image-container {
+  position: relative;
+}
+
+.sign_in_image {
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+  object-position: 15%;
+}
+
+.sign_up_image{
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+  object-position: 46%;
+}
+
+.sing_in_text {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 38%;
+  left: 44%;
+  font-size: calc(22px + 30 * ((100vw - 320px) / 447));
+  color: white;
+  text-shadow: 4px 2px 5px black;
+  font-weight: bold;
+  font-family: initial;
+  letter-spacing: 0.1em;
+}
+.sing_up_text {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 38%;
+  left: 9%;
+  font-size: calc(18px + 30 * ((100vw - 320px) / 447));
+  color: white;
+  text-shadow: 4px 2px 5px black;
+  font-weight: bold;
+  font-family: initial;
+  letter-spacing: 0.1em;
+}
+
+@media (max-width: 768px) {
+  .sign_in_image,.sign_up_image {
+    height: auto;
+  }
+
+}
+
+@media (min-width: 768px) {
+  .sing_in_text, .sing_up_text {
+    display: none;
+  }
+} 

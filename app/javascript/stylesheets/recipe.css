@@ -1,0 +1,25 @@
+/*showページ使用*/
+.field_with_errors {
+  display: contents;
+}
+/*ユーザー画像を丸く*/
+.user_profile_image{
+  border-radius: 50%;
+  border: 2px solid black;
+}
+/*recipe_showページのCSS*/
+@media (min-width:992px) {
+  .recipe-show{
+    padding-left: 13rem;
+  }
+}
+@media (min-width:768px) and (max-width:991px) {
+  .recipe-show{
+    padding-left: 10rem;
+  }
+}
+
+.input-review{
+  border: none;
+  border-bottom: 2px solid #cccccc;
+}

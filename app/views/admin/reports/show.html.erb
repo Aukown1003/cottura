@@ -1,0 +1,35 @@
+<div class="container my-4">
+  <div class="row mb-3">
+    <div class="col-md-8 text-center mx-auto">
+      <h1>報告</h1>
+    </div>
+    <div class="col-md-8 mx-auto">
+      <table class="table">
+        <tr>
+          <th>レシピ名</th>
+          <td><%= link_to @report.recipe.title, recipe_path(id: @report.recipe.id) %></td>
+        </tr>
+        <tr>
+          <th>レシピ投稿者</th>
+          <td><%= link_to @report.recipe.user.name, admin_user_path(id: @report.recipe.user.id)%></td>
+        </tr>
+        <tr>
+          <th>違反理由</th>
+          <td><%= @report.content %></td>
+        </tr>
+        <tr>
+          <th>報告者</th>
+          <td><%= link_to @report.user.name, admin_user_path(id: @report.user.id) %></td>
+        </tr>
+        <tr>
+          <th>報告日時</th>
+          <td><%= @report.created_at.strftime("%Y年%m月%d日 %H:%M")  %></td>
+        </tr>
+      </table>
+    </div>
+    <div class="col-md-8 mx-auto text-center">
+      <%= link_to "管理者画面に戻る", admin_root_path, class:"btn btn-success" %>
+      <%= link_to "削除", admin_report_path(id: @report.id), method: :delete, class:"btn btn-danger" %>
+    </div>
+  </div>
+</div>

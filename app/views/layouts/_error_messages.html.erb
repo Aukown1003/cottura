@@ -1,0 +1,11 @@
+<% if resource.errors.any? %>
+  <div id="error_explanation">
+    <ul class="p-0">
+      <% resource.errors.full_messages.each do |message| %>
+        <li class="d-flex error_field alert alert-danger m-0 align-items-center" role="alert">
+          <i class="fas fa-exclamation-triangle"></i><p class="error_msg mb-0 ms-2"><%= message %></p>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

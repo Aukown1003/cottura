@@ -1,0 +1,15 @@
+<div class="nested-fields text-start">
+  <%= f.hidden_field :_destroy %>
+  <div class="recipe_ingredient_inputBox d-flex justify-content-between mb-3">
+    <%= f.text_field :name, placeholder: "材料名", class:"ingredient-name p-1 me-3" %>
+    <!--< %= f.text_field :quantity, placeholder: "分量(半角英数字)", pattern:"^([1-9]\d*|0)(\.\d+)?$", class:"ingredient-quantity p-1 me-2" ,required:"required"%>-->
+    <%= f.number_field :quantity, placeholder: "分量(半角英数字)", min: 0.1, step: 0.1, class:"ingredient-quantity p-1 me-2" %>
+    <div class="d-inline-block selectdiv unit">
+      <%= f.collection_select(:unit_id, Unit.all, :id, :name, class:"ingredient-unit p-0") %>
+    </div>
+    <%= link_to '#', class: "remove-field-btn" do %>
+      <%= image_tag 'ifn0498', class:"remove_fields" %>
+    <% end %>
+  </div>
+</div>
+

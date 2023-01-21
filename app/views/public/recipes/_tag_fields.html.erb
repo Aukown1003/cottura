@@ -1,0 +1,9 @@
+<div class="col-4 nested-fields my-3">
+  <%= f.hidden_field :_destroy %>
+  <div class="tag_inputBox d-flex justify-content-around mb-3">
+    <%= f.text_field :name, placeholder: "タグを記述", class:"step-content w-75"%>
+    <%= link_to '#', class: "remove-field-btn" do %>
+      <%= image_tag 'ifn0498', class:"remove_fields" %>
+    <% end %>
+  </div>
+</div>

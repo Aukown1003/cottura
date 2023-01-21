@@ -7,7 +7,29 @@ import Rails from "@rails/ujs"
 import Turbolinks from "turbolinks"
 import * as ActiveStorage from "@rails/activestorage"
 import "channels"
+import jquery from "jquery"
+window.$ = window.jQuery = jquery
+import * as bootstrap from "bootstrap"
+window.bootstrap = bootstrap
+import "../stylesheets/application"
+import '@fortawesome/fontawesome-free/js/all'
+import "../stylesheets/header"
+import "../stylesheets/top"
+import "../stylesheets/recipe"
+import "../stylesheets/recipe_index"
+import "../stylesheets/recipe_show"
+import "../stylesheets/recipe_new"
+import "../stylesheets/favorites"
+import "../stylesheets/sign_in_sign_up"
+import "../stylesheets/user_show"
 
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
+
+import Raty from "raty.js"
+window.raty = function(elem,opt) {
+  let raty =  new Raty(elem,opt)
+  raty.init();
+  return raty;
+}

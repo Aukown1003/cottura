@@ -1,0 +1,269 @@
+<%= form_with(model: recipe, local: true) do |f| %>
+  <div class="row">
+    <div class="col-12 text-center mb-5">
+      <%= f.text_field :title, placeholder: "レシピ名(32文字以内)", maxlength: "32", class:"recipe-name", required:"required" %>
+    </div>
+
+    <div class="col-md-6 text-center my-auto">
+        <!--クラス名、id変更禁止(javascript使用)-->
+      <div class="preview">
+        <div id="preview">
+          <% unless recipe.image.attached? %>
+            <img src="/assets/no_image_item" alt="default-image" class="img-fluid default-image">
+          <% else %>
+            <%= image_tag recipe.get_recipe_image(480, 480) %>
+          <% end %>
+        </div>
+      </div>
+
+      <label class="mt-3 mb-3 mb-md-3">
+        <%= f.label :image, class: "d-flex align-items-center btn btn-secondary" do %>
+          <i class="fas fa-camera fa-2x "></i>
+          <span class="ps-2 pt-1">写真を追加</span>
+        <!--クラス名変更禁止(css使用)-->
+          <%= f.file_field :image, accept: "image/*", class: "input-image" %>
+        <% end %>
+      </label>
+
+    </div>
+
+    <div class="col-md-6">
+      <div class="mb-3">
+        <h5 class="fw-bold border-bottom border-secondary mb-3">レシピ紹介</h5>
+        <%= f.text_area :content, placeholder: "簡単なレシピ紹介を入力！(140文字以内)", maxlength: "140", class:"w-100 recipe-content textArea", required:"required", rows: 1%>
+      </div>
+
+      <div class="selectdiv mb-3">
+        <h5 class="fw-bold border-bottom border-secondary mb-3">調理時間</h5>
+        <%= f.select :total_time, Recipe.select_time_data, { include_blank: '選択してください'}, class: 'form-control' , required: true %>
+      </div>
+
+
+      <h5 class="fw-bold border-bottom border-secondary mb-3">材料一覧</h5>
+      <div class="recipe_ingredient text-center">
+        <%= f.fields_for :recipe_ingredients do |ingredient| %>
+          <%= render "recipe_ingredient_fields", f: ingredient %>
+        <% end %>
+        <%= link_to_add_fields "材料の追加", f, :recipe_ingredients %>
+      </div>
+    </div>
+  </diV>
+
+  <div class="row mt-4">
+    <div class="col-md-10 mb-3 mx-auto">
+      <h5 class="fw-bold border-bottom border-secondary mb-3">作り方 <span class="fw-light small-font">※画像は表示イメージです</span></h5>
+      <div class="recipe_step">
+        <%= f.fields_for :recipe_steps do |step| %>
+          <%= render "recipe_step_fields", f: step%>
+        <% end %>
+        <%= link_to_add_fields "作り方の追加", f, :recipe_steps %>
+      </div>
+    </div>
+
+    <div class="col-md-10 mb-3 mx-auto">
+      <h5 class="fw-bold border-bottom border-secondary mt-3 mb-4">ジャンル選択</h5>
+      <% if recipe.category.present? %>
+        <div class="selectdiv mb-3">
+          <%= f.collection_select(:genre_id, @genre, :id, :name, {}, selected: recipe.category.genre ) %>
+        </div>
+      <% else %>
+        <div class="selectdiv mb-3">
+          <%= f.collection_select(:genre_id, @genre, :id, :name, include_blank: "ジャンルを選択してください") %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="col-md-10 mb-3 mx-auto">
+      <h5 class="fw-bold border-bottom border-secondary mt-3 mb-4">カテゴリ選択</h5>
+      <% if recipe.category.present? %>
+        <div class="selectdiv mb-3">
+          <%= f.collection_select(:category_id, @category.all, :id, :name, {include_blank: "ジャンルを選択後、選択可能になります"}, selected: recipe.category )%>
+        </div>
+      <% else %>
+        <div class="selectdiv mb-3">
+          <%= f.collection_select(:category_id, @category.all, :id, :name, {include_blank: "ジャンルを選択後、選択可能になります"}, disabled: true )%>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-10 mb-3 mx-auto">
+      <h5 class="fw-bold border-bottom border-secondary mb-3">タグ作成</h5>
+      <div class="d-flex flex-wrap tags" >
+        <%= f.fields_for :tags do |tag| %>
+          <%= render "tag_fields", f: tag %>
+        <% end %>
+        <%= link_to_add_fields "タグの追加", f, :tags %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-10 border-bottom border-secondary pb-4 mx-auto">
+      <h5 class="fw-bold border-bottom border-secondary mt-3 mb-4">公開状況</h5>
+      <div class="radio_button_group">
+          <label class="mx-0" style="width: 49%;">
+            <%= f.radio_button(:is_open, :true, checked: "checked", class:"btn-check") %>
+            <%= f.label :is_open, "公開", value: true, class:"btn btn-outline-secondary w-100" %>
+        </label>
+        <label class="mx-0" style="width: 49%;">
+          <%= f.radio_button(:is_open, :false, class:"btn-check") %>
+          <%= f.label :is_open, "非公開", value: false, class:"btn btn-outline-secondary w-100" %>
+        </label>
+      </div>
+    </div>
+
+    <div class="col-md-10 mt-3 text-center mx-auto">
+      <% if current_page?(new_recipe_path) %>
+        <%= f.submit "レシピを投稿する", class:"sb-btn btn btn-lg btn-secondary" %>
+      <% else %>
+        <%= f.submit "編集したレシピを保存する", class:"sb-bnt btn btn-lg btn-secondary" %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+
+<script>
+let genreForm = document.getElementById('recipe_genre_id');
+let categoryForm = document.getElementById('recipe_category_id');
+let categoryValue = categoryForm.options[0];
+genreForm.onchange = inputChange;
+function inputChange(){
+  // console.log(genreForm.value)
+  if(genreForm.value == ''){
+    categoryForm.disabled = true;
+    categoryForm.insertBefore(categoryValue, categoryForm.options[0]);
+  } else {
+    categoryForm.disabled = false ;
+  }
+}
+  $(function() {
+  $('#recipe_genre_id').change(function() {
+    $.get({
+      url: "<%= search_category_recipe_path %>",
+      data: { genre_id: $('#recipe_genre_id').has('option:selected').val() }
+    });
+  });
+});
+
+
+
+// テキストエリアの可変処理
+window.addEventListener('turbolinks:load', () => {
+  // textareaタグを全て取得
+  const textareaEls = document.querySelectorAll("textarea");
+
+  textareaEls.forEach((textareaEl) => {
+    // デフォルト値としてスタイル属性を付与
+    textareaEl.setAttribute("style", `height: ${textareaEl.scrollHeight}px;`);
+    // inputイベントが発生するたびに関数呼び出し
+    textareaEl.addEventListener("input", setTextareaHeight);
+  });
+
+  // textareaの高さを計算して指定する関数
+  function setTextareaHeight() {
+    this.style.height = "auto";
+    this.style.height = `${this.scrollHeight}px`;
+  }
+});
+
+
+  // 項目追加
+  class addFields {
+    constructor() {
+      this.links = document.querySelectorAll('.add_fields')
+      this.iterateLinks()
+    }
+
+    iterateLinks() {
+      if (this.links.length === 0) return
+      this.links.forEach(link => {
+        link.addEventListener('click', e => {
+          this.handleClick(link, e)
+        })
+      })
+    }
+
+    handleClick(link, e) {
+      if (!link || !e) return
+      e.preventDefault()
+      let time = new Date().getTime()
+      let linkId = link.dataset.id
+      let regexp = linkId ? new RegExp(linkId, 'g') : null
+      let newFields = regexp ? link.dataset.fields.replace(regexp, time) : null
+      newFields ? link.insertAdjacentHTML('beforebegin', newFields) : null
+
+      // 以下カスタマイズ草案
+      var getId = "recipe_recipe_steps_attributes_" + time + "_image"
+      console.log(getId)
+    }
+  }
+window.addEventListener('turbolinks:load', () => new addFields())
+
+
+
+  // 項目削除
+  class removeFields {
+    constructor() {
+      this.iterateLinks()
+    }
+
+    iterateLinks() {
+      document.addEventListener('click', e => {
+        if (e.target && e.target.className == 'remove_fields') {
+          this.handleClick(e.target, e)
+        }
+      })
+    }
+
+    handleClick(link, e) {
+      if (!link || !e) return
+      e.preventDefault()
+      let fieldParent = link.closest('.nested-fields')
+      let deleteField = fieldParent
+        ? fieldParent.querySelector('input[type="hidden"]')
+        : null
+      if (deleteField) {
+        deleteField.value = 1
+        fieldParent.style.display = 'none'
+      }
+    }
+  }
+window.addEventListener('turbolinks:load', () => new removeFields())
+
+
+
+
+
+if (document.URL.match(/new/)|| document.URL.match(/edit/)){
+  document.addEventListener('turbolinks:load', () => {
+    const createImageHTML = (blob) => {
+      const imageElement = document.getElementById('preview');
+      const blobImage = document.createElement('img');
+      // class属性の追加
+      blobImage.setAttribute('class', 'new-img img-fluid');
+      blobImage.setAttribute('src', blob);
+
+      imageElement.appendChild(blobImage);
+    };
+     // id = recipe_imageを取得(ファイルを選択時のボタン)、クリック時に以下の処理を実行
+     if (document.getElementById('recipe_image') != null ){
+        document.getElementById('recipe_image').addEventListener('change', (e) => {
+        const imageContent = document.querySelector('img');
+        // getelemntByClassname
+        // imageContentに値が入っている場合remove
+        if (imageContent){
+          imageContent.remove();
+        }
+
+        const file = e.target.files[0];
+        const blob = window.URL.createObjectURL(file);
+        createImageHTML(blob);
+        });
+     }
+
+  });
+}
+</script>

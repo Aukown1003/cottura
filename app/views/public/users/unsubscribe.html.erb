@@ -1,0 +1,22 @@
+<div class="container my-4">
+  <div class="row mb-3">
+    <div class="col-10 col-md-8 col-lg-7 mx-auto">
+      <h1 class="text-center">退会確認</h1>
+      <p class="mt-2">退会されますと以下が利用できなくなります</p>
+      <ul>
+        <li>レシピの投稿、編集</li>
+        <li>レシピへのレビューの投稿</li>
+        <li>レシピのお気に入りの追加、閲覧</li>
+        <li>マイページ</li>
+      </ul>
+      <p>
+        上記を再開したい場合は、再度会員登録が必要になります</br>
+        本当に退会してよろしいですか？
+      </p>
+      <div class="mt-2 text-center">
+        <%= link_to "退会する", user_withdrawal_path, method: :patch, class:"btn btn-lg btn-danger" %>
+      </div>
+      
+    </div>
+  </div>
+</div>

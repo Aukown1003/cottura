@@ -1,0 +1,259 @@
+<div class="container  my-5">
+  <div class="row">
+
+    <div class="col-md-8 col-lg-10 md-4 mb-md-5 text-center recipe-show">
+      <h1><%= @recipe.title %></h1>
+    </div>
+
+    <div class="col-md-4 col-lg-2 p-0 mt-4 mt-md-0 mb-5 text-end">
+      <div class="profile-link text-truncate">
+        <%= link_to user_path(@recipe.user.id) do %>
+          <%= image_tag @recipe.user.get_user_image(30,30), alt: "ユーザー画像", class:"user_profile_image" %>
+          <span class="ps-2"><%= @recipe.user.name %></span>
+        <% end %>
+      </div>
+    </div>
+    <%# 分岐処理はここを参照 %>
+    <% if user_signed_in? || admin_signed_in? %>
+      <% if current_admin.present? || @recipe.user.id == current_user.id %>
+        <div class="col-12 d-flex justify-content-end mb-3">
+          <%= link_to "レシピ編集", edit_recipe_path(@recipe.id), class: "btn btn-success me-3" %>
+          <%= link_to "レシピ削除", recipe_path(@recipe.id), method: :delete, data: { confirm: '削除してもよろしいですか？' }, class: "btn btn-danger" %>
+        </div>
+      <% else %>
+        <div class="col-12 d-flex justify-content-end mb-2" id="js-recipe_favorite_<%= @recipe.id %>">
+          <div class>
+            <%= render 'public/favorites/form', recipe: @recipe %>
+          </div>
+          <div class="report_icon ms-2">
+            <%= link_to new_reports_path(id: @recipe.id), class:"btn btn-outline-secondary" do %>
+              <span class=""><i class="far fa-flag fa-lg"></i></span>
+              <p class="report_comment">レシピを管理者へ報告</p>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+    <div class="col-md-6 mb-3 my-md-auto  text-center">
+      <%= image_tag @recipe.get_recipe_image(480, 480), class: "img-fluid" %>
+
+      <div class="d-flex justify-content-center mt-3">
+        <span class="me-2"><%= @recipe.reviews.average(:score).to_f.round(1) %></span>
+        <div id="review_<%= @recipe.id %>"></div>
+        <span class="ms-2">(<%= @recipe.reviews.count %>)</span>
+      </div>
+
+      <% unless @recipe.reviews.empty? %>
+        <div class="mt-2">
+          <%= link_to "レビューを読む", { anchor: "review_contents" }, class: 'btn btn-sm btn-secondary' %>
+        </div>
+      <% end %>
+
+    </div>
+
+    <div class="col-md-6">
+      <div class="mb-3">
+        <h5 class="fw-bold border-bottom border-secondary mb-3">レシピ紹介</h5>
+        <p class="p-2"><%= safe_join(@recipe.content.split("\n"),tag(:br)) %></p>
+      </div>
+
+      <div class="mb-3">
+        <h5 class="fw-bold border-bottom border-secondary mb-3">ジャンル・カテゴリー</h5>
+        <span class="p-2"><%= @recipe.category.genre.name %><%= @recipe.category.name %></span>
+      </div>
+
+      <div class="mb-3">
+        <h5 class="fw-bold border-bottom border-secondary mb-3">調理時間</h5>
+        <p class="p-2"><i class="fas fa-clock"></i><span class="ps-2"><%= @recipe.view_time_data %></span></p>
+      </div>
+
+      <div class="mb-3">
+        <h5 class="fw-bold border-bottom border-secondary mb-3">材料一覧</h5>
+        <%= form_with model: @recipe, url: recipe_recalculation_path(@recipe.id), method: :get do |f| %>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>材料名</th>
+              <th class="text-end">分量</th>
+              <th style="width: 7%;"></th>
+              <th style="width: 19%;"></th>
+            </tr>
+          </thead>
+
+          <% @recipe.recipe_ingredients.each do |ingredient| %>
+          <tbody>
+            <tr class="align-middle">
+              <td><%= ingredient.name %></td>
+              <% if ingredient.unit.name == "大さじ" || ingredient.unit.name == "小さじ"%>
+                <td class="text-end"><%= ingredient.unit.name %></td>
+                <% if session[:recalculation].present? %>
+                  <td class="text-start"><%= (BigDecimal(ingredient.quantity.to_s) * session[:recalculation]).round(1) %></td>
+                <% else %>
+                  <td class="text-start"><%= ingredient.quantity %></td>
+                <% end %>
+              <% else %>
+                <% if session[:recalculation].present? %>
+                  <td class="text-end"><%= (BigDecimal(ingredient.quantity.to_s) * session[:recalculation]).round(1) %></td>
+                <% else %>
+                  <td class="text-end"><%= ingredient.quantity %></td>
+                <% end %>
+                <td class="text-end"><%= ingredient.unit.name %></td>
+              <% end %>
+              <td class="">
+                <%= f.text_field (ingredient.id).to_s,  placeholder: "分量", class:"ingredient-quantity d-block mx-auto text-center w-100"%>
+              </td>
+            </tr>
+          </tbody>
+          <% end %>
+          <tbody>
+            <!--border border-whiteは後で修正、border noneに-->
+            <tr class="text-center border border-white">
+              <td colspan="3" class="text-end"><%= link_to "分量のリセット", recipe_path(@recipe.id), class:"btn btn-secondary" %></td>
+              <td><%= f.submit "再計算", class:"btn btn-primary" %></td>
+            </tr>
+          </tbody>
+        </table>
+        <% end %>
+        <% if session[:recalculation].present? %>
+          <% session[:recalculation] = nil %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-11 mx-auto mb-3">
+      <h5 class="fw-bold border-bottom border-secondary">作り方</h5>
+      <table class="table table-hover table-borderless">
+        <thead>
+          <tr>
+            <th style="width: 10%;"></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% counter = 1 %>
+          <% @recipe.recipe_steps.each do |step| %>
+            <tr class="align-middle border-bottom">
+              <td><%= image_tag step.get_recipe_step_image(90, 90) %></td>
+              <td class="text-start bottom-0">
+                <h6><%= "Step.#{counter}" %></h6>
+                <p class="mb-0"><%= safe_join(step.content.split("\n"),tag(:br)) %></p>
+              </td>
+            </tr>
+          <% counter = counter.to_i + 1 %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <% unless @recipe.tags.empty? %>
+    <div class="col-md-11 tag-group mx-auto mb-3">
+      <h5 class="mx-auto fw-bold border-bottom border-secondary mb-3">タグ一覧</h5>
+      <div class="tags d-flex">
+      <% @recipe.tags.each do |tag| %>
+        <div class="col">
+          <p class="rounded-2 p-1 m-0"><span class="ps-2"><i class="fas fa-tag"></i></span><span class="ps-2"><%= tag.name %></span></p>
+        </div>
+      <% end %>
+      </div>
+    </div>
+    <% end %>
+
+    <% if current_user == nil || @recipe.user.id == current_user.id %>
+    <% else %>
+      <%= form_with model: @review, url: reviews_path(@recipe.id), method: :post, local: true do |f| %>
+        <div class="col-md-11">
+          <h5 class="fw-bold border-bottom border-secondary mb-3">レビュー入力</h5>
+          <%= f.hidden_field :recipe_id, value: @recipe.id %>
+          <div id="recipe_review" class ="mb-3"></div>
+          <%= f.text_area :content, placeholder: "コメントをここに入力", maxlength: "140", class:"w-100 textArea input-review  mb-2", required:"required", rows: 1 %>
+          <%= f.submit "レビューを投稿", class: "btn btn-secondary mb-3" %>
+        </div>
+      <% end %>
+    <% end %>
+
+    <% unless @recipe.reviews.empty? %>
+      <div class="col-md-11 mx-auto" id="review_contents">
+        <h5 class="fw-bold border-bottom border-secondary mb-3">レビュー<span class="ms-2">(<%= @recipe.reviews.count %>件)</span></h5>
+        <% @recipe.reviews.each do |review| %>
+          <div class="review_content my-3">
+            <%= render "public/recipes/review_show", review: review %>
+            <div class="mb-1"><%= link_to "投稿者：#{review.user.name}", user_path(review.user.id) %></div>
+            <div class="mb-1"><%= safe_join(review.content.split("\n"),tag(:br)) %></div>
+            <div class="mb-1"><%= review.created_at.strftime("%Y年%m月%d日") %></div>
+            <% if user_signed_in? || admin_signed_in? %>
+              <% if current_admin.present? || review.user.id == current_user.id %>
+                <div class="mb-1"><%= link_to "このコメントを削除", review_path(review.id), method: :delete, class:"btn btn-sm btn-danger" %></div>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+  </div>
+</div>
+
+<script>
+
+  window.addEventListener('turbolinks:load', () => {
+    const textareaEls = document.querySelectorAll("textarea");
+
+    textareaEls.forEach((textareaEl) => {
+      textareaEl.setAttribute("style", `height: ${textareaEl.scrollHeight}px;`);
+      textareaEl.addEventListener("input", setTextareaHeight);
+    });
+
+    function setTextareaHeight() {
+      this.style.height = "auto";
+      this.style.height = `${this.scrollHeight}px`;
+    }
+  });
+
+
+  document.addEventListener('turbolinks:load', function() {
+    $('#review_<%= @recipe.id %>').empty();
+    let raty_<%= @recipe.id %> = document.querySelector('#review_<%= @recipe.id %>');
+    let option_<%= @recipe.id %> = {
+      starOn: "<%= asset_path('star-on.png') %>",
+      starOff: "<%= asset_path('star-off.png') %>",
+      starHalf: "<%= asset_path('star-half.png') %>",
+      readOnly: true,
+      score: <%= @recipe.reviews.average(:score).to_f.round(1) %>,
+    };
+    raty(raty_<%= @recipe.id %> ,option_<%= @recipe.id %>);
+  });
+
+
+  document.addEventListener('turbolinks:load', function() {
+    $('#recipe_review').empty();
+    const elem = document.querySelector('#recipe_review');
+    const opt = {
+      starOn: "<%= asset_path('star-on.png') %>",
+      starOff: "<%= asset_path('star-off.png') %>",
+      starHalf: "<%= asset_path('star-half.png') %>",
+      scoreName: 'review[score]',
+    };
+    raty(elem,opt);
+  });
+
+  const elements = document.getElementsByClassName('ingredient-quantity')
+  for(i = 0; i < elements.length; i++) {
+    elements[i].addEventListener('change', () => {
+
+      Array.prototype.forEach.call(elements, (element) => {
+        if (!element.value) {
+          element.disabled = true
+        }
+      })
+
+      const inputValues = Array.prototype.map.call(elements, e => e.value)
+      if(inputValues.filter(e => e).length == 0) {
+        Array.prototype.forEach.call(elements, (element) => {
+          element.disabled = false
+        })
+      }
+    })
+  }
+</script>

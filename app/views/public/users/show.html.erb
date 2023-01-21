@@ -1,0 +1,64 @@
+<div class="container my-4">
+  <div class="row mb-5">
+    <div class="col-sm-4 my-auto text-center text-sm-end mx-auto">
+      <%= image_tag @user.get_user_image(200, 200), alt: "ユーザー画像", class:"user_profile_image"%>
+    </div>
+    <div class="col-sm-7 text-center text-sm-start offset-sm-1">
+      <h2 class="mb-2 mt-3 mt-sm-0"><%= @user.name %>のキッチン</h2>
+      <p><%= safe_join(@user.content.split("\n"),tag(:br)) %></p>
+      <% if current_user == nil || @user.id != current_user.id || @user.email == 'guest@example.com'%>
+      <% else %>
+        <div class="d-flex justify-content-evenly justify-content-sm-start">
+          <div class="m-1">
+            <%= link_to "プロフィール編集", edit_user_path, class:"btn btn-sm btn-success" %>
+          </div>
+          <div class="m-1">
+            <%= link_to "会員情報編集", edit_user_registration_path, class:"btn btn-sm btn-success" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="tab-panel">
+    <!--タブ-->
+    <ul class="tab-group mb-0 p-0">
+      <li class="tab tab-A is-active m-0">投稿したレシピ</li>
+      <li class="tab tab-B no-active me-0">お気に入りレシピ</li>
+    </ul>
+    <!--タブを切り替えて表示するコンテンツ-->
+    <div class="panel-group p-3">
+      <div class="panel tab-A is-show">
+        <%= render 'public/users/post_recipe_lists' %>
+      </div>
+      <div class="panel p-3 tab-B">
+        <%= render 'public/users/favorites_recipes' %>
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+<script>
+  document.addEventListener('turbolinks:load', function() {
+    // タブに対してクリックイベントを適用
+    const tabs = document.getElementsByClassName('tab');
+    for(let i = 0; i < tabs.length; i++) {
+      tabs[i].addEventListener('click', tabSwitch, false);
+    }
+
+    // タブをクリックすると実行する関数
+    function tabSwitch(){
+      // タブのclassの値を変更
+      document.getElementsByClassName('is-active')[0].classList.add('no-active');
+      document.getElementsByClassName('is-active')[0].classList.remove('is-active');
+      this.classList.add('is-active');
+      this.classList.remove('no-active');
+      // コンテンツのclassの値を変更
+      document.getElementsByClassName('is-show')[0].classList.remove('is-show');
+      const arrayTabs = Array.prototype.slice.call(tabs);
+      const index = arrayTabs.indexOf(this);
+      document.getElementsByClassName('panel')[index].classList.add('is-show');
+    };
+  }, false);
+</script>

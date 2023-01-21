@@ -1,0 +1,28 @@
+<div class="nested-fields border-bottom border-secondary my-3">
+  <%= f.hidden_field :_destroy %>
+  <div class="recipe_step_inputBox d-flex justify-content-around mb-3">
+    <div class="step-sample-image me-1">
+      <% if current_page?(new_recipe_path) %>
+        <img src="/assets/no_image_item" alt="default-image" class="img-fluid">
+      <% else %>
+        <% if f.options[:child_index] + 1 > @recipe.recipe_steps.count %>
+          <img src="/assets/no_image_item" alt="default-image" class="img-fluid">
+        <% else %>
+          <%= image_tag f.object.get_recipe_step_image(90,90) %>
+        <% end %>
+      <% end %>
+    </div>
+    
+    <%#= f.text_field :content, placeholder: "作り方をここに記述！", class:"step-content w-75"%>
+    <%= f.text_area :content, placeholder: "作り方をここに記述！", class:"step-content textArea w-75", rows: 1%>
+    <%= link_to '#', class: "remove-field-btn" do %>
+      <%= image_tag 'ifn0498', class:"remove_fields" %>
+    <% end %>
+  </div>
+    
+  <div class="recipe_step_iamage_field my-3">
+    <%= f.label :image, "手順の画像：", class: "" %>
+    <%= f.file_field :image, accept: "image/*", class: "" %>
+  </div>
+    
+</div>

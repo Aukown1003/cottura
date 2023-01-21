@@ -1,0 +1,60 @@
+<%= render "layouts/error_messages", resource: @user %>
+<div class="container my-5">
+  <div class="row mb-3">
+    <div class="col-8 mx-auto">
+      <%= form_with model: @user, url: user_path(@user.id), method: :patch do |f| %>
+        <h2 class="d-inline-block p-1 rounded-2 text-bg-secondary">プロフィール編集画面</h2>
+        
+        <div class="mb-3 mt-3">
+          <%= f.label :image, "プロフィール画像", { class: "form-label"} %>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-image"></i></span>
+            <%= f.file_field :image, { accept: "image/*", class: "form-control" } %>
+          </div>
+        </div>
+        
+        <div class="mb-3 mt-3">
+          <%= f.label :name, "ニックネーム", { class: "form-label"} %>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
+            <%= f.text_field :name, { class: "form-control", autofocus: true, placeholder: "cottura!" } %>
+          </div>
+        </div>
+        
+        <div class="mb-3 h-auto">
+          <%= f.label :content, "自己紹介", { class: "form-label"} %>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-id-badge"></i></span>
+            <%= f.text_area :content, { class: "form-control textarea", placeholder: "簡単な自己紹介を入力", rows: 1 } %>
+          </div>
+        </div>
+        
+        <div class=""> 
+          <%= f.submit "プロフィール更新", class: "btn btn-lg btn-success" %>
+        </div>
+        
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+// テキストエリアの可変処理
+window.addEventListener('turbolinks:load', () => {
+  // textareaタグを全て取得
+  const textareaEls = document.querySelectorAll("textarea");
+
+  textareaEls.forEach((textareaEl) => {
+    // デフォルト値としてスタイル属性を付与
+    textareaEl.setAttribute("style", `height: ${textareaEl.scrollHeight}px;`);
+    // inputイベントが発生するたびに関数呼び出し
+    textareaEl.addEventListener("input", setTextareaHeight);
+  });
+
+  // textareaの高さを計算して指定する関数
+  function setTextareaHeight() {
+    this.style.height = "auto";
+    this.style.height = `${this.scrollHeight}px`;
+  }
+});
+</script>
