@@ -35,10 +35,6 @@
 #   ]
 # )
 
-# Admin.create!(
-#   email: 'test@admin',
-#   password: '111111',
-# )
 
 # Recipe.create!(
 #   [
