@@ -71,10 +71,27 @@
     left: 0;
 }
 
-.recipe-index-item{
+.recipe-index-item {
     box-shadow: 6px 6px 10px 0px rgba(0, 0, 0, 0.4);
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
+    max-width: 255px;
 }
 
-.recipe-index-item :hover {
-    
+@media (min-width:992px) and (max-width:1199px) {
+  .recipe-index-item:nth-child(3n+1){
+    margin-left: 4.1rem;
+  }
+}
+
+@media (min-width:768px) and (max-width:991px) {
+  .recipe-index-item:nth-child(2n+1){
+    margin-left: 5rem;
+  }
+}
+
+@media (max-width:526px) {
+  .recipe-index-item {
+    margin: 0 auto;
+  }
 }

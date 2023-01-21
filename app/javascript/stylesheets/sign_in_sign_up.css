@@ -58,11 +58,11 @@
   .sign_in_image,.sign_up_image {
     height: auto;
   }
+
 }
 
-/* 現状上手く動かず */
-@media (min-width: 479px) {
-  .sign_in_text {
+@media (min-width: 768px) {
+  .sing_in_text, .sing_up_text {
     display: none;
   }
-}
+} 
