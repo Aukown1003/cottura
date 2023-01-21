@@ -102,15 +102,15 @@
   <div class="row">
     <div class="col-md-10 border-bottom border-secondary pb-4 mx-auto">
       <h5 class="fw-bold border-bottom border-secondary mt-3 mb-4">公開状況</h5>
-      <div class="radio_button_group">
-          <label class="mx-0" style="width: 49%;">
-            <%= f.radio_button(:is_open, :true, checked: "checked", class:"btn-check") %>
-            <%= f.label :is_open, "公開", value: true, class:"btn btn-outline-secondary w-100" %>
-        </label>
-        <label class="mx-0" style="width: 49%;">
-          <%= f.radio_button(:is_open, :false, class:"btn-check") %>
-          <%= f.label :is_open, "非公開", value: false, class:"btn btn-outline-secondary w-100" %>
-        </label>
+      <div class="row radio_button_group d-flex justify-content-around">
+        <div class="text-center rounded-lg" style="width:49%;">
+          <%= f.radio_button(:is_open, :true, checked: "checked", class:"btn-check d-none") %>
+          <%= f.label :is_open, "公開", value: true, class:"radio-form m-0 w-100 py-2" %>
+        </div>
+        <div class="text-center rounded-lg" style="width:49%;">
+          <%= f.radio_button(:is_open, :false, class:"btn-check d-none") %>
+          <%= f.label :is_open, "非公開", value: false, class:"radio-form m-0 w-100 py-2"%>
+        </div>
       </div>
     </div>
 
