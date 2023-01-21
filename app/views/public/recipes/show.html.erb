@@ -135,11 +135,7 @@
           <% counter = 1 %>
           <% @recipe.recipe_steps.each do |step| %>
             <tr class="align-middle border-bottom">
-              <% if step.image.attached? %>
-                <td><%= image_tag step.get_recipe_step_image(90, 90) %></td>
-              <% else %>
-                <td style="width: 90px; height: 108px;"></td>
-              <% end %>
+              <td><%= image_tag step.get_recipe_step_image(90, 90) %></td>
               <td class="text-start bottom-0">
                 <h6><%= "Step.#{counter}" %></h6>
                 <p class="mb-0"><%= safe_join(step.content.split("\n"),tag(:br)) %></p>
