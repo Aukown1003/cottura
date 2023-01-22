@@ -103,6 +103,18 @@ a.add_fields:hover,a.add_fields:visited{
   width: 30%;
 }
 
+.radio-form {
+  border-radius: 10px;
+  border: 1px solid #212529;
+}
+
+.btn-check:checked + .radio-form {
+    background: #6c757d;
+    color: #fff;
+    text-shadow: 0 0 1px rgba(0,0,0,.7);
+    font-weight: 400;
+}
+
 /*メディクリ*/
 
 @media (min-width:1400px)  {

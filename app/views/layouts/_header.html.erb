@@ -2,34 +2,34 @@
   <nav class="navbar navbar-expand-md navbar-light bg-light">
     <div class="container-fluid">
       <a class="navbar-brand" href="/"></a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">  
         <span class="navbar-toggler-icon"></span>
       </button>
       <!--ユーザーログイン時-->
       <% if user_signed_in? %>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ms-auto">
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav ml-auto">
 
-            <li class="nav-item mb-1 mb-lg-0">
-              <%= link_to user_path(current_user.id), class: 'nav-link text-dark btn me-2' do %>
+            <li class="nav-item mr-lg-2 mb-lg-0">
+              <%= link_to user_path(current_user.id), class: 'nav-link text-dark btn ' do %>
                 <i class="fas fa-home"></i><%= " マイページ" %>
               <% end %>
             </li>
 
-            <li class="nav-item mb-1 mb-lg-0">
-              <%= link_to recipes_path, class: 'nav-link text-dark btn me-2' do %>
+            <li class="nav-item mr-lg-2 mb-lg-0">
+              <%= link_to recipes_path, class: 'nav-link text-dark btn ' do %>
                 <i class="fas fa-book"></i><%= " レシピ一覧" %>
               <% end %>
             </li>
 
-            <li class="nav-item mb-1 mb-lg-0">
-              <%= link_to new_recipe_path, class: 'nav-link text-dark btn me-2', 'data-turbolinks': false do %>
+            <li class="nav-item mr-lg-2 mb-lg-0">
+              <%= link_to new_recipe_path, class: 'nav-link text-dark btn ', 'data-turbolinks': false do %>
                 <i class="fas fa-pencil-alt"></i><%= "レシピを書く" %>
               <% end %>
             </li>
 
-            <li class="nav-item mb-1 mb-lg-0">
-              <%= link_to destroy_user_session_path, method: :delete, class: 'nav-link text-dark btn me-2' do %>
+            <li class="nav-item mb-lg-0">
+              <%= link_to destroy_user_session_path, method: :delete, class: 'nav-link text-dark btn ' do %>
                 <i class="fas fa-sign-out-alt"></i><%= " ログアウト" %>
               <% end %>
             </li>
@@ -37,29 +37,29 @@
         </div>
         <!--管理者ーログイン時-->
       <% elsif admin_signed_in? %>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ms-auto">
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav ml-auto">
 
-            <li class="nav-item mb-1 mb-lg-0">
-              <%= link_to admin_root_path, class: 'nav-link text-dark btn me-2' do %>
+            <li class="nav-item mr-lg-2 mb-lg-0">
+              <%= link_to admin_root_path, class: 'nav-link text-dark btn ' do %>
                 <i class="fas fa-book"></i><%= " 管理者画面" %>
               <% end %>
             </li>
 
-            <li class="nav-item  mb-1 mb-lg-0">
-              <%= link_to admin_users_path, class: 'nav-link text-dark btn me-2' do %>
+            <li class="nav-item mr-lg-2 mb-lg-0">
+              <%= link_to admin_users_path, class: 'nav-link text-dark btn ' do %>
                 <i class="fas fa-users"></i><%= " 会員一覧" %>
               <% end %>
             </li>
 
-            <li class="nav-item  mb-1 mb-lg-0">
-              <%= link_to admin_genres_path, class: 'nav-link text-dark btn me-2' do %>
+            <li class="nav-item mb-lg-0">
+              <%= link_to admin_genres_path, class: 'nav-link text-dark btn ' do %>
                 <i class="fas fa-tags"></i><%= "タグ一覧" %>
               <% end %>
             </li>
 
-            <li class="nav-item  mb-1 mb-lg-0">
-              <%= link_to destroy_admin_session_path, method: :delete, class: 'nav-link text-dark btn me-2' do %>
+            <li class="nav-item mr-lg-2 mb-lg-0">
+              <%= link_to destroy_admin_session_path, method: :delete, class: 'nav-link text-dark btn ' do %>
                 <i class="fas fa-sign-out-alt"></i><%= " ログアウト" %>
               <% end %>
             </li>
@@ -67,23 +67,23 @@
         </div>
         <!--非ログイン時-->
       <% else %>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ms-auto">
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav ml-auto">
 
-            <li class="nav-item  mb-2 mb-lg-0">
-              <%= link_to recipes_path, class: 'nav-link text-dark btn me-2' do %>
+            <li class="nav-item mr-lg-2 mb-lg-0">
+              <%= link_to recipes_path, class: 'nav-link text-dark btn' do %>
                 <i class="fas fa-book"></i><%= " レシピ一覧" %>
               <% end %>
             </li>
 
-            <li class="nav-item  mb-2 mb-lg-0">
-              <%= link_to new_user_registration_path, class: 'nav-link text-dark btn me-2' do %>
+            <li class="nav-item mr-lg-2 mb-lg-0">
+              <%= link_to new_user_registration_path, class: 'nav-link text-dark btn ' do %>
                 <i class="fas fa-user-plus"></i><%= " 新規登録" %>
               <% end %>
             </li>
 
-            <li class="nav-item  mb-2 mb-lg-0">
-              <%= link_to new_user_session_path,  class: 'nav-link text-dark btn me-2' do %>
+            <li class="nav-item mb-lg-0">
+              <%= link_to new_user_session_path,  class: 'nav-link text-dark btn ' do %>
                 <i class="fas fa-sign-in-alt"></i><%= " ログイン" %>
               <% end %>
             </li>
