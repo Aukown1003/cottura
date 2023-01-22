@@ -9,7 +9,8 @@
       <div class="preview">
         <div id="preview">
           <% unless recipe.image.attached? %>
-            <img src="/assets/no_image_item" alt="default-image" class="img-fluid default-image">
+            <%= image_tag 'no_image_item.png', class: "img-fluid default-image" %>
+            <!--<img src="/assets/no_image_item" alt="default-image" class="img-fluid default-image">-->
           <% else %>
             <%= image_tag recipe.get_recipe_image(480, 480) %>
           <% end %>
