@@ -53,22 +53,22 @@
 
     <div class="col-md-6">
       <div class="mb-3">
-        <h5 class="fw-bold border-bottom border-secondary mb-3">レシピ紹介</h5>
+        <h5 class="font-weight-bold border-bottom border-secondary mb-3">レシピ紹介</h5>
         <p class="p-2"><%= safe_join(@recipe.content.split("\n"),tag(:br)) %></p>
       </div>
 
       <div class="mb-3">
-        <h5 class="fw-bold border-bottom border-secondary mb-3">ジャンル・カテゴリー</h5>
+        <h5 class="font-weight-bold border-bottom border-secondary mb-3">ジャンル・カテゴリー</h5>
         <span class="p-2"><%= @recipe.category.genre.name %><%= @recipe.category.name %></span>
       </div>
 
       <div class="mb-3">
-        <h5 class="fw-bold border-bottom border-secondary mb-3">調理時間</h5>
+        <h5 class="font-weight-bold border-bottom border-secondary mb-3">調理時間</h5>
         <p class="p-2"><i class="fas fa-clock"></i><span class="ps-2"><%= @recipe.view_time_data %></span></p>
       </div>
 
       <div class="mb-3">
-        <h5 class="fw-bold border-bottom border-secondary mb-3">材料一覧</h5>
+        <h5 class="font-weight-bold border-bottom border-secondary mb-3">材料一覧</h5>
         <%= form_with model: @recipe, url: recipe_recalculation_path(@recipe.id), method: :get do |f| %>
         <table class="table">
           <thead>
@@ -123,7 +123,7 @@
 
   <div class="row mt-4">
     <div class="col-md-11 mx-auto mb-3">
-      <h5 class="fw-bold border-bottom border-secondary">作り方</h5>
+      <h5 class="font-weight-bold border-bottom border-secondary">作り方</h5>
       <table class="table table-hover table-borderless">
         <thead>
           <tr>
@@ -149,7 +149,7 @@
 
     <% unless @recipe.tags.empty? %>
     <div class="col-md-11 tag-group mx-auto mb-3">
-      <h5 class="mx-auto fw-bold border-bottom border-secondary mb-3">タグ一覧</h5>
+      <h5 class="mx-auto font-weight-bold border-bottom border-secondary mb-3">タグ一覧</h5>
       <div class="tags d-flex">
       <% @recipe.tags.each do |tag| %>
         <div class="col">
@@ -164,7 +164,7 @@
     <% else %>
       <%= form_with model: @review, url: reviews_path(@recipe.id), method: :post, local: true do |f| %>
         <div class="col-md-11">
-          <h5 class="fw-bold border-bottom border-secondary mb-3">レビュー入力</h5>
+          <h5 class="font-weight-bold border-bottom border-secondary mb-3">レビュー入力</h5>
           <%= f.hidden_field :recipe_id, value: @recipe.id %>
           <div id="recipe_review" class ="mb-3"></div>
           <%= f.text_area :content, placeholder: "コメントをここに入力", maxlength: "140", class:"w-100 textArea input-review  mb-2", required:"required", rows: 1 %>
@@ -175,7 +175,7 @@
 
     <% unless @recipe.reviews.empty? %>
       <div class="col-md-11 mx-auto" id="review_contents">
-        <h5 class="fw-bold border-bottom border-secondary mb-3">レビュー<span class="ms-2">(<%= @recipe.reviews.count %>件)</span></h5>
+        <h5 class="font-weight-bold border-bottom border-secondary mb-3">レビュー<span class="ms-2">(<%= @recipe.reviews.count %>件)</span></h5>
         <% @recipe.reviews.each do |review| %>
           <div class="review_content my-3">
             <%= render "public/recipes/review_show", review: review %>
