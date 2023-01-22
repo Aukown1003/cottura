@@ -20,7 +20,7 @@
     margin-top: 1em;
   }
   .nav-item{
-    text-align-last: start;
+    border-bottom: 1px solid black;
   }
 }
 
