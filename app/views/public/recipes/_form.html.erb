@@ -99,7 +99,7 @@
     <div class="col-md-10 border-bottom border-secondary pb-4 mx-auto">
       <h5 class="font-weight-bold border-bottom border-secondary required mt-3 mb-4">公開状況</h5>
       
-      <% if current_user.email == "guest@example.com" %>
+      <% if current_user.present? && current_user.email == "guest@example.com" %>
         <div class="input-gest-radio text-center rounded-lg mx-auto">
           <%= f.radio_button(:is_open, :false, checked: "checked", class:"btn-check d-none") %>
           <%= f.label :is_open, "非公開", value: false, class:"radio-form m-0 w-100 py-2"%>

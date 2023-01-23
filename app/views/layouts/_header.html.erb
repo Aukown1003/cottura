@@ -51,14 +51,27 @@
                 <i class="fas fa-users"></i><%= " 会員一覧" %>
               <% end %>
             </li>
+            
 
-            <li class="nav-item mb-lg-0">
-              <%= link_to admin_genres_path, class: 'nav-link text-dark btn ' do %>
-                <i class="fas fa-tags"></i><%= "タグ一覧" %>
+            <li class="nav-item mr-md-2 mb-lg-0">
+              <%= link_to recipes_path, class: 'nav-link text-dark btn ' do %>
+                <i class="fas fa-book"></i><%= " レシピ一覧" %>
               <% end %>
             </li>
 
             <li class="nav-item mr-md-2 mb-lg-0">
+              <%= link_to admin_genres_path, class: 'nav-link text-dark btn ' do %>
+                <i class="fas fa-tags"></i><%= "ジャンル、カテゴリ一覧" %>
+              <% end %>
+            </li>
+
+            <li class="nav-item mr-md-2 mb-lg-0">
+              <%= link_to admin_units_index_path, class: 'nav-link text-dark btn ' do %>
+                <i class="fas fa-tags"></i><%= "単位一覧" %>
+              <% end %>
+            </li>
+
+            <li class="nav-item mb-lg-0">
               <%= link_to destroy_admin_session_path, method: :delete, class: 'nav-link text-dark btn ' do %>
                 <i class="fas fa-sign-out-alt"></i><%= " ログアウト" %>
               <% end %>

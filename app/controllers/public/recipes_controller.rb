@@ -65,10 +65,6 @@ class Public::RecipesController < ApplicationController
   def update
     ActiveRecord::Base.transaction do
       @recipe = Recipe.find(params[:id])
-      # if @recipe.recipe_ingredients == [] || @recipe.recipe_steps == []
-      #   redirect_to request.referer, alert: "材料または作り方が未入力です。"
-      #   return
-      # end
       @recipe.update!(recipe_params)
       redirect_to root_path, notice: "レシピを編集しました"
     rescue ActiveRecord::RecordInvalid
@@ -163,10 +159,23 @@ class Public::RecipesController < ApplicationController
         )
   end
 
+  # def user_check
+  #   if admin_signed_in?
+  #   elsif user_signed_in?
+  #     user_id = Recipe.find(params[:id]).user_id
+  #     if user_id =! current_user.id
+  #       redirect_to root_path, alert: '他の会員のレシピの更新、削除はできません。'
+  #     end
+  #   else
+  #     redirect_to root_path, alert: '非ログイン時はこの処理を行えません'
+  #   end
+  # end
+  
   def user_check
+    user_id = Recipe.find(params[:id]).user_id
     if admin_signed_in?
+      return
     elsif user_signed_in?
-      user_id = Recipe.find(params[:id]).user_id
       if user_id =! current_user.id
         redirect_to root_path, alert: '他の会員のレシピの更新、削除はできません。'
       end
@@ -176,7 +185,7 @@ class Public::RecipesController < ApplicationController
   end
   
   def gest_user_request_check
-    if current_user.email == "guest@example.com" && params[:recipe][:is_open] == "true"
+    if current_user.present? && current_user.email == "guest@example.com" && params[:recipe][:is_open] == "true"
       redirect_to new_recipe_path, alert: 'ゲストユーザーはレシピを公開することは出来ません'
     end
   end

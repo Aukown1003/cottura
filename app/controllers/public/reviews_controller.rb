@@ -13,8 +13,11 @@ class Public::ReviewsController < ApplicationController
 
   def destroy
     review = Review.find(params[:id])
-    review.destroy
-    redirect_to request.referer, notice: 'レビューを削除しました。'
+    if review.destroy
+      redirect_to request.referer, notice: 'レビューを削除しました。'
+    else
+      redirect_to request.referer, alert: 'レビューの削除に失敗しました。'
+    end
   end
 
   private
