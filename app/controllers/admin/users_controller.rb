@@ -14,7 +14,7 @@ class Admin::UsersController < ApplicationController
       redirect_to request.referer, notice: 'ユーザーの情報を編集しました'
     else
       redirect_to request.referer, alert: '編集に失敗しました'
-      
+    end
   end
 
   private
