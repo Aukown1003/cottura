@@ -10,23 +10,24 @@
       <%= form_with model: @user, url: user_registration_path do |f| %>
         <h2 class="border-bottom border-2">新規会員登録</h2>
         
-        <!--ここを上手く修正-->
-        <div class="d-flex">
-          <div class="preview">
-            <div id="preview_user">
-              <%= image_tag 'no_image_user.png', class: "img-fluid user_profile_image new-user-img" %>
+        <div class="my-3">
+          <%= f.label :image, "プロフィール画像", { class: "form-label"} %>
+          <div class="d-flex align-items-center">
+            <div class="preview">
+              <div id="preview_user">
+                <%= image_tag 'no_image_user.png', class: "img-fluid user_profile_image new-user-img" %>
+              </div>
             </div>
-          </div>
-  
-          <div class="mb-3 mt-3">
-            <%= f.label :image, "プロフィール画像", { class: "form-label"} %>
-            <div class="input-group">
-              <%= f.file_field :image, { accept: "image/*", class: "form-control" } %>
+            <div class="ml-5">
+              <%= f.label :image, class: "d-flex align-items-center btn btn-sm btn-secondary" do %>
+                <i class="fas fa-camera fa-2x "></i><span class="ps-2 pt-1">写真を追加</span>
+                <%= f.file_field :image, accept: "image/*", class: "input-image" %>
+              <% end %>
             </div>
           </div>
         </div>
         
-        <div class="mb-3 mt-3">
+        <div class="mb-3">
           <%= f.label :name, "ニックネーム", { class: "form-label required"} %>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-user"></i></span>

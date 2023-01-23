@@ -2,6 +2,7 @@ class Public::RecipesController < ApplicationController
   # before_action :authenticate_user!, except: [:index, :show, :recalculation, :search, :category_id_delete, :category_id_all_delete]
   before_action :authenticate_user!, only: [:new, :create]
   before_action :user_check, only: [:edit, :update, :destroy]
+  before_action :gest_user_request_check, only: [:create, :update]
 
   def new
     @recipe = Recipe.new
@@ -10,7 +11,6 @@ class Public::RecipesController < ApplicationController
   end
 
   def index
-    # @recipes = Recipe.all.includes(:recipe_steps).includes(:recipe_ingredients)
     @recipes = Recipe.where(is_open: true).includes(:recipe_steps, :recipe_ingredients)
     if session[:category_id].present?
       @recipes = @recipes.where(category: session[:category_id])
@@ -38,7 +38,6 @@ class Public::RecipesController < ApplicationController
   end
 
   def show
-    # binding.pry
     @recipe = Recipe.includes(:recipe_ingredients, :recipe_steps, :tags, :reviews).find(params[:id])
     @review = Review.new
     impressionist(@recipe, nil, unique: [:ip_address])
@@ -47,11 +46,6 @@ class Public::RecipesController < ApplicationController
   def create
     ActiveRecord::Base.transaction do
       @recipe = current_user.recipes.new(recipe_params)
-      # binding.pry
-      # if @recipe.recipe_ingredients == [] || @recipe.recipe_steps == []
-      #   redirect_to new_recipe_path, alert: "材料または作り方が未入力です。"
-      #   return
-      # end
       if @recipe.save
         redirect_to root_path, notice: "レシピを投稿しました"
       else
@@ -93,9 +87,6 @@ class Public::RecipesController < ApplicationController
 
   def search_category
     @category = Category.where(genre_id: params[:genre_id])
-    if @category.empty?
-      @category = ["ジャンルを選択後入力可能になります"]
-    end
   end
 
   def search
@@ -173,10 +164,6 @@ class Public::RecipesController < ApplicationController
   end
 
   def user_check
-    # user_id = Recipe.find(params[:id]).user_id
-    # if user_id =! current_user.id
-    #   redirect_to root_path, alert: '他の会員のレシピの更新、削除はできません。'
-    # end
     if admin_signed_in?
     elsif user_signed_in?
       user_id = Recipe.find(params[:id]).user_id
@@ -185,6 +172,12 @@ class Public::RecipesController < ApplicationController
       end
     else
       redirect_to root_path, alert: '非ログイン時はこの処理を行えません'
+    end
+  end
+  
+  def gest_user_request_check
+    if current_user.email == "guest@example.com" && params[:recipe][:is_open] == "true"
+      redirect_to new_recipe_path, alert: 'ゲストユーザーはレシピを公開することは出来ません'
     end
   end
 

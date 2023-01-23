@@ -19,6 +19,7 @@
   background: #ffc107;
   left: -135px;
   border-radius: 5px;
+  z-index: 1;
 }
 
 .report_comment:before {
@@ -33,4 +34,39 @@
 
 .report_icon :hover + .report_comment {
   display: block;
+}
+
+.user_profile_name {
+  padding-right: 15px;
+}
+
+@media (min-width:992px) and (max-width:1199px) {
+  .recipe-show-items .recipe-index-item:nth-child(3n+1){
+    margin-left: 1.5rem;
+  }
+}
+
+@media (min-width:768px) and (max-width:991px) {
+  .recipe-show-items .recipe-index-item:nth-child(2n+1){
+    margin-left: 2.3rem;
+  }
+}
+
+@media (min-width:570px) and (max-width:767px) {
+  .recipe-show-items .recipe-index-item {
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
+    max-width: 240px;
+    padding: 0
+  }
+}
+
+@media (max-width:569px) {
+  .recipe-show-items {
+    display: block;
+  }
+  
+  .recipe-index-item {
+    margin: 0 auto;
+  }
 }

@@ -1,4 +1,4 @@
-<div class="row mt-2 ">
+<div class="row recipe-show-items mt-2">
   <% @user.recipes.each do |recipe| %>
     <%= render "/public/recipes/recipe_lists", recipe: recipe %>
   <% end %>
