@@ -49,6 +49,7 @@ class Public::RecipesController < ApplicationController
       if @recipe.save
         redirect_to root_path, notice: "レシピを投稿しました"
       else
+        @recipe.image = nil
         @genre = Genre.all
         @category = Category.all
         render :new
@@ -63,15 +64,15 @@ class Public::RecipesController < ApplicationController
   end
 
   def update
-    ActiveRecord::Base.transaction do
-      @recipe = Recipe.find(params[:id])
-      @recipe.update!(recipe_params)
+    @recipe = Recipe.find(params[:id])
+    if @recipe.update(recipe_params)
       redirect_to root_path, notice: "レシピを編集しました"
-    rescue ActiveRecord::RecordInvalid
-        @genre = Genre.all
-        @category = Category.where(genre_id: @recipe.category.genre.id)
-        flash.now[:alert] = "編集に失敗しました"
-        render :edit
+    else
+      @recipe.reload
+      @genre = Genre.all
+      @category = Category.where(genre_id: @recipe.category.genre.id)
+      flash.now[:alert] = "編集に失敗しました"
+      render :edit
     end
   end
 
