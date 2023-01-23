@@ -4,7 +4,7 @@
       <h2>会員一覧</h2>
       <table class="table">
         <thead>
-          <tr class="align-middle">
+          <tr>
             <th></th>
             <th>ID</th>
             <th>ユーザー名</th>
@@ -14,14 +14,14 @@
           </tr>
         </thead>
         <% @users.each do |user| %>
-        <tbody>
-          <tr class="align-middle">
-            <td><%= image_tag user.get_user_image(50, 50), alt: "ユーザー画像", class:"user_profile_image" %></td>
-            <td><%= user.id %></td>
-            <td><%= link_to user.name, admin_user_path(user.id) %></td>
-            <td><%= user.email %></td>
-            <td><%= user.recipes.count %></td>
-            <td><%= user.active? %></td>
+        <tbody >
+          <tr>
+            <td class="align-middle"><%= image_tag user.get_user_image(50, 50), alt: "ユーザー画像", class:"user_profile_image" %></td>
+            <td class="align-middle"><%= user.id %></td>
+            <td class="align-middle"><%= link_to user.name, admin_user_path(user.id) %></td>
+            <td class="align-middle"><%= user.email %></td>
+            <td class="align-middle text-center"><%= user.recipes.count %></td>
+            <td class="align-middle text-center"><%= user.active? %></td>
           </tr>
         </tbody>
         <% end %>

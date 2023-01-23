@@ -24,11 +24,12 @@
       </div>
     <% end %>
   </div>
+
   <div class="row ml-0 mr-0 w-100">
     <% @genres.each do |genre| %>
     <div class="col jenre-items p-0">
       <div class="jenre-item text-center font-weight-bold p-2"><%= genre.name %><span class="ps-1"><i class="fas fa-caret-square-down"></i></span></div>
-      <div class="category-list" style="margin-left: 5%;">
+      <div class="category-list">
         <% genre.categories.each do |category| %>
         <div class="category-item"><%= link_to category.name, search_recipe_path(category_id: category.id),class:"w-100 d-block btn btn-prymary" %></div>
         <% end %>
@@ -40,10 +41,8 @@
   
 </div>
 
-</div>
-
 <div class="container my-5">
-  <div class="row mt-2 ">
+  <div class="row recipe-index-items mt-2">
     <% @recipes.each do |recipe| %>
       <%= render "/public/recipes/recipe_lists", recipe: recipe %>
     <% end %>

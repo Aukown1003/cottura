@@ -1,0 +1,18 @@
+<div class="container">
+  <div class="row mt-4">
+    <div class="col-md-8 m-auto">
+      <%= form_with(model: @category, url: admin_category_path, method: :patch, local: true) do |f| %>
+        <h5>カテゴリ作成</h5>
+        <div class="form-group">
+          <%= f.collection_select(:genre_id, @genres, :id, :name, {}, class:"form-control") %>
+        </div>
+        <div class="form-group">
+          <%= f.text_field :name, placeholder: "カテゴリー名", class:"form-control", required:"required" %>
+        </div>
+        <div class="form-group">
+          <%= f.submit "カテゴリー変更", class: "btn btn-success" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

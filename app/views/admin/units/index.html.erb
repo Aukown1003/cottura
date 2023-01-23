@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="row mt-4">
+
+    <div class="col-md-4 m-auto">
+      <%= form_with(model: @unit, url: admin_units_path, method: :post, local: true) do |f| %>
+        <div class="form-group">
+          <h5>レシピ材料の単位の作成</h5>
+          <%= f.text_field :name, placeholder: "ジャンル名", class:"form-control", required:"required" %>
+        </div>
+        <div class="form-group">
+          <%= f.submit "単位の作成", class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="col-md-8 mx-auto">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>ジャンル名</th>
+            <th class="align-middle text-center">材料における使用数</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <% @units.each do |unit| %>
+        <tbody>
+          <tr>
+            <td class="align-middle"><%= unit.id %></td>
+            <td class="align-middle"><%= unit.name %></td>
+            <td class="align-middle text-center"><%= unit.recipe_ingredients.count %></td>
+            <td class="align-middle"><%= link_to "編集", edit_admin_unit_path(unit.id), class:"btn btn-primary" %></td>
+            <td class="align-middle"><%= link_to "削除", admin_unit_path(unit.id), method: :delete, class:"btn btn-danger" %></td>
+          </tr>
+        </tbody>
+        <% end %>
+      </table>
+    </div>
+  </div>
+</div>
