@@ -1,5 +1,6 @@
 class Public::ReviewsController < ApplicationController
   before_action :authenticate_user!
+  before_action :gest_user_check
 
   def create
     @review = current_user.reviews.new(review_params)
@@ -12,13 +13,21 @@ class Public::ReviewsController < ApplicationController
 
   def destroy
     review = Review.find(params[:id])
-    review.destroy
-    redirect_to request.referer, notice: 'レビューを削除しました。'
+    if review.destroy
+      redirect_to request.referer, notice: 'レビューを削除しました。'
+    else
+      redirect_to request.referer, alert: 'レビューの削除に失敗しました。'
+    end
   end
 
   private
   def review_params
     params.require(:review).permit(:user_id ,:recipe_id, :score, :content)
   end
-
+  
+  def gest_user_check
+    if current_user.email == "guest@example.com"
+      redirect_to recipes_path, alert: 'ゲストユーザーはレビューを投稿、削除することは出来ません'
+    end
+  end
 end

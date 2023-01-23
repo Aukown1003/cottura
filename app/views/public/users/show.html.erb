@@ -1,14 +1,14 @@
 <div class="container my-4">
   <div class="row mb-5">
-    <div class="col-sm-4 my-auto text-center text-sm-end mx-auto">
+    <div class="col-sm-5 my-auto text-center text-sm-right mx-auto">
       <%= image_tag @user.get_user_image(200, 200), alt: "ユーザー画像", class:"user_profile_image"%>
     </div>
-    <div class="col-sm-7 text-center text-sm-start offset-sm-1">
+    <div class="col-sm-6 text-center text-sm-left offset-sm-1">
       <h2 class="mb-2 mt-3 mt-sm-0"><%= @user.name %>のキッチン</h2>
       <p><%= safe_join(@user.content.split("\n"),tag(:br)) %></p>
       <% if current_user == nil || @user.id != current_user.id || @user.email == 'guest@example.com'%>
       <% else %>
-        <div class="d-flex justify-content-center">
+        <div class="d-flex justify-content-start">
           <div class="m-1">
             <%= link_to "プロフィール編集", edit_user_path, class:"btn btn-sm btn-success" %>
           </div>

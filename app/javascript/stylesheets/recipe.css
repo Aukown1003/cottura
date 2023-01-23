@@ -5,7 +5,7 @@
 /*ユーザー画像を丸く*/
 .user_profile_image{
   border-radius: 50%;
-  border: 2px solid black;
+  border: 1px solid black;
 }
 /*recipe_showページのCSS*/
 @media (min-width:992px) {

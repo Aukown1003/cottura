@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  namespace :admin do
+    get 'units/index'
+    get 'units/edit'
+  end
   # 制限有りはdevise_for :users,skip: [:passwords], controllers: {
   devise_for :users, controllers: {
     registrations: "public/registrations",
@@ -41,6 +45,7 @@ Rails.application.routes.draw do
     resources :users, except: [:new, :create]
     resources :genres, except: [:new]
     resources :categories
+    resources :units
     resources :reports, only: [:show, :destroy]
     #以下adminはすべてこの中に
   end

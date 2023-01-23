@@ -5,11 +5,25 @@
       <%= form_with model: @user, url: user_path(@user.id), method: :patch do |f| %>
         <h2 class="d-inline-block p-1 rounded-2 text-bg-secondary">プロフィール編集画面</h2>
         
-        <div class="mb-3 mt-3">
+        <div class="my-3">
           <%= f.label :image, "プロフィール画像", { class: "form-label"} %>
-          <div class="input-group">
-            <span class="input-group-text"><i class="fas fa-image"></i></span>
-            <%= f.file_field :image, { accept: "image/*", class: "form-control" } %>
+          <div class="d-flex align-items-center">
+            <div class="preview">
+              <div id="preview_user">
+                <% unless @user.image.attached? %>
+                  <%= image_tag 'no_image_user.png', class: "img-fluid user_profile_image new-user-img" %>
+                <% else %>
+                  <%= image_tag @user.get_user_image(100, 100), alt: "ユーザー画像", class:"user_profile_image"%>
+                <% end %>
+              </div>
+            </div>
+
+            <div class="ml-5">
+              <%= f.label :image, class: "d-flex align-items-center btn btn-sm btn-secondary" do %>
+                <i class="fas fa-camera fa-2x "></i><span class="ps-2 pt-1">写真を変更</span>
+                <%= f.file_field :image, accept: "image/*", class: "input-image" %>
+              <% end %>
+            </div>
           </div>
         </div>
         
@@ -57,4 +71,35 @@ window.addEventListener('turbolinks:load', () => {
     this.style.height = `${this.scrollHeight}px`;
   }
 });
+
+
+if (document.URL.match(/edit/)) {
+  document.addEventListener('turbolinks:load', () => {
+    const createImageHTML = (blob) => {
+      const imageElement = document.getElementById('preview_user');
+      const blobImage = document.createElement('img');
+      // class属性の追加
+      blobImage.setAttribute('class', 'new-user-img img-fluid user_profile_image');
+      blobImage.setAttribute('src', blob);
+
+      imageElement.appendChild(blobImage);
+    };
+     // id = recipe_imageを取得(ファイルを選択時のボタン)、クリック時に以下の処理を実行
+     if (document.getElementById('user_image') != null ){
+        document.getElementById('user_image').addEventListener('change', (e) => {
+        const imageContent = document.querySelector(".user_profile_image");
+        // getelemntByClassname
+        // imageContentに値が入っている場合remove
+        if (imageContent){
+          imageContent.remove();
+        }
+
+        const file = e.target.files[0];
+        const blob = window.URL.createObjectURL(file);
+        createImageHTML(blob);
+        });
+     }
+
+  });
+}
 </script>
