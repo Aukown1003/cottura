@@ -38,6 +38,8 @@
 
 .user_profile_name {
   padding-right: 15px;
+  font-size: 12px;
+  font-weight: bold;
 }
 
 @media (min-width:992px) and (max-width:1199px) {
