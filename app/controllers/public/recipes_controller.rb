@@ -200,7 +200,7 @@ class Public::RecipesController < ApplicationController
         redirect_to root_path, alert: '他の会員のレシピの更新、削除はできません。'
       end
     else
-      redirect_to root_path, alert: '非ログイン時はこの処理を行えません'
+      redirect_to root_path, alert: '未ログイン時、レシピの更新、削除はできません。'
     end
   end
   

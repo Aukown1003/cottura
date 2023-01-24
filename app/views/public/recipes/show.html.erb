@@ -59,7 +59,7 @@
 
       <div class="mb-3">
         <h5 class="font-weight-bold border-bottom border-secondary mb-3">ジャンル・カテゴリー</h5>
-        <span class="p-2"><%= @recipe.category.genre.name %><%= @recipe.category.name %></span>
+        <span class="p-2"><%= @recipe.category.genre.name %>、<%= @recipe.category.name %></span>
       </div>
 
       <div class="mb-3">
@@ -99,7 +99,7 @@
                 <% end %>
                 <td class="text-left"><%= number_with_precision(ingredient.unit.name, precision: 1, strip_insignificant_zeros: true) %></td>
               <% end %>
-              <td><%= f.text_field (ingredient.id).to_s,  placeholder: "分量", class:"ingredient-quantity d-block mx-auto text-center w-100"%></td>
+              <td><%= f.number_field (ingredient.id).to_s,  placeholder: "分量", min: 0.1, step: 0.1, class:"ingredient-quantity d-block mx-auto text-center w-100"%></td>
             </tr>
           </tbody>
           <% end %>
