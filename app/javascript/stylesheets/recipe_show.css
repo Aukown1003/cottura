@@ -47,46 +47,59 @@
     margin-right: 0.5rem;
     margin-left: 0.5rem;
   }
-  .recipe-show-items .recipe-index-item:nth-child(4n+1){
+  .recipe-post-items .recipe-index-item {
+    margin-right: 1.5rem;
+    margin-left: 0.5rem;
+  }
+  .recipe-post-items .recipe-index-item:nth-child(4n+1), .recipe-show-items .recipe-index-item:nth-child(4n+1) {
     margin-left: 3.6rem;
   }
-  .recipe-show-items .recipe-index-item:nth-child(4n) {
+  .recipe-post-items .recipe-index-item:nth-child(4n), .recipe-show-items .recipe-index-item:nth-child(4n) {
     margin-right: 0;
   }
 }
 
 @media (min-width:992px) and (max-width:1199px) {
-  .recipe-show-items .recipe-index-item {
+  .recipe-show-items .recipe-index-item, .recipe-post-items .recipe-index-item {
     width: 213px !important;
   }
   .recipe-show-items .recipe-index-item:nth-child(4n+1){
     margin-left: 0.3rem;
   }
-  .recipe-show-items .recipe-index-item:nth-child(4n) {
+  .recipe-show-items .recipe-index-item:nth-child(4n), .recipe-post-items .recipe-index-item:nth-child(4n) {
     margin-right: 0;
+  }
+  .recipe-post-items .recipe-index-item:nth-child(4n+1) {
+    margin-left: 1.3rem;
   }
 }
 
 @media (min-width:768px) and (max-width:991px) {
-  .recipe-show-items .recipe-index-item {
+  .recipe-show-items .recipe-index-item, .recipe-post-items .recipe-index-item {
     width: 210px !important;
   }
-  .recipe-show-items .recipe-index-item:nth-child(3n) {
+  .recipe-show-items .recipe-index-item:nth-child(3n), .recipe-post-items .recipe-index-item:nth-child(3n) {
     margin-right: 0;
+  }
+  .recipe-post-items .recipe-index-item:nth-child(3n+1) {
+    margin-left: 1.1rem;
   }
 }
 
 @media (min-width:570px) and (max-width:767px) {
-  .recipe-show-items .recipe-index-item {
+  .recipe-show-items .recipe-index-item, .recipe-post-items .recipe-index-item {
     width: 229px !important;
   }
-  .recipe-show-items .recipe-index-item:nth-child(2n) {
+  .recipe-show-items .recipe-index-item:nth-child(2n), .recipe-post-items .recipe-index-item:nth-child(2n) {
     margin-right: 0;
+  }
+  .recipe-post-items .recipe-index-item:nth-child(2n+1) {
+    margin-left: 1.1rem;
   }
 }
 
 @media (max-width:569px) {
-  .recipe-show-items {
+  .recipe-show-items, .recipe-post-items {
     display: block;
   }
   
