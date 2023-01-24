@@ -11,9 +11,14 @@ class Public::RecipesController < ApplicationController
 
   def index
     @recipes = Recipe.where(is_open: true).includes(:recipe_steps, :recipe_ingredients)
-    if session[:category_id].present?
+    if session[:category_id].present? && session[:search_time].present?
+      @recipes = @recipes.where(category: session[:category_id]).where(total_time: ..session[:search_time].to_i)
+      @categories = Category.where(id: session[:category_id])
+    elsif session[:category_id].present?
       @recipes = @recipes.where(category: session[:category_id])
       @categories = Category.where(id: session[:category_id])
+    elsif session[:search_time].present?
+      @recipes = @recipes.where(total_time: ..session[:search_time].to_i)
     end
     @genres = Genre.all.includes(:categories)
 
@@ -26,7 +31,7 @@ class Public::RecipesController < ApplicationController
       keyword = params[:search].split(/ |　/).uniq.compact
       # assign_attributesでpayloadにデータを追加
       @recipes.each do |recipe|
-        recipe.assign_attributes(payload: (recipe.recipe_steps.pluck(:content).join + recipe.recipe_ingredients.pluck(:name).join + recipe.tags.pluck(:name).join + recipe.title))
+        recipe.assign_attributes(payload: (recipe.recipe_steps.pluck(:content).join + recipe.recipe_ingredients.pluck(:name).join + recipe.tags.pluck(:name).join + recipe.title ))
       end
       # レシピを一つづつ見て、payloadにkeywordが含まれているものだけを取得する
       @recipes = @recipes.select do |o|
@@ -34,7 +39,7 @@ class Public::RecipesController < ApplicationController
         result.compact.uniq.size == 1 && result.compact.uniq.first == true
       end
     end
-    @recipes = @recipes.page(params[:page])
+    # @recipes = @recipes.page(params[:page])
   end
 
   def show
@@ -97,34 +102,48 @@ class Public::RecipesController < ApplicationController
     # add_data.each do |f|
     #   data << f
     # end
-
-    add_data = params[:category_id]
-    if session[:category_id].present?
-      data = session[:category_id]
-      data << add_data
-    else
-      data = [] << add_data
+    # binding.pry
+    if params[:search_time].present?
+      time_data = params[:search_time]
+      session[:search_time] = time_data
     end
+    
+    if params[:category_id].present?
+      add_data = params[:category_id]
+      if session[:category_id].present?
+        data = session[:category_id]
+        data << add_data
+      else
+        data = [] << add_data
+      end
 
-    data.uniq!
-    session[:category_id] = data
+      data.uniq!
+      session[:category_id] = data
+    end
+    
     redirect_to recipes_path
   end
 
   def category_id_delete
-    data = session[:category_id]
-    delete_data = params[:destroy_category_id]
-    data.delete(delete_data)
-    # delete_data = params[:destroy_category_id].reject(&:empty?)
-    # delete_data.each do |f|
-    #   category_id_data.delete(f)
-    # end
-    session[:category_id] = data
+    if params[:destroy_time_id].present?
+      session[:search_time] = nil
+    end
+    if params[:destroy_category_id].present?
+      data = session[:category_id]
+      delete_data = params[:destroy_category_id]
+      data.delete(delete_data)
+      # delete_data = params[:destroy_category_id].reject(&:empty?)
+      # delete_data.each do |f|
+      #   category_id_data.delete(f)
+      # end
+      session[:category_id] = data
+    end
     redirect_to recipes_path
   end
 
   def category_id_all_delete
     session[:category_id] = nil
+    session[:search_time] = nil
     redirect_to recipes_path
   end
 

@@ -125,5 +125,48 @@ class Recipe < ApplicationRecord
     }
     return data
   end
+  
+    # 調理時間絞り込み要メソッド
+  def self.search_time_data
+    # 登録したい時間
+    hour = 2
+    # 何分刻みで登録するか
+    min = 30
+
+    # 配列の作成
+    data = []
+    count = hour * (60 / min)
+    (1..count).each { |x|
+      total_min = min * x
+      if total_min < 60
+        time = "#{total_min}分以内"
+      elsif total_min % 60 == 0
+        time = "#{total_min / 60}時間以内"
+      else
+        time = "#{total_min / 60}時間" + "#{ total_min % 60 }分以内"
+      end
+        arr = [time, total_min]
+        data.push(arr)
+    }
+    return data
+  end
+
+ # 時間表示メソッド
+  def view_search_data
+    data = session[:search_time].to_i
+    hour_min = 60
+
+    if data < hour_min
+      data = "#{data}分以内"
+    elsif data % hour_min == 0
+      hour =  data / hour_min
+      data = "#{hour}時間以内"
+    else
+      hour = data / hour_min
+      min = data % hour_min
+      data = "#{hour}時間" + "#{min}分以内"
+    end
+    return data
+  end
 
 end
