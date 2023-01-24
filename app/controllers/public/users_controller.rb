@@ -3,6 +3,8 @@ class Public::UsersController < ApplicationController
   
   def show
     @user = User.includes(:favorited_recipes, :recipes).find(params[:id])
+    @recipes = @user.recipes.page(params[:page])
+    @favorited_recipes =@user.favorited_recipes.page(params[:page])
   end
 
   def edit

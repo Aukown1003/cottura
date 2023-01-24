@@ -27,7 +27,7 @@
         <% if session[:search_time].present? %>
           <label class="tag_labels rounded-2 ms-1">
             <%= link_to category_id_delete_recipe_path(destroy_time_id: true), method: :delete, class:"btn btn-dark px-2" do %>
-              <%= session[:search_time] %><span class="ms-1"><i class="fas fa-times"></i></span>
+              <%= view_search_data(session[:search_time]) %><span class="ms-1"><i class="fas fa-times"></i></span>
             <% end %>
           </label>
         <% end %>
@@ -71,7 +71,7 @@
     <% end %>
     <div class="col-12 mt-5">
       <div class="d-flex justify-content-center">
-        <%#= paginate @recipes %>
+        <%= paginate @recipes %>
       </div>
     </div>
   </div>
