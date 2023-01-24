@@ -21,6 +21,15 @@
   margin-left: 5%;
 }
 
+.page-item.active .page-link {
+  color: #fff;
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.page-link {
+  color: #6c757d;
+}
 
 @media (min-width:992px) and (max-width:1199px) {
   .recipe-index-items .recipe-index-item:nth-child(3n+1){

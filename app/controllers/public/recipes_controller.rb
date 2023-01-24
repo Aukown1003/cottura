@@ -35,6 +35,7 @@ class Public::RecipesController < ApplicationController
         result.compact.uniq.size == 1 && result.compact.uniq.first == true
       end
     end
+    @recipes = @recipes.page(params[:page])
   end
 
   def show
