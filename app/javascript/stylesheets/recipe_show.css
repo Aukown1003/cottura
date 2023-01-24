@@ -11,7 +11,7 @@
   position: absolute;
   display: none;
   padding: 7px 10px;
-  margin-top: 18px;
+  margin-top: 11px;
   min-width: 186px;
   max-width: 100%;
   color: #fff;
@@ -42,24 +42,46 @@
   font-weight: bold;
 }
 
+@media (min-width:1200px) {
+  .recipe-show-items .recipe-index-item {
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
+  }
+  .recipe-show-items .recipe-index-item:nth-child(4n+1){
+    margin-left: 3.6rem;
+  }
+  .recipe-show-items .recipe-index-item:nth-child(4n) {
+    margin-right: 0;
+  }
+}
+
 @media (min-width:992px) and (max-width:1199px) {
-  .recipe-show-items .recipe-index-item:nth-child(3n+1){
-    margin-left: 1.5rem;
+  .recipe-show-items .recipe-index-item {
+    width: 213px !important;
+  }
+  .recipe-show-items .recipe-index-item:nth-child(4n+1){
+    margin-left: 0.3rem;
+  }
+  .recipe-show-items .recipe-index-item:nth-child(4n) {
+    margin-right: 0;
   }
 }
 
 @media (min-width:768px) and (max-width:991px) {
-  .recipe-show-items .recipe-index-item:nth-child(2n+1){
-    margin-left: 2.3rem;
+  .recipe-show-items .recipe-index-item {
+    width: 210px !important;
+  }
+  .recipe-show-items .recipe-index-item:nth-child(3n) {
+    margin-right: 0;
   }
 }
 
 @media (min-width:570px) and (max-width:767px) {
   .recipe-show-items .recipe-index-item {
-    margin-right: 0.5rem;
-    margin-left: 0.5rem;
-    max-width: 240px;
-    padding: 0
+    width: 229px !important;
+  }
+  .recipe-show-items .recipe-index-item:nth-child(2n) {
+    margin-right: 0;
   }
 }
 

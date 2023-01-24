@@ -92,7 +92,6 @@ class Public::RecipesController < ApplicationController
   end
 
   def search
-    # binding.pry
     # if session[:category_id].present?
     #   data = session[:category_id]
     # else
@@ -102,7 +101,6 @@ class Public::RecipesController < ApplicationController
     # add_data.each do |f|
     #   data << f
     # end
-    # binding.pry
     if params[:search_time].present?
       time_data = params[:search_time]
       session[:search_time] = time_data
