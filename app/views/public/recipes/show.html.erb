@@ -182,7 +182,7 @@
             <div class="mb-1"><%= review.created_at.strftime("%Y年%m月%d日") %></div>
             <% if user_signed_in? || admin_signed_in? %>
               <% if current_admin.present? || review.user.id == current_user.id %>
-                <div class="mb-1"><%= link_to "このコメントを削除", review_path(review.id), method: :delete, class:"btn btn-sm btn-danger" %></div>
+                <div class="mb-1"><%= link_to "このコメントを削除", review_path(id: review.id, recipe_id: @recipe.id), method: :delete, class:"btn btn-sm btn-danger" %></div>
               <% end %>
             <% end %>
           </div>
@@ -235,22 +235,24 @@
     raty(elem,opt);
   });
 
-  const elements = document.getElementsByClassName('ingredient-quantity')
-  for(i = 0; i < elements.length; i++) {
-    elements[i].addEventListener('change', () => {
-
-      Array.prototype.forEach.call(elements, (element) => {
-        if (!element.value) {
-          element.disabled = true
+  document.addEventListener('turbolinks:load', function() {
+    const elements = document.getElementsByClassName('ingredient-quantity')
+    for(i = 0; i < elements.length; i++) {
+      elements[i].addEventListener('change', () => {
+  
+        Array.prototype.forEach.call(elements, (element) => {
+          if (!element.value) {
+            element.disabled = true
+          }
+        })
+  
+        const inputValues = Array.prototype.map.call(elements, e => e.value)
+        if(inputValues.filter(e => e).length == 0) {
+          Array.prototype.forEach.call(elements, (element) => {
+            element.disabled = false
+          })
         }
       })
-
-      const inputValues = Array.prototype.map.call(elements, e => e.value)
-      if(inputValues.filter(e => e).length == 0) {
-        Array.prototype.forEach.call(elements, (element) => {
-          element.disabled = false
-        })
-      }
-    })
-  }
+    }
+  });
 </script>
