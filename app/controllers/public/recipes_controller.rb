@@ -147,6 +147,10 @@ class Public::RecipesController < ApplicationController
 
   def recalculation
     arry = {}
+    if params[:recipe].keys[1].present?
+      redirect_to request.referer, alert: '２つ以上の値で再計算は行なえません'
+      return
+    end
     params[:recipe].each do |key, value|
       unless value.empty?
         arry.store(key, value)
