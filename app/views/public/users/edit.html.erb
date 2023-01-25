@@ -53,32 +53,32 @@
 </div>
 
 <script>
-// テキストエリアの可変処理
-window.addEventListener('turbolinks:load', () => {
-  // textareaタグを全て取得
-  const textareaEls = document.querySelectorAll("textarea");
 
-  textareaEls.forEach((textareaEl) => {
-    // デフォルト値としてスタイル属性を付与
-    textareaEl.setAttribute("style", `height: ${textareaEl.scrollHeight}px;`);
-    // inputイベントが発生するたびに関数呼び出し
-    textareaEl.addEventListener("input", setTextareaHeight);
+  window.onload = addToNewUrl();
+    function addToNewUrl() {
+    let path = location.pathname;
+    let pattern = /^.*\/edit.*$/
+  
+    if(path.match(pattern)) return;
+    history.replaceState('', '', `${ path }/edit`)
+  }
+
+  window.addEventListener('turbolinks:load', () => {
+    const textareaEls = document.querySelectorAll("textarea");
+    textareaEls.forEach((textareaEl) => {
+      textareaEl.setAttribute("style", `height: ${textareaEl.scrollHeight}px;`);
+      textareaEl.addEventListener("input", setTextareaHeight);
+    });
+    function setTextareaHeight() {
+      this.style.height = "auto";
+      this.style.height = `${this.scrollHeight}px`;
+    }
   });
 
-  // textareaの高さを計算して指定する関数
-  function setTextareaHeight() {
-    this.style.height = "auto";
-    this.style.height = `${this.scrollHeight}px`;
-  }
-});
-
-
-if (document.URL.match(/edit/)) {
   document.addEventListener('turbolinks:load', () => {
     const createImageHTML = (blob) => {
       const imageElement = document.getElementById('preview_user');
       const blobImage = document.createElement('img');
-      // class属性の追加
       blobImage.setAttribute('class', 'new-user-img img-fluid user_profile_image');
       blobImage.setAttribute('src', blob);
 
@@ -99,7 +99,5 @@ if (document.URL.match(/edit/)) {
         createImageHTML(blob);
         });
      }
-
   });
-}
 </script>
