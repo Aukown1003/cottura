@@ -25,7 +25,7 @@ class Admin::GenresController < ApplicationController
     if @genre.update(params_genre)
       redirect_to admin_genres_path, notice: 'ジャンルを変更しました'
     else
-      redirect_to admin_genres_path, alert: 'ジャンルの変更に失敗しました'
+      redirect_to edit_admin_genre_path(@genre.id), alert: 'ジャンルの変更に失敗しました'
     end
   end
   

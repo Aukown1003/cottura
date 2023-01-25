@@ -18,7 +18,7 @@ class Admin::CategoriesController < ApplicationController
       if @category.update(params_category)
         redirect_to admin_genres_path, notice: 'カテゴリーを変更しました'
       else
-        redirect_to admin_genres_path, alert: 'カテゴリーの変更に失敗しました'
+        redirect_to edit_admin_category_path(@category.id), alert: 'カテゴリーの変更に失敗しました'
       end
     end
 
