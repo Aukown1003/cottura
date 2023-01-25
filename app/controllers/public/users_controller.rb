@@ -2,17 +2,16 @@ class Public::UsersController < ApplicationController
   before_action :user_check, only: [:edit, :update, :destroy]
   
   def show
-    # binding.pry
-    # user = User.includes(:favorited_recipes, :recipes).where(recipes: { is_open: true }).find(params[:id])
-    @user = User.includes(:favorited_recipes, :recipes).find(params[:id])
-    
-    # if admin_signed_in? || user_signed_in?
-    #   if current_admin.present? || current_user.id = User.find(params[:id]).id
-    #     @user = User.includes(:favorited_recipes, :recipes).find(params[:id])
-    #   end
-    # end
-    @recipes = @user.recipes.page(params[:page])
-    @favorited_recipes =@user.favorited_recipes.page(params[:page])
+    @user = User.find(params[:id])
+    @recipes = Recipe.includes(:user).where(users: {id: @user.id})
+                                    .where(recipes: { is_open: true }).page(params[:page])
+    @favorited_recipes = @user.favorited_recipes.page(params[:page])
+
+    if admin_signed_in? || user_signed_in?
+      if current_admin.present? || current_user.id == User.find(params[:id]).id
+        @recipes = @user.recipes.page(params[:page])
+      end
+    end
   end
 
   def edit
