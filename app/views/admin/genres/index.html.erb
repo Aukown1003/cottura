@@ -31,7 +31,7 @@
             <td class="align-middle"><%= genre.name %></td>
             <td class="align-middle text-center"><%= genre.categories.count %></td>
             <td class="align-middle"><%= link_to "編集", edit_admin_genre_path(genre.id), class:"btn btn-primary" %></td>
-            <td class="align-middle"><%= link_to "削除", admin_genre_path(genre.id), method: :delete, class:"btn btn-danger" %></td>
+            <td class="align-middle"><%= link_to "削除", admin_genre_path(genre.id), method: :delete, data: { confirm: '削除してもよろしいですか？' }, class:"btn btn-danger" %></td>
           </tr>
         </tbody>
         <% end %>
@@ -74,7 +74,7 @@
             <td class="align-middle"><%= category.name %></td>
             <td class="align-middle"><%= category.genre.name %></td>
             <td class="align-middle"><%= link_to "編集",  edit_admin_category_path(category.id), class:"btn btn-primary" %></td>
-            <td class="align-middle"><%= link_to "削除", admin_category_path(category.id), method: :delete, class:"btn btn-danger" %></td>
+            <td class="align-middle"><%= link_to "削除", admin_category_path(category.id), method: :delete, data: { confirm: '削除してもよろしいですか？' }, class:"btn btn-danger" %></td>
           </tr>
         </tbody>
         <% end %>

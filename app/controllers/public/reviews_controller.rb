@@ -1,6 +1,5 @@
 class Public::ReviewsController < ApplicationController
-  before_action :authenticate_user!
-  before_action :gest_user_check
+  before_action :user_check
 
   def create
     @review = current_user.reviews.new(review_params)
@@ -25,9 +24,26 @@ class Public::ReviewsController < ApplicationController
     params.require(:review).permit(:user_id ,:recipe_id, :score, :content)
   end
   
-  def gest_user_check
-    if current_user.email == "guest@example.com"
-      redirect_to recipes_path, alert: 'ゲストユーザーはレビューを投稿、削除することは出来ません'
+
+  def user_check
+    if user_signed_in? || admin_signed_in?
+      if params[:create] == "create"
+        recipe_user = Recipe.find(params[:review][:recipe_id]).user_id
+      elsif params[:action] == "destroy"
+        recipe_user = Recipe.find(params[:recipe_id]).user_id
+      end
+      
+      if admin_signed_in?
+        return
+      elsif current_user.email == "guest@example.com"
+        redirect_to recipes_path, alert: 'ゲストユーザーはレビューを投稿、削除することは出来ません'
+      elsif current_user.id == recipe_user
+        redirect_to recipes_path, alert: '自身のレシピにレビューを投稿、削除することは出来ません'
+      end
+
+    else
+      redirect_to recipes_path, alert: '未ログイン時、レビューを投稿、削除することは出来ません'
     end
+    
   end
 end

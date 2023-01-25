@@ -31,7 +31,7 @@
             <td class="align-middle"><%= unit.name %></td>
             <td class="align-middle text-center"><%= unit.recipe_ingredients.count %></td>
             <td class="align-middle"><%= link_to "編集", edit_admin_unit_path(unit.id), class:"btn btn-primary" %></td>
-            <td class="align-middle"><%= link_to "削除", admin_unit_path(unit.id), method: :delete, class:"btn btn-danger" %></td>
+            <td class="align-middle"><%= link_to "削除", admin_unit_path(unit.id), method: :delete, data: { confirm: '削除してもよろしいですか？' }, class:"btn btn-danger" %></td>
           </tr>
         </tbody>
         <% end %>

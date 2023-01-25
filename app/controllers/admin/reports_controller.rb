@@ -1,5 +1,5 @@
 class Admin::ReportsController < ApplicationController
-
+  before_action :authenticate_admin!
   def show
     @report = Report.includes(:user, recipe: :user).find(params[:id])
   end

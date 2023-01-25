@@ -1,5 +1,5 @@
 class Admin::UnitsController < ApplicationController
-  
+  before_action :authenticate_admin!
   def index
     @units = Unit.all.includes(:recipe_ingredients)
     @unit = Unit.new
@@ -23,7 +23,7 @@ class Admin::UnitsController < ApplicationController
     if @unit.update(params_unit)
       redirect_to admin_units_index_path, notice: '単位を変更しました'
     else
-      redirect_to admin_units_index_path, alert: '単位の変更に失敗しました'
+      redirect_to edit_admin_unit_path(@unit.id), alert: '単位の変更に失敗しました'
     end
   end
   

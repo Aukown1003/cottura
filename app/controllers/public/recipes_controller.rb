@@ -22,7 +22,6 @@ class Public::RecipesController < ApplicationController
     end
     @genres = Genre.all.includes(:categories)
 
-    # 以下検索ロジック
     if params[:search].present?
       # params[:search] => "文字 文字"
       # .split(/ |　/) => ["文字","文字"] スペースで区切って配列に
@@ -52,7 +51,7 @@ class Public::RecipesController < ApplicationController
     ActiveRecord::Base.transaction do
       @recipe = current_user.recipes.new(recipe_params)
       if @recipe.save
-        redirect_to root_path, notice: "レシピを投稿しました"
+        redirect_to user_path(current_user.id), notice: "レシピを投稿しました"
       else
         @recipe.image = nil
         @genre = Genre.all
@@ -71,7 +70,7 @@ class Public::RecipesController < ApplicationController
   def update
     @recipe = Recipe.find(params[:id])
     if @recipe.update(recipe_params)
-      redirect_to root_path, notice: "レシピを編集しました"
+      redirect_to user_path(@recipe.user_id), notice: "レシピを編集しました"
     else
       @recipe.reload
       @genre = Genre.all
@@ -84,7 +83,7 @@ class Public::RecipesController < ApplicationController
   def destroy
     @recipe = Recipe.find(params[:id])
     @recipe.destroy
-    redirect_to recipes_path
+    redirect_to recipes_path, notice: "レシピを削除しました"
   end
 
   def search_category
@@ -92,15 +91,6 @@ class Public::RecipesController < ApplicationController
   end
 
   def search
-    # if session[:category_id].present?
-    #   data = session[:category_id]
-    # else
-    #   data = []
-    # end
-    # add_data = params[:category_id].reject(&:empty?)
-    # add_data.each do |f|
-    #   data << f
-    # end
     if params[:search_time].present?
       time_data = params[:search_time]
       session[:search_time] = time_data
@@ -130,10 +120,6 @@ class Public::RecipesController < ApplicationController
       data = session[:category_id]
       delete_data = params[:destroy_category_id]
       data.delete(delete_data)
-      # delete_data = params[:destroy_category_id].reject(&:empty?)
-      # delete_data.each do |f|
-      #   category_id_data.delete(f)
-      # end
       session[:category_id] = data
     end
     redirect_to recipes_path
@@ -147,6 +133,10 @@ class Public::RecipesController < ApplicationController
 
   def recalculation
     arry = {}
+    if params[:recipe].keys[1].present?
+      redirect_to request.referer, alert: '２つ以上の値で再計算は行なえません'
+      return
+    end
     params[:recipe].each do |key, value|
       unless value.empty?
         arry.store(key, value)
@@ -163,31 +153,19 @@ class Public::RecipesController < ApplicationController
   private
 
   def recipe_params
-      params.require(:recipe).permit(
-        :user_id,
-        :title,
-        :content,
-        :total_time,
-        :category_id,
-        :is_open,
-        :image,
-        recipe_ingredients_attributes: [:id, :name, :quantity, :unit_id, :_destroy],
-        recipe_steps_attributes: [:id, :content, :image, :_destroy],
-        tags_attributes: [:id, :name, :_destroy],
-        )
+    params.require(:recipe).permit(
+      :user_id,
+      :title,
+      :content,
+      :total_time,
+      :category_id,
+      :is_open,
+      :image,
+      recipe_ingredients_attributes: [:id, :name, :quantity, :unit_id, :_destroy],
+      recipe_steps_attributes: [:id, :content, :image, :_destroy],
+      tags_attributes: [:id, :name, :_destroy],
+      )
   end
-
-  # def user_check
-  #   if admin_signed_in?
-  #   elsif user_signed_in?
-  #     user_id = Recipe.find(params[:id]).user_id
-  #     if user_id =! current_user.id
-  #       redirect_to root_path, alert: '他の会員のレシピの更新、削除はできません。'
-  #     end
-  #   else
-  #     redirect_to root_path, alert: '非ログイン時はこの処理を行えません'
-  #   end
-  # end
   
   def user_check
     user_id = Recipe.find(params[:id]).user_id
@@ -203,7 +181,9 @@ class Public::RecipesController < ApplicationController
   end
   
   def gest_user_request_check
-    if current_user.present? && current_user.email == "guest@example.com" && params[:recipe][:is_open] == "true"
+    if admin_signed_in?
+      return
+    elsif current_user.present? && current_user.email == "guest@example.com" && params[:recipe][:is_open] == "true"
       redirect_to new_recipe_path, alert: 'ゲストユーザーはレシピを公開することは出来ません'
     end
   end
