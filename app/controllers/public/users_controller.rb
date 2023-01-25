@@ -22,7 +22,7 @@ class Public::UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     if @user.update(user_params)
-      redirect_to user_path(current_user.id)
+      redirect_to user_path(@user.id), notice: 'ユーザー情報を編集しました。'
     else
       @user.reload
       flash.now[:alert] = "編集に失敗しました"
