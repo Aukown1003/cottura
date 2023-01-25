@@ -1,5 +1,12 @@
-<div class="row recipe-show-items mt-2">
-  <% @user.recipes.each do |recipe| %>
+<div class="row recipe-post-items mt-2">
+  <% @recipes.each do |recipe| %>
     <%= render "/public/recipes/recipe_lists", recipe: recipe %>
   <% end %>
+
+  <div class="col-12 mt-5">
+    <div class="d-flex justify-content-center">
+      <%= paginate @recipes %>
+    </div>
+  </div>
+
 </div>

@@ -1,5 +1,4 @@
 class Public::RecipesController < ApplicationController
-  # before_action :authenticate_user!, except: [:index, :show, :recalculation, :search, :category_id_delete, :category_id_all_delete]
   before_action :authenticate_user!, only: [:new, :create]
   before_action :user_check, only: [:edit, :update, :destroy]
   before_action :gest_user_request_check, only: [:create, :update]
@@ -12,9 +11,14 @@ class Public::RecipesController < ApplicationController
 
   def index
     @recipes = Recipe.where(is_open: true).includes(:recipe_steps, :recipe_ingredients)
-    if session[:category_id].present?
+    if session[:category_id].present? && session[:search_time].present?
+      @recipes = @recipes.where(category: session[:category_id]).where(total_time: ..session[:search_time].to_i)
+      @categories = Category.where(id: session[:category_id])
+    elsif session[:category_id].present?
       @recipes = @recipes.where(category: session[:category_id])
       @categories = Category.where(id: session[:category_id])
+    elsif session[:search_time].present?
+      @recipes = @recipes.where(total_time: ..session[:search_time].to_i)
     end
     @genres = Genre.all.includes(:categories)
 
@@ -27,7 +31,7 @@ class Public::RecipesController < ApplicationController
       keyword = params[:search].split(/ |　/).uniq.compact
       # assign_attributesでpayloadにデータを追加
       @recipes.each do |recipe|
-        recipe.assign_attributes(payload: (recipe.recipe_steps.pluck(:content).join + recipe.recipe_ingredients.pluck(:name).join + recipe.tags.pluck(:name).join + recipe.title))
+        recipe.assign_attributes(payload: (recipe.recipe_steps.pluck(:content).join + recipe.recipe_ingredients.pluck(:name).join + recipe.tags.pluck(:name).join + recipe.title ))
       end
       # レシピを一つづつ見て、payloadにkeywordが含まれているものだけを取得する
       @recipes = @recipes.select do |o|
@@ -35,6 +39,7 @@ class Public::RecipesController < ApplicationController
         result.compact.uniq.size == 1 && result.compact.uniq.first == true
       end
     end
+    @recipes = Kaminari.paginate_array(@recipes).page(params[:page])
   end
 
   def show
@@ -49,6 +54,7 @@ class Public::RecipesController < ApplicationController
       if @recipe.save
         redirect_to root_path, notice: "レシピを投稿しました"
       else
+        @recipe.image = nil
         @genre = Genre.all
         @category = Category.all
         render :new
@@ -63,15 +69,15 @@ class Public::RecipesController < ApplicationController
   end
 
   def update
-    ActiveRecord::Base.transaction do
-      @recipe = Recipe.find(params[:id])
-      @recipe.update!(recipe_params)
+    @recipe = Recipe.find(params[:id])
+    if @recipe.update(recipe_params)
       redirect_to root_path, notice: "レシピを編集しました"
-    rescue ActiveRecord::RecordInvalid
-        @genre = Genre.all
-        @category = Category.where(genre_id: @recipe.category.genre.id)
-        flash.now[:alert] = "編集に失敗しました"
-        render :edit
+    else
+      @recipe.reload
+      @genre = Genre.all
+      @category = Category.where(genre_id: @recipe.category.genre.id)
+      flash.now[:alert] = "編集に失敗しました"
+      render :edit
     end
   end
 
@@ -86,7 +92,6 @@ class Public::RecipesController < ApplicationController
   end
 
   def search
-    # binding.pry
     # if session[:category_id].present?
     #   data = session[:category_id]
     # else
@@ -96,34 +101,47 @@ class Public::RecipesController < ApplicationController
     # add_data.each do |f|
     #   data << f
     # end
-
-    add_data = params[:category_id]
-    if session[:category_id].present?
-      data = session[:category_id]
-      data << add_data
-    else
-      data = [] << add_data
+    if params[:search_time].present?
+      time_data = params[:search_time]
+      session[:search_time] = time_data
     end
+    
+    if params[:category_id].present?
+      add_data = params[:category_id]
+      if session[:category_id].present?
+        data = session[:category_id]
+        data << add_data
+      else
+        data = [] << add_data
+      end
 
-    data.uniq!
-    session[:category_id] = data
+      data.uniq!
+      session[:category_id] = data
+    end
+    
     redirect_to recipes_path
   end
 
   def category_id_delete
-    data = session[:category_id]
-    delete_data = params[:destroy_category_id]
-    data.delete(delete_data)
-    # delete_data = params[:destroy_category_id].reject(&:empty?)
-    # delete_data.each do |f|
-    #   category_id_data.delete(f)
-    # end
-    session[:category_id] = data
+    if params[:destroy_time_id].present?
+      session[:search_time] = nil
+    end
+    if params[:destroy_category_id].present?
+      data = session[:category_id]
+      delete_data = params[:destroy_category_id]
+      data.delete(delete_data)
+      # delete_data = params[:destroy_category_id].reject(&:empty?)
+      # delete_data.each do |f|
+      #   category_id_data.delete(f)
+      # end
+      session[:category_id] = data
+    end
     redirect_to recipes_path
   end
 
   def category_id_all_delete
     session[:category_id] = nil
+    session[:search_time] = nil
     redirect_to recipes_path
   end
 
@@ -180,7 +198,7 @@ class Public::RecipesController < ApplicationController
         redirect_to root_path, alert: '他の会員のレシピの更新、削除はできません。'
       end
     else
-      redirect_to root_path, alert: '非ログイン時はこの処理を行えません'
+      redirect_to root_path, alert: '未ログイン時、レシピの更新、削除はできません。'
     end
   end
   

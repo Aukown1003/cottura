@@ -1,4 +1,8 @@
 <%= render 'layouts/error_messages', resource: @recipe %>
+<% if @recipe2 %>
+  <%= @recipe2.errors.inspect %>
+  <%= @recipe2.image.variant(resize_to_limit: [10, 10]).processed.inspect %>
+<% end %>
 <div class="container my-5">
   <%= render 'form', recipe: @recipe %>
 </div>
