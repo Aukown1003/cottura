@@ -10,7 +10,7 @@
           <% unless recipe.image.attached? %>
             <%= image_tag 'no_image_item.png', class: "img-fluid default-image" %>
           <% else %>
-            <%= image_tag recipe.get_recipe_image(480, 480) %>
+            <%= image_tag recipe.get_recipe_image(480, 480), class: "img-fluid" %>
           <% end %>
         </div>
       </div>
@@ -145,7 +145,8 @@ function inputChange(){
     categoryForm.disabled = false ;
   }
 }
-  $(function() {
+
+$(function() {
   $('#recipe_genre_id').change(function() {
     $.get({
       url: "<%= search_category_recipe_path %>",
@@ -153,8 +154,6 @@ function inputChange(){
     });
   });
 });
-
-
 
 // テキストエリアの可変処理
 window.addEventListener('turbolinks:load', () => {
@@ -175,43 +174,40 @@ window.addEventListener('turbolinks:load', () => {
   }
 });
 
-
-  // 項目追加
-  class addFields {
-    constructor() {
-      this.links = document.querySelectorAll('.add_fields')
-      this.iterateLinks()
-    }
-
-    iterateLinks() {
-      if (this.links.length === 0) return
-      this.links.forEach(link => {
-        link.addEventListener('click', e => {
-          this.handleClick(link, e)
-        })
-      })
-    }
-
-    handleClick(link, e) {
-      if (!link || !e) return
-      e.preventDefault()
-      let time = new Date().getTime()
-      let linkId = link.dataset.id
-      let regexp = linkId ? new RegExp(linkId, 'g') : null
-      let newFields = regexp ? link.dataset.fields.replace(regexp, time) : null
-      newFields ? link.insertAdjacentHTML('beforebegin', newFields) : null
-
-      // 以下カスタマイズ草案
-      var getId = "recipe_recipe_steps_attributes_" + time + "_image"
-      console.log(getId)
-    }
+// 項目追加
+class addFields {
+  constructor() {
+    this.links = document.querySelectorAll('.add_fields')
+    this.iterateLinks()
   }
+
+  iterateLinks() {
+    if (this.links.length === 0) return
+    this.links.forEach(link => {
+      link.addEventListener('click', e => {
+        this.handleClick(link, e)
+      })
+    })
+  }
+
+  handleClick(link, e) {
+    if (!link || !e) return
+    e.preventDefault()
+    let time = new Date().getTime()
+    let linkId = link.dataset.id
+    let regexp = linkId ? new RegExp(linkId, 'g') : null
+    let newFields = regexp ? link.dataset.fields.replace(regexp, time) : null
+    newFields ? link.insertAdjacentHTML('beforebegin', newFields) : null
+
+    // 以下カスタマイズ草案
+    var getId = "recipe_recipe_steps_attributes_" + time + "_image"
+    console.log(getId)
+  }
+}
+
 window.addEventListener('turbolinks:load', () => new addFields())
-
-
-
   // 項目削除
-  class removeFields {
+class removeFields {
     constructor() {
       this.iterateLinks()
     }
@@ -237,39 +233,33 @@ window.addEventListener('turbolinks:load', () => new addFields())
       }
     }
   }
+  
 window.addEventListener('turbolinks:load', () => new removeFields())
 
+document.addEventListener('turbolinks:load', () => {
+  const createImageHTML = (blob) => {
+    const imageElement = document.getElementById('preview');
+    const blobImage = document.createElement('img');
+    // class属性の追加
+    blobImage.setAttribute('class', 'new-img img-fluid');
+    blobImage.setAttribute('src', blob);
 
+    imageElement.appendChild(blobImage);
+  };
+   // id = recipe_imageを取得(ファイルを選択時のボタン)、クリック時に以下の処理を実行
+  if (document.getElementById('recipe_image') != null ) {
+    document.getElementById('recipe_image').addEventListener('change', (e) => {
+      const imageContent = document.querySelector('img');
+      // getelemntByClassname
+      // imageContentに値が入っている場合remove
+      if (imageContent){
+        imageContent.remove();
+      }
 
-
-
-if (document.URL.match(/new/)|| document.URL.match(/edit/)){
-  document.addEventListener('turbolinks:load', () => {
-    const createImageHTML = (blob) => {
-      const imageElement = document.getElementById('preview');
-      const blobImage = document.createElement('img');
-      // class属性の追加
-      blobImage.setAttribute('class', 'new-img img-fluid');
-      blobImage.setAttribute('src', blob);
-
-      imageElement.appendChild(blobImage);
-    };
-     // id = recipe_imageを取得(ファイルを選択時のボタン)、クリック時に以下の処理を実行
-     if (document.getElementById('recipe_image') != null ){
-        document.getElementById('recipe_image').addEventListener('change', (e) => {
-        const imageContent = document.querySelector('img');
-        // getelemntByClassname
-        // imageContentに値が入っている場合remove
-        if (imageContent){
-          imageContent.remove();
-        }
-
-        const file = e.target.files[0];
-        const blob = window.URL.createObjectURL(file);
-        createImageHTML(blob);
-        });
-     }
-
-  });
-}
+      const file = e.target.files[0];
+      const blob = window.URL.createObjectURL(file);
+      createImageHTML(blob);
+    });
+  }
+})
 </script>

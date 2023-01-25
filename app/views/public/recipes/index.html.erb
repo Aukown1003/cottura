@@ -3,7 +3,7 @@
     <div class="col-12 search-form">
       <%= form_with url: recipes_path, method: :get, class:"w-50 mx-auto my-2" do |f| %>
       <div class="text-center d-flex">
-        <%= f.search_field :search, class: 'form-control rounded-0', placeholder: '検索したい言葉を入力、複数ある場合は半角スペースを挿入', value: params[:search] %>
+        <%= f.search_field :search, class: 'form-control rounded-0', placeholder: '複数検索は半角スペースを挿入', value: params[:search] %>
         <%= f.button type: "submit", class: "btn btn-secondary rounded-0" do %>
           <i class="fas fa-search"></i>
         <% end %>
@@ -11,31 +11,54 @@
       <% end %>
     </div>
 
-    <% if session[:category_id].present? %>
+    <% if session[:category_id].present? || session[:search_time].present? %>
       <div class="col-12 search-category pb-2">
-        <% @categories.each do |category| %>
+        
+        <% if session[:category_id].present? %>
+          <% @categories.each do |category| %>
+            <label class="tag_labels rounded-2 ms-1">
+              <%= link_to category_id_delete_recipe_path(destroy_category_id: category.id), method: :delete, class:"btn btn-dark px-2" do %>
+                <%= category.name %><span class="ms-1"><i class="fas fa-times"></i></span>
+              <% end %>
+            </label>
+          <% end %>
+        <% end %>
+        
+        <% if session[:search_time].present? %>
           <label class="tag_labels rounded-2 ms-1">
-            <%= link_to category_id_delete_recipe_path(destroy_category_id: category.id), method: :delete, class:"btn btn-dark px-2" do %>
-              <%= category.name %><span class="ms-1"><i class="fas fa-times"></i></span>
+            <%= link_to category_id_delete_recipe_path(destroy_time_id: true), method: :delete, class:"btn btn-dark px-2" do %>
+              <%= view_search_data(session[:search_time]) %><span class="ms-1"><i class="fas fa-times"></i></span>
             <% end %>
           </label>
         <% end %>
-        <%= link_to "全てのカテゴリーを削除", category_id_all_delete_recipe_path, method: :delete, class:"ms-1 tag_labels btn btn-danger rounded-1" %>
+        <%= link_to "全ての絞り込みを解除", category_id_all_delete_recipe_path, method: :delete, class:"ms-1 tag_labels btn btn-danger rounded-1" %>
       </div>
     <% end %>
   </div>
 
-  <div class="row ml-0 mr-0 w-100">
+  <div class="jenre-category-box row ml-0 mr-0 w-100">
     <% @genres.each do |genre| %>
     <div class="col jenre-items p-0">
       <div class="jenre-item text-center font-weight-bold p-2"><%= genre.name %><span class="ps-1"><i class="fas fa-caret-square-down"></i></span></div>
       <div class="category-list">
         <% genre.categories.each do |category| %>
-        <div class="category-item"><%= link_to category.name, search_recipe_path(category_id: category.id),class:"w-100 d-block btn btn-prymary" %></div>
+          <div class="category-item">
+            <%= link_to category.name, search_recipe_path(category_id: category.id), class:"w-100 d-block btn"%>
+          </div>
         <% end %>
       </div>
     </div>
     <% end %>
+    <div class="col jenre-items p-0">
+      <div class="jenre-item text-center font-weight-bold p-2">時間で選ぶ<span class="ps-1"><i class="fas fa-caret-square-down"></i></span></div>
+      <div class="category-list">
+        <% Recipe.search_time_data.each do |search_time| %>
+          <div class="category-item">
+            <%= link_to search_time[0], search_recipe_path(search_time: search_time[1]), class:"w-100 d-block btn" %>
+          </div>
+        <% end %>
+      </di>
+    </div>
   </div>
 
   
@@ -46,6 +69,11 @@
     <% @recipes.each do |recipe| %>
       <%= render "/public/recipes/recipe_lists", recipe: recipe %>
     <% end %>
+    <div class="col-12 mt-5">
+      <div class="d-flex justify-content-center">
+        <%= paginate @recipes %>
+      </div>
+    </div>
   </div>
 </div>
 

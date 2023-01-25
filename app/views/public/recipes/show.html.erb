@@ -1,11 +1,11 @@
 <div class="container  my-5">
   <div class="row">
 
-    <div class="col-md-8 col-lg-10 md-4 mb-md-5 text-center recipe-show">
+    <div class="col-md-8 col-lg-9 md-4 mb-md-5 text-center recipe-show">
       <h1><%= @recipe.title %></h1>
     </div>
 
-    <div class="col-md-4 col-lg-2 p-0 mt-4 mt-md-0 mb-5 text-right">
+    <div class="col-md-4 col-lg-3 mt-3 mb-3 mb-lg-0 text-right">
       <div class="profile-link text-truncate">
         <%= link_to user_path(@recipe.user.id) do %>
           <%= image_tag @recipe.user.get_user_image(30,30), alt: "ユーザー画像", class:"user_profile_image" %>
@@ -13,7 +13,7 @@
         <% end %>
       </div>
     </div>
-    <%# 分岐処理はここを参照 %>
+
     <% if user_signed_in? || admin_signed_in? %>
       <% if current_admin.present? || @recipe.user.id == current_user.id %>
         <div class="col-12 d-flex justify-content-end mb-3">
@@ -28,8 +28,8 @@
           <div class="report_icon ms-2">
             <%= link_to new_reports_path(id: @recipe.id), class:"btn btn-outline-secondary" do %>
               <span class=""><i class="far fa-flag fa-lg"></i></span>
-              <p class="report_comment">レシピを管理者へ報告</p>
             <% end %>
+            <p class="report_comment">レシピを管理者へ報告</p>
           </div>
         </div>
       <% end %>
@@ -59,7 +59,7 @@
 
       <div class="mb-3">
         <h5 class="font-weight-bold border-bottom border-secondary mb-3">ジャンル・カテゴリー</h5>
-        <span class="p-2"><%= @recipe.category.genre.name %><%= @recipe.category.name %></span>
+        <span class="p-2"><%= @recipe.category.genre.name %>、<%= @recipe.category.name %></span>
       </div>
 
       <div class="mb-3">
@@ -99,7 +99,7 @@
                 <% end %>
                 <td class="text-left"><%= number_with_precision(ingredient.unit.name, precision: 1, strip_insignificant_zeros: true) %></td>
               <% end %>
-              <td><%= f.text_field (ingredient.id).to_s,  placeholder: "分量", class:"ingredient-quantity d-block mx-auto text-center w-100"%></td>
+              <td><%= f.number_field (ingredient.id).to_s,  placeholder: "分量", min: 0.1, step: 0.1, class:"ingredient-quantity d-block mx-auto text-center w-100"%></td>
             </tr>
           </tbody>
           <% end %>
@@ -159,15 +159,15 @@
 
     <% if user_signed_in? %>
       <% if @recipe.user.id != current_user.id && current_user.email != "guest@example.com"  %>
-        <%= form_with model: @review, url: reviews_path(@recipe.id), method: :post, local: true do |f| %>
-          <div class="col-md-11">
+        <div class="col-md-11 mx-auto">
+          <%= form_with model: @review, url: reviews_path(@recipe.id), method: :post, local: true do |f| %>
             <h5 class="font-weight-bold border-bottom border-secondary mb-3">レビュー入力</h5>
             <%= f.hidden_field :recipe_id, value: @recipe.id %>
             <div id="recipe_review" class ="mb-3"></div>
             <%= f.text_area :content, placeholder: "コメントをここに入力", maxlength: "140", class:"w-100 textArea input-review  mb-2", required:"required", rows: 1 %>
             <%= f.submit "レビューを投稿", class: "btn btn-secondary mb-3" %>
-          </div>
-        <% end %>
+          <% end %>
+        </div>
       <% end %>
     <% end %>
 
@@ -189,7 +189,6 @@
         <% end %>
       </div>
     <% end %>
-
   </div>
 </div>
 

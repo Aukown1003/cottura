@@ -32,7 +32,6 @@ class User < ApplicationRecord
       file_path = Rails.root.join('app/assets/images/no_image_user.png')
       image.attach(io: File.open(file_path), filename: 'default-user-image.png', content_type: 'image/png')
     end
-    # image.variant(resize_to_limit: [width, height]).processed
     image.variant(resize_to_fill: [width, height]).processed
   end
 
@@ -43,6 +42,10 @@ class User < ApplicationRecord
       user.name = "ゲストユーザー"
       user.content = "ゲストユーザーでログイン中！"
     end
+  end
+  
+  def active_for_authentication?
+    super && (is_active == true)
   end
 
 end

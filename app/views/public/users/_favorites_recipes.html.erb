@@ -1,5 +1,12 @@
 <div class="row recipe-show-items mt-2">
-  <% @user.favorited_recipes.each do |recipe| %>
+  <% @favorited_recipes.each do |recipe| %>
     <%= render "/public/recipes/recipe_lists", recipe: recipe %>
   <% end %>
+
+  <div class="col-12 mt-5">
+    <div class="d-flex justify-content-center">
+      <%= paginate @favorited_recipes %>
+    </div>
+  </div>
+
 </div>

@@ -11,7 +11,7 @@
           <ul class="navbar-nav ml-auto">
 
             <li class="nav-item mr-md-2 mb-lg-0">
-              <%= link_to user_path(current_user.id), class: 'nav-link text-dark btn ' do %>
+              <%= link_to user_path(id: current_user.id), class: 'nav-link text-dark btn ' do %>
                 <i class="fas fa-home"></i><%= " マイページ" %>
               <% end %>
             </li>
@@ -48,7 +48,7 @@
 
             <li class="nav-item mr-md-2 mb-lg-0">
               <%= link_to admin_users_path, class: 'nav-link text-dark btn ' do %>
-                <i class="fas fa-users"></i><%= " 会員一覧" %>
+                <i class="fas fa-users"></i><%= " ユーザー一覧" %>
               <% end %>
             </li>
             
