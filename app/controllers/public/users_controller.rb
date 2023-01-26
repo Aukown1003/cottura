@@ -43,6 +43,10 @@ class Public::UsersController < ApplicationController
   end
   
   def user_check
+    unless user_signed_in? || admin_signed_in?
+      redirect_to root_path, alert: '未ログイン時、ユーザーの編集は行なえません'
+      return
+    end
     user = User.find(params[:id])
     if current_admin.present?
       return
