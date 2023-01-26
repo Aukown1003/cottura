@@ -1,3 +1,16 @@
+
+.body-box{
+  position: relative;
+  padding-bottom: 60px;
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+
+.footer{
+  position: absolute;
+  bottom: 0;
+}
+
 /*画像処理*/
 .top_image_form{
   position: relative;

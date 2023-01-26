@@ -16,7 +16,6 @@ import "../stylesheets/application"
 import '@fortawesome/fontawesome-free/js/all'
 import "../stylesheets/header"
 import "../stylesheets/top"
-import "../stylesheets/recipe"
 import "../stylesheets/recipe_index"
 import "../stylesheets/recipe_show"
 import "../stylesheets/recipe_new"
