@@ -182,7 +182,7 @@
             <div class="mb-1"><%= review.created_at.strftime("%Y年%m月%d日") %></div>
             <% if user_signed_in? || admin_signed_in? %>
               <% if current_admin.present? || review.user.id == current_user.id %>
-                <div class="mb-1"><%= link_to "このコメントを削除", review_path(id: review.id, recipe_id: @recipe.id), method: :delete, class:"btn btn-sm btn-danger" %></div>
+                <div class="mb-1"><%= link_to "このコメントを削除", review_path(id: review.id, recipe_id: @recipe.id), method: :delete, data: { confirm: '削除してもよろしいですか？' }, class:"btn btn-sm btn-danger" %></div>
               <% end %>
             <% end %>
           </div>
