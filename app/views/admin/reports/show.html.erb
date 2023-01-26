@@ -29,7 +29,7 @@
     </div>
     <div class="col-md-8 mx-auto text-center">
       <%= link_to "管理者画面に戻る", admin_root_path, class:"btn btn-success" %>
-      <%= link_to "削除", admin_report_path(id: @report.id), method: :delete, class:"btn btn-danger" %>
+      <%= link_to "削除", admin_report_path(id: @report.id), method: :delete, data: { confirm: '削除してもよろしいですか？' }, class:"btn btn-danger" %>
     </div>
   </div>
 </div>
