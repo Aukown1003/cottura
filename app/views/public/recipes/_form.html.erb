@@ -121,11 +121,7 @@
     </div>
 
     <div class="col-md-10 mt-3 text-center mx-auto">
-      <% if current_page?(new_recipe_path) %>
-        <%= f.submit "レシピを投稿する", class:"sb-btn btn btn-lg btn-secondary" %>
-      <% else %>
-        <%= f.submit "編集したレシピを保存する", class:"sb-bnt btn btn-lg btn-secondary" %>
-      <% end %>
+      <%= f.submit "レシピを投稿する", class:"sb-btn btn btn-lg btn-secondary" %>
     </div>
   </div>
 <% end %>
