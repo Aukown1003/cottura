@@ -2,17 +2,16 @@ class Public::UsersController < ApplicationController
   before_action :user_check, only: [:edit, :update, :destroy]
   
   def show
-    # binding.pry
-    # user = User.includes(:favorited_recipes, :recipes).where(recipes: { is_open: true }).find(params[:id])
-    @user = User.includes(:favorited_recipes, :recipes).find(params[:id])
-    
-    # if admin_signed_in? || user_signed_in?
-    #   if current_admin.present? || current_user.id = User.find(params[:id]).id
-    #     @user = User.includes(:favorited_recipes, :recipes).find(params[:id])
-    #   end
-    # end
-    @recipes = @user.recipes.page(params[:page])
-    @favorited_recipes =@user.favorited_recipes.page(params[:page])
+    @user = User.find(params[:id])
+    @recipes = Recipe.includes(:user).where(users: {id: @user.id})
+                                    .where(recipes: { is_open: true }).page(params[:page])
+    @favorited_recipes = @user.favorited_recipes.page(params[:page])
+
+    if admin_signed_in? || user_signed_in?
+      if current_admin.present? || current_user.id == User.find(params[:id]).id
+        @recipes = @user.recipes.page(params[:page])
+      end
+    end
   end
 
   def edit
@@ -22,8 +21,9 @@ class Public::UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     if @user.update(user_params)
-      redirect_to user_path(current_user.id)
+      redirect_to user_path(@user.id), notice: 'ユーザー情報を編集しました。'
     else
+      @user.reload
       flash.now[:alert] = "編集に失敗しました"
       render :edit
     end
@@ -46,7 +46,7 @@ class Public::UsersController < ApplicationController
     user = User.find(params[:id])
     if current_admin.present?
       return
-    elsif user.id =! current_user.id || user.email == 'guest@example.com'
+    elsif user.id != current_user.id || user.email == 'guest@example.com'
       redirect_to root_path, alert: 'ゲストユーザーや他の会員の、情報の更新、削除はできません。'
     end
   end

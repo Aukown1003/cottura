@@ -9,7 +9,7 @@ ja:
       recipe:
         title: "レシピ名"
         content: "レシピ紹介"
-        total time: "調理時間"
+        total_time: "調理時間"
         recipe_ingredients: "材料"
         recipe_steps: "作り方"
         category: "カテゴリー"

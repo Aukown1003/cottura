@@ -80,28 +80,37 @@
 </div>
 
 <script>
-// テキストエリアの可変処理
-window.addEventListener('turbolinks:load', () => {
-  // textareaタグを全て取得
-  const textareaEls = document.querySelectorAll("textarea");
+  window.onload = addToNewUrl();
+    function addToNewUrl() {
+    let path = location.pathname;
+    let pattern = /^.*\/sign_up.*$/
+  
+    if(path.match(pattern)) return;
+    history.replaceState('', '', `${ path }/sign_up`)
+  }
 
-  textareaEls.forEach((textareaEl) => {
-    // デフォルト値としてスタイル属性を付与
-    textareaEl.setAttribute("style", `height: ${textareaEl.scrollHeight}px;`);
-    // inputイベントが発生するたびに関数呼び出し
-    textareaEl.addEventListener("input", setTextareaHeight);
+// テキストエリアの可変処理
+  window.addEventListener('turbolinks:load', () => {
+    // textareaタグを全て取得
+    const textareaEls = document.querySelectorAll("textarea");
+  
+    textareaEls.forEach((textareaEl) => {
+      // デフォルト値としてスタイル属性を付与
+      textareaEl.setAttribute("style", `height: ${textareaEl.scrollHeight}px;`);
+      // inputイベントが発生するたびに関数呼び出し
+      textareaEl.addEventListener("input", setTextareaHeight);
+    });
+  
+    // textareaの高さを計算して指定する関数
+    function setTextareaHeight() {
+      this.style.height = "auto";
+      this.style.height = `${this.scrollHeight}px`;
+    }
   });
 
-  // textareaの高さを計算して指定する関数
-  function setTextareaHeight() {
-    this.style.height = "auto";
-    this.style.height = `${this.scrollHeight}px`;
-  }
-});
 
 
 
-if (document.URL.match(/sign_up/)) {
   document.addEventListener('turbolinks:load', () => {
     const createImageHTML = (blob) => {
       const imageElement = document.getElementById('preview_user');
@@ -127,7 +136,5 @@ if (document.URL.match(/sign_up/)) {
         createImageHTML(blob);
         });
      }
-
   });
-}
 </script>

@@ -11,6 +11,8 @@
       readOnly: true,
       score: <%= review.score %>,
     };
-    raty(raty_<%= review.id %> ,option_<%= review.id %>);
+    if (raty_<%= review.id %>) {
+      raty(raty_<%= review.id %>, option_<%= review.id %>);
+    }
   });
 </script>
