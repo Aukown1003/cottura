@@ -171,10 +171,8 @@ class Public::RecipesController < ApplicationController
     user_id = Recipe.find(params[:id]).user_id
     if admin_signed_in?
       return
-    elsif user_signed_in?
-      if user_id =! current_user.id
-        redirect_to root_path, alert: '他の会員のレシピの更新、削除はできません。'
-      end
+    elsif user_signed_in? && user_id != current_user.id
+      redirect_to root_path, alert: '他の会員のレシピの更新、削除はできません。'
     else
       redirect_to root_path, alert: '未ログイン時、レシピの更新、削除はできません。'
     end

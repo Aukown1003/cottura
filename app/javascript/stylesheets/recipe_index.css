@@ -1,17 +1,18 @@
 
 .search-form, .search-category{
-    background-color: peachpuff;
+  background-color: peachpuff;
 }
 
 .tag_labels {
-    box-shadow: 6px 6px 10px 0px rgba(0, 0, 0, 0.4);
+  border-radius: 0.25rem;
+  box-shadow: 6px 6px 10px 0px rgba(0, 0, 0, 0.4);
 }
 
 .recipe-index-item {
-    box-shadow: 6px 6px 10px 0px rgba(0, 0, 0, 0.4);
-    margin-right: 0.5rem;
-    width: 219px !important;
-    box-sizing: border-box;
+  box-shadow: 6px 6px 10px 0px rgba(0, 0, 0, 0.4);
+  margin-right: 0.5rem;
+  width: 219px !important;
+  box-sizing: border-box;
 }
 .recipe-index-title, .recipe-index-time {
   margin-left: 5%;

@@ -8,12 +8,12 @@
 </div>
 
 <script>
-window.onload = addToNewUrl();
-  function addToNewUrl() {
-  let path = location.pathname;
-  let pattern = /^.*\/edit.*$/
-
-  if(path.match(pattern)) return;
-  history.replaceState('', '', `${ path }/edit`)
-}
+  window.onload = addToNewUrl();
+    function addToNewUrl() {
+    let path = location.pathname;
+    let pattern = /^.*\/edit.*$/
+  
+    if(path.match(pattern)) return;
+    history.replaceState('', '', `${ path }/edit`)
+  }
 </script>

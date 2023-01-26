@@ -7,14 +7,17 @@ ja:
         recipe:
           attributes:
             title:
+              too_long: "が制限数を超えて入力されています"
               blank: "が入力されていません。"
             content:
+              too_long: "が制限数を超えて入力されています"
               blank: "が入力されていません。"
             total_time:
               blank: "が未選択です。"
             recipe_ingredients:
               too_short: "は一つ以上入力してください。"
             recipe_steps:
+              too_long: "が制限数を超えて入力されています"
               too_short: "は一つ以上入力してください。"
             category:
               required: "が選択されていません。"
@@ -56,6 +59,8 @@ ja:
               too_long: "は%{count}文字以下に設定して下さい。"
               invalid: "は有効でありません。"
               confirmation: "が内容とあっていません。"
+            content: 
+              blank: "が入力されていません。"
     attributes:
       user:
         current_password: "現在のパスワード"
@@ -63,6 +68,7 @@ ja:
         email: "メールアドレス"
         password: "パスワード"
         password_confirmation: "確認用パスワード"
+        content: "自己紹介文"
         remember_me: "次回から自動的にログイン"
     models:
       user: "ユーザー"

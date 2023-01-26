@@ -9,6 +9,7 @@ class User < ApplicationRecord
   # バリデーション
   validates :name, presence: true
   validates :email, presence: true
+  validates :content, presence: true
 
   # アソシエーション
   has_many :recipes, dependent: :destroy

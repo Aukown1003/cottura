@@ -35,7 +35,7 @@
         </div>
 
         <div class="mb-3">
-          <%= f.label :current_password, "現在のパスワード(入力必須)", { class: "form-label"} %>
+          <%= f.label :current_password, "現在のパスワード", { class: "form-label required"} %>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-lock"></i></span>
             <%= f.password_field :current_password, { class: "form-control", autocomplete: "current-password", placeholder: "password" } %>
@@ -55,6 +55,7 @@
     </div>
   </div>
 </div>
+
 <%
 =begin
 %>

@@ -2,16 +2,18 @@
   <span class="ms-2"><%= recipe.reviews.average(:score).to_f.round(1) %>/ 5.0</span>
 
 <script>
-document.addEventListener('turbolinks:load', function() {
-  $('#review_<%= recipe.id %>').empty();
-  let raty_<%= recipe.id %> = document.querySelector('#review_<%= recipe.id %>');
-  let option_<%= recipe.id %> = {
-    starOn: "<%= asset_path('star-on.png') %>",
-    starOff: "<%= asset_path('star-off.png') %>",
-    starHalf: "<%= asset_path('star-half.png') %>",
-    readOnly: true,
-    score: <%= recipe.reviews.average(:score).to_f.round(1) %>,
-  };
-  raty(raty_<%= recipe.id %> ,option_<%= recipe.id %>);
-});
+  document.addEventListener('turbolinks:load', function() {
+    $('#review_<%= recipe.id %>').empty();
+    let raty_<%= recipe.id %> = document.querySelector('#review_<%= recipe.id %>');
+    let option_<%= recipe.id %> = {
+      starOn: "<%= asset_path('star-on.png') %>",
+      starOff: "<%= asset_path('star-off.png') %>",
+      starHalf: "<%= asset_path('star-half.png') %>",
+      readOnly: true,
+      score: <%= recipe.reviews.average(:score).to_f.round(1) %>,
+    };
+    if (raty_<%= recipe.id %>) {
+      raty(raty_<%= recipe.id %>, option_<%= recipe.id %>);
+    }
+  });
 </script>
