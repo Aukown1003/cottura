@@ -9,7 +9,7 @@ class Public::ReportsController < ApplicationController
     if @report.save
       redirect_to root_path, notice: "報告を行いました"
     else
-      @recipe = Recipe.find(params[:recipe_id])
+      @recipe = Recipe.find(params[:report][:recipe_id])
       flash.now[:alert] = "報告に失敗しました"
       render :new
     end
