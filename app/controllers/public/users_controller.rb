@@ -1,5 +1,5 @@
 class Public::UsersController < ApplicationController
-  before_action :user_check, only: [:edit, :update, :destroy]
+  before_action :user_check, only: [:edit, :update]
   
   def show
     @user = User.find(params[:id])
@@ -47,7 +47,7 @@ class Public::UsersController < ApplicationController
     if current_admin.present?
       return
     elsif user.id != current_user.id || user.email == 'guest@example.com'
-      redirect_to root_path, alert: 'ゲストユーザーや他の会員の、情報の更新、削除はできません。'
+      redirect_to root_path, alert: 'ゲストユーザーや他の会員の情報の更新はできません。'
     end
   end
 
