@@ -17,7 +17,6 @@
       <table class="table">
         <thead>
           <tr>
-            <th>ID</th>
             <th>ジャンル名</th>
             <th class="align-middle text-center">ジャンル内カテゴリー数</th>
             <th></th>
@@ -27,7 +26,6 @@
         <% @genres.each do |genre| %>
         <tbody>
           <tr>
-            <td class="align-middle"><%= genre.id %></td>
             <td class="align-middle"><%= genre.name %></td>
             <td class="align-middle text-center"><%= genre.categories.count %></td>
             <td class="align-middle"><%= link_to "編集", edit_admin_genre_path(genre.id), class:"btn btn-primary" %></td>
@@ -54,15 +52,25 @@
           <%= f.submit "カテゴリー作成", class: "btn btn-primary" %>
         </div>
       <% end %>
+      <%= form_with url: admin_genres_path, method: :get do |f| %>
+      <div class="form-group mt-5">
+        <h5>カテゴリ絞り込み</h5>
+        <%= f.collection_select(:genre_id, @genres, :id, :name, {}, class:"form-control") %>
+        <div class="btn-group d-flex mt-3">
+          <p class="me-1"><%= f.submit "絞り込み", class:"btn btn-success" %></p>
+          <p class="ms-1"><%= link_to "絞り込み解除", admin_genres_path, method: :get, class:"btn btn-secondary" %></p>
+        </div>
+      </div>
+      <% end %>
     </div>
 
-    <div class="col-8">
+    <div class="col-md-8 mx-auto">
       <table class="table">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>カテゴリー名</th>
-            <th>ジャンル名</th>
+            <th class="align-middle">カテゴリー名</th>
+            <th class="align-middle">ジャンル名</th>
+            <th class="align-middle">レシピ登録数</th>
             <th></th>
             <th></th>
           </tr>
@@ -70,9 +78,9 @@
         <% @categories.each do |category| %>
         <tbody>
           <tr>
-            <td class="align-middle"><%= category.id %></td>
             <td class="align-middle"><%= category.name %></td>
             <td class="align-middle"><%= category.genre.name %></td>
+            <td class="align-middle text-center"><%= category.recipes.count %></td>
             <td class="align-middle"><%= link_to "編集",  edit_admin_category_path(category.id), class:"btn btn-primary" %></td>
             <td class="align-middle"><%= link_to "削除", admin_category_path(category.id), method: :delete, data: { confirm: '削除してもよろしいですか？' }, class:"btn btn-danger" %></td>
           </tr>
