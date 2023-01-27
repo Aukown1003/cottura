@@ -1,4 +1,6 @@
 class Public::ReportsController < ApplicationController
+  before_action :authenticate_user!
+
   def new
     @report = Report.new
     @recipe = Recipe.find(params[:id])

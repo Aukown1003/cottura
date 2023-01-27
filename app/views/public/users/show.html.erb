@@ -1,10 +1,10 @@
 <div class="container my-4">
   <div class="row mb-5">
-    <div class="col-sm-5 my-auto text-center text-sm-right mx-auto">
+    <div class="col-md-5 my-auto text-center text-md-right mx-auto">
       <%= image_tag @user.get_user_image(200, 200), alt: "ユーザー画像", class:"user_profile_image"%>
     </div>
-    <div class="col-sm-6 text-center text-sm-left offset-sm-1">
-      <h2 class="mb-2 mt-3 mt-sm-0"><%= @user.name %>のキッチン</h2>
+    <div class="col-md-6 text-center text-md-left offset-md-1">
+      <h2 class="mb-2 mt-3 mt-md-0"><%= @user.name %>のキッチン</h2>
       <p><%= safe_join(@user.content.split("\n"),tag(:br)) %></p>
       <% if user_signed_in? || admin_signed_in? %>
         <% if current_admin.present? || current_user.email != "guest@example.com" && @user.id == current_user.id %>
@@ -32,7 +32,7 @@
       <div class="panel tab-A is-show">
         <%= render 'public/users/post_recipe_lists' %>
       </div>
-      <div class="panel p-3 tab-B">
+      <div class="panel tab-B">
         <%= render 'public/users/favorites_recipes' %>
       </div>
     </div>

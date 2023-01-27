@@ -1,4 +1,3 @@
-
 .search-form, .search-category{
   background-color: peachpuff;
 }
@@ -28,9 +27,23 @@
   color: #6c757d;
 }
 
-@media (min-width:1200px) {
+.review-average {
+  font-size: 14px; 
+  margin-top: auto;
+}
+
+@media (min-width:1400px) {
   .recipe-index-items .recipe-index-item:nth-child(5n+1){
-    margin-left: 0.4rem;
+    margin-left: 0.35rem;
+  }
+  .recipe-index-items .recipe-index-item:nth-child(5n) {
+    margin-right: 0;
+  }
+}
+
+@media (min-width:1200px) and (max-width:1399px) {
+  .recipe-index-items .recipe-index-item:nth-child(5n+1){
+    margin-left: 0.3rem;
   }
   .recipe-index-items .recipe-index-item:nth-child(5n) {
     margin-right: 0;
@@ -39,7 +52,7 @@
 
 @media (min-width:992px) and (max-width:1199px) {
   .recipe-index-items .recipe-index-item:nth-child(4n+1){
-    margin-left: 1.6rem;
+    margin-left: 1.8rem;
   }
   .recipe-index-items .recipe-index-item:nth-child(4n){
     margin-right: 0;
@@ -58,10 +71,11 @@
 
 @media (min-width:570px) and (max-width:767px) {
   .recipe-index-items .recipe-index-item:nth-child(2n+1){
-    margin-left: 2.7rem;
+    margin-right: 3rem;
   }
   .recipe-index-items .recipe-index-item:nth-child(2n){
-     margin-right: 0;
+    margin-left: 3rem;
+    margin-right: 0;
   }
 }
 
