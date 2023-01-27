@@ -3,7 +3,11 @@ class Admin::GenresController < ApplicationController
   def index
     @genres = Genre.all
     @genre = Genre.new
-    @categories = Category.all
+    if params[:genre_id].present?
+      @categories = Category.where(genre_id: params[:genre_id]).order(id: :ASC)
+    else
+      @categories = Category.order(genre_id: :ASC)
+    end
     @category = Category.new
   end
 

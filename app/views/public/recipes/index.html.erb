@@ -12,7 +12,7 @@
     </div>
 
     <% if session[:category_id].present? || session[:search_time].present? %>
-      <div class="col-12 search-category pb-2">
+      <div class="col-12 search-category py-2">
         
         <% if session[:category_id].present? %>
           <% @categories.each do |category| %>
