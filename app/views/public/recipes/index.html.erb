@@ -43,7 +43,7 @@
       <div class="category-list">
         <% genre.categories.each do |category| %>
           <div class="category-item">
-            <%= link_to category.name, search_recipe_path(category_id: category.id), class:"w-100 d-block btn"%>
+            <%= link_to category.name, search_recipe_path(category_id: category.id), class:"w-100 btn"%>
           </div>
         <% end %>
       </div>

@@ -38,34 +38,34 @@
         <!--管理者ーログイン時-->
       <% elsif admin_signed_in? %>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
-          <ul class="navbar-nav ml-auto">
+          <ul class="navbar-nav ml-auto" id="admin-nav">
 
-            <li class="nav-item mr-md-2 mb-lg-0">
+            <li class="nav-item mr-md-1 mb-lg-0">
               <%= link_to admin_root_path, class: 'nav-link text-dark btn ' do %>
                 <i class="fas fa-book"></i><%= " 管理者画面" %>
               <% end %>
             </li>
 
-            <li class="nav-item mr-md-2 mb-lg-0">
+            <li class="nav-item mr-md-1 mb-lg-0">
               <%= link_to admin_users_path, class: 'nav-link text-dark btn ' do %>
                 <i class="fas fa-users"></i><%= " ユーザー一覧" %>
               <% end %>
             </li>
             
 
-            <li class="nav-item mr-md-2 mb-lg-0">
+            <li class="nav-item mr-md-1 mb-lg-0">
               <%= link_to recipes_path, class: 'nav-link text-dark btn ' do %>
                 <i class="fas fa-book"></i><%= " レシピ一覧" %>
               <% end %>
             </li>
 
-            <li class="nav-item mr-md-2 mb-lg-0">
+            <li class="nav-item mr-md-1 mb-lg-0">
               <%= link_to admin_genres_path, class: 'nav-link text-dark btn ' do %>
                 <i class="fas fa-tags"></i><%= "ジャンル、カテゴリ一覧" %>
               <% end %>
             </li>
 
-            <li class="nav-item mr-md-2 mb-lg-0">
+            <li class="nav-item mr-md-1 mb-lg-0">
               <%= link_to admin_units_index_path, class: 'nav-link text-dark btn ' do %>
                 <i class="fas fa-tags"></i><%= "単位一覧" %>
               <% end %>

@@ -17,7 +17,6 @@
       <table class="table">
         <thead>
           <tr>
-            <th>ID</th>
             <th>ジャンル名</th>
             <th class="align-middle text-center">ジャンル内カテゴリー数</th>
             <th></th>
@@ -27,7 +26,6 @@
         <% @genres.each do |genre| %>
         <tbody>
           <tr>
-            <td class="align-middle"><%= genre.id %></td>
             <td class="align-middle"><%= genre.name %></td>
             <td class="align-middle text-center"><%= genre.categories.count %></td>
             <td class="align-middle"><%= link_to "編集", edit_admin_genre_path(genre.id), class:"btn btn-primary" %></td>
@@ -60,7 +58,6 @@
       <table class="table">
         <thead>
           <tr>
-            <th>ID</th>
             <th>カテゴリー名</th>
             <th>ジャンル名</th>
             <th></th>
@@ -70,7 +67,6 @@
         <% @categories.each do |category| %>
         <tbody>
           <tr>
-            <td class="align-middle"><%= category.id %></td>
             <td class="align-middle"><%= category.name %></td>
             <td class="align-middle"><%= category.genre.name %></td>
             <td class="align-middle"><%= link_to "編集",  edit_admin_category_path(category.id), class:"btn btn-primary" %></td>
