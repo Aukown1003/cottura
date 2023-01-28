@@ -147,11 +147,9 @@
     <% unless @recipe.tags.empty? %>
       <div class="col-md-11 tag-group mx-auto mb-3">
         <h5 class="mx-auto font-weight-bold border-bottom border-secondary mb-3">タグ一覧</h5>
-        <div class="tags d-flex">
+        <div class="tags d-flex flex-wrap">
         <% @recipe.tags.each do |tag| %>
-          <div class="col">
-            <p class="rounded-2 p-1 m-0"><span class="ps-2"><i class="fas fa-tag"></i></span><span class="ps-2"><%= tag.name %></span></p>
-          </div>
+          <p class="p-1 m-0"><span class="ps-2"><i class="fas fa-tag"></i></span><span class="ps-2"><%= tag.name %></span></p>
         <% end %>
         </div>
       </div>
