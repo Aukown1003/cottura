@@ -8,4 +8,12 @@ module ApplicationHelper
       end
       link_to(name, '#', class: "add_fields", data: {id: id, fields: fields.gsub("\n", "")})
   end
+  
+  def jp_time_date(time_date)
+    time_date.strftime("%Y年%m月%d日")
+  end
+  
+  def br_attach(text)
+    safe_join(text.split("\n"),tag(:br))
+  end
 end

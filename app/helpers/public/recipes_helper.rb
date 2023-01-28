@@ -31,4 +31,18 @@ module Public::RecipesHelper
     end
     return time
   end
+  
+  def review_average(score)
+    score.average(:score).to_f.round(1)
+  end
+
+
+  def material_quantity_after_conversion(quantity)
+    number_with_precision((BigDecimal(quantity.to_s) * session[:recalculation]).round(1), precision: 1, strip_insignificant_zeros: true)
+  end
+    
+  def material_quantity(quantity)
+    number_with_precision(quantity, precision: 1, strip_insignificant_zeros: true)
+  end
+
 end
