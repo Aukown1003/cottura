@@ -5,7 +5,7 @@
     </div>
     <div class="col-md-6 text-center text-md-left offset-md-1">
       <h2 class="mb-2 mt-3 mt-md-0"><%= @user.name %>のキッチン</h2>
-      <p><%= safe_join(@user.content.split("\n"),tag(:br)) %></p>
+      <p><%= br_attach(@user.content) %></p>
       <% if user_signed_in? || admin_signed_in? %>
         <% if current_admin.present? || current_user.email != "guest@example.com" && @user.id == current_user.id %>
           <div class="d-flex justify-content-center justify-content-md-start">
@@ -22,12 +22,10 @@
   </div>
 
   <div class="tab-panel">
-    <!--タブ-->
     <ul class="tab-group mb-0 p-0">
       <li class="tab tab-A is-active m-0">投稿したレシピ</li>
       <li class="tab tab-B no-active me-0">お気に入りレシピ</li>
     </ul>
-    <!--タブを切り替えて表示するコンテンツ-->
     <div class="panel-group p-3">
       <div class="panel tab-A is-show">
         <%= render 'public/users/post_recipe_lists' %>

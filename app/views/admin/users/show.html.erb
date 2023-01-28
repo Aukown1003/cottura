@@ -26,17 +26,17 @@
         
         <tr>
           <th>紹介文</th>
-          <td><%= safe_join(@user.content.split("\n"),tag(:br)) %></td>
+          <td><%= br_attach(@user.content) %></td>
         </tr>
         
         <tr>
           <th>アカウント作成日</th>
-          <td><%= @user.created_at.strftime("%Y年%m月%d日 %H:%M") %></td>
+          <td><%= jp_time_date(@user.created_at) %></td>
         </tr>
         
         <tr>
           <th>アカウント更新日</th>
-          <td><%= @user.updated_at.strftime("%Y年%m月%d日 %H:%M") %></td>
+          <td><%= jp_time_date(@user.updated_at) %></td>
         </tr>
         
         <tr>
