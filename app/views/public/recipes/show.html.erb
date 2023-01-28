@@ -64,7 +64,7 @@
 
       <div class="mb-3">
         <h5 class="font-weight-bold border-bottom border-secondary mb-3">調理時間</h5>
-        <p class="p-2"><i class="fas fa-clock"></i><span class="ps-2"><%= @recipe.view_time_data %></span></p>
+        <p class="p-2"><i class="fas fa-clock"></i><span class="ps-2"><%= view_time_data(@recipe.total_time) %></span></p>
       </div>
 
       <div class="mb-3">
@@ -157,7 +157,7 @@
 
     <% if user_signed_in? %>
       <% if @recipe.user.id != current_user.id && current_user.email != "guest@example.com"  %>
-        <div class="col-md-11 mx-auto">
+        <div class="col-md-11 mx-auto mt-3">
           <%= form_with model: @review, url: reviews_path(@recipe.id), method: :post, local: true do |f| %>
             <h5 class="font-weight-bold border-bottom border-secondary mb-3">レビュー入力</h5>
             <%= f.hidden_field :recipe_id, value: @recipe.id %>
@@ -170,7 +170,7 @@
     <% end %>
 
     <% unless @recipe.reviews.empty? %>
-      <div class="col-md-11 mx-auto" id="review_contents">
+      <div class="col-md-11 mx-auto mt-3" id="review_contents">
         <h5 class="font-weight-bold border-bottom border-secondary mb-3">レビュー<span class="ms-2">(<%= @recipe.reviews.count %>件)</span></h5>
         <% @recipe.reviews.each do |review| %>
           <div class="review_content my-3">

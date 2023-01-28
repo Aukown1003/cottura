@@ -51,24 +51,6 @@ class Recipe < ApplicationRecord
 
   end
 
-  # 時間表示メソッド
-  def view_time_data
-    data = total_time
-    hour_min = 60
-
-    if data < hour_min
-      data = "#{data}分"
-    elsif data % hour_min == 0
-      hour =  data / hour_min
-      data = "#{hour}時間"
-    else
-      hour = data / hour_min
-      min = data % hour_min
-      data = "#{hour}時間" + "#{min}分"
-    end
-    return data
-  end
-
   # 調理時間作成メソッド
   def self.select_time_data
     # 登録したい時間
@@ -76,7 +58,6 @@ class Recipe < ApplicationRecord
     # 何分刻みで登録するか
     min = 15
 
-    # 配列の作成
     data = []
     count = hour * (60 / min)
     (1..count).each { |x|
@@ -101,7 +82,6 @@ class Recipe < ApplicationRecord
     # 何分刻みで登録するか
     min = 30
 
-    # 配列の作成
     data = []
     count = hour * (60 / min)
     (1..count).each { |x|
