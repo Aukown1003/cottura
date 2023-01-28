@@ -21,7 +21,7 @@ module Public::RecipesHelper
     hour_min = 60
     if time < hour_min
       time = "#{time}分"
-    elsif data % hour_min == 0
+    elsif time % hour_min == 0
       hour =  time / hour_min
       time = "#{hour}時間"
     else
