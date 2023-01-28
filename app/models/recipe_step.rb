@@ -14,6 +14,6 @@ class RecipeStep < ApplicationRecord
       file_path = Rails.root.join('app/assets/images/no_image_item.png')
       image.attach(io: File.open(file_path), filename: 'default-recipe-image.png', content_type: 'image/png')
     end
-    image.variant(resize_to_fill: [width, height])
+    image.variant(resize_to_fill: [width, height]).processed
   end
 end
