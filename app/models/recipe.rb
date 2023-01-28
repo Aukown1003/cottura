@@ -97,7 +97,7 @@ class Recipe < ApplicationRecord
     # 調理時間絞り込み要メソッド
   def self.search_time_data
     # 登録したい時間
-    hour = 2
+    hour = 3
     # 何分刻みで登録するか
     min = 30
 
@@ -116,24 +116,6 @@ class Recipe < ApplicationRecord
         arr = [time, total_min]
         data.push(arr)
     }
-    return data
-  end
-
- # 時間表示メソッド
-  def view_search_data
-    data = session[:search_time].to_i
-    hour_min = 60
-
-    if data < hour_min
-      data = "#{data}分以内"
-    elsif data % hour_min == 0
-      hour =  data / hour_min
-      data = "#{hour}時間以内"
-    else
-      hour = data / hour_min
-      min = data % hour_min
-      data = "#{hour}時間" + "#{min}分以内"
-    end
     return data
   end
 

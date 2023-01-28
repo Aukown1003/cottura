@@ -70,8 +70,7 @@ a.add_fields:hover,a.add_fields:visited{
   width: 100%;
   height: 40px;
   padding: 0.25rem;
-  font-size: 16px;
-  /* line-height: 1.75; */
+  font-size: 15px;
   border: 2px solid #cccccc;
   color: #333;
   text-align: center;
@@ -132,6 +131,9 @@ a.add_fields:hover,a.add_fields:visited{
   }
   .ingredient-quantity{
     width: 33%;
+  }
+  .recipe_ingredient_inputBox .unit{
+    width: 16%;
   }
 }
 

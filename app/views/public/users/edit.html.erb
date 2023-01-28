@@ -28,7 +28,7 @@
         </div>
         
         <div class="mb-3 mt-3">
-          <%= f.label :name, "ニックネーム", { class: "form-label"} %>
+          <%= f.label :name, "ニックネーム", { class: "form-label required"} %>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-user"></i></span>
             <%= f.text_field :name, { class: "form-control", autofocus: true, placeholder: "cottura!" } %>
@@ -36,15 +36,21 @@
         </div>
         
         <div class="mb-3 h-auto">
-          <%= f.label :content, "自己紹介", { class: "form-label"} %>
+          <%= f.label :content, "自己紹介", { class: "form-label required"} %>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-id-badge"></i></span>
             <%= f.text_area :content, { class: "form-control textarea", placeholder: "簡単な自己紹介を入力", rows: 1 } %>
           </div>
         </div>
         
-        <div class=""> 
-          <%= f.submit "プロフィール更新", class: "btn btn-lg btn-success" %>
+        <div class="d-flex text-center justify-content-between">
+          <div class="actions"> 
+            <%= f.submit "プロフィール更新", class: "btn btn-lg btn-success" %>
+          </div>
+          
+          <div class="actions">
+            <%= link_to "戻る", :back, class: "btn btn-lg btn-primary" %>
+          </div>
         </div>
         
       <% end %>

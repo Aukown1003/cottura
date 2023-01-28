@@ -9,7 +9,7 @@
       <%= form_with model: @user, url: session_path(resource_name) do |f| %>
   
         <div class="mb-3 mt-3">
-          <%= f.label :email, "メールアドレス", { class: "form-label"} %>
+          <%= f.label :email, "メールアドレス", { class: "form-label required"} %>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-envelope"></i></span>
             <%= f.email_field :email, { class: "form-control", autofocus: true, autocomplete: "email", placeholder: "cottura@example.com" } %>
@@ -17,7 +17,7 @@
         </div>
   
         <div class="mb-3">
-          <%= f.label :password, "パスワード", { class: "form-label"} %>
+          <%= f.label :password, "パスワード", { class: "form-label required"} %>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-lock"></i></span>
             <%= f.password_field :password, { class: "form-control", autocomplete: "new-password", placeholder: "password" } %>
