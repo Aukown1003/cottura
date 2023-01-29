@@ -20,7 +20,7 @@
   <h5 class="font-weight-bold border-bottom border-secondary mb-3">新着レシピ！</h5>
   <div class="row mt-3">
     <% @new_recipes.each do |new_recipe| %>
-      <div class="col">
+      <div class="col-3 top-recipe">
         <%= link_to recipe_path(new_recipe.id) do %>
           <%= render "/public/recipes/recipe_lists", recipe: new_recipe %>
         <% end %>

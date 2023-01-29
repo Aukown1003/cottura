@@ -38,3 +38,7 @@
   letter-spacing: 0.1em;
   font-weight: bold;
 }
+
+.top-recipe .recipe-index-item {
+  margin: 0 auto;  
+}
