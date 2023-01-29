@@ -16,30 +16,25 @@
   position: relative;
 }
 
+.top-image{
+  object-fit: cover;
+  width: 100%;
+  max-height: 570px;
+}
+
+.top-text{
+  max-width: 747px;
+}
+
 .cover-text {
   position: absolute;
   top: 50%;
   left: 50%;
+  font-size: calc(30px + 35 * ((100vw - 320px) / 1240));
   transform: translate(-50%,-50%);
   text-shadow: 4px 2px 5px black;
   color: white;
   font-family: -webkit-body;
   letter-spacing: 0.1em;
   font-weight: bold;
-}
-
-@media (min-width:768px) {
-  .cover-text {
-    font-size: 60px;
-  }
-}
-@media (max-width:768px) {
-  .cover-text {
-    font-size: 45px;
-  }
-}
-@media (max-width: 479px) {
-  .cover-text {
-    font-size: 30px;
-  }
 }
