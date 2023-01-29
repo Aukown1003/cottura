@@ -10,7 +10,7 @@ class Public::RecipesController < ApplicationController
   end
 
   def index
-    @recipes = Recipe.where(is_open: true).includes(:recipe_steps, :recipe_ingredients)
+    @recipes = Recipe.where(is_open: true).includes(:recipe_steps, :recipe_ingredients).order(category_id: :asc)
     if session[:category_id].present? && session[:search_time].present?
       @recipes = @recipes.where(category: session[:category_id]).where(total_time: ..session[:search_time].to_i)
       @categories = Category.where(id: session[:category_id])

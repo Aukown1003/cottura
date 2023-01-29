@@ -74,25 +74,25 @@
             <thead>
               <tr>
                 <th>材料名</th>
-                <th class="text-right">分量</th>
+                <th class="text-right" style="width: 24%;">分量</th>
                 <th style="width: 7%;"></th>
                 <th style="width: 19%;"></th>
               </tr>
             </thead>
             <% @recipe.recipe_ingredients.each do |ingredient| %>
               <tbody>
-                <tr class="align-middle">
-                  <td><%= ingredient.name %></td>
+                <tr>
+                  <td class="text-break"><%= ingredient.name %></td>
                   <% if ingredient.unit.name == "大さじ" || ingredient.unit.name == "小さじ"%>
-                    <td class="text-right"><%= ingredient.unit.name %></td>
+                    <td class="text-right align-middle"><%= ingredient.unit.name %></td>
                     <!--<td class="text-left"><%#= session[:recalculation].present? ? number_with_precision((BigDecimal(ingredient.quantity.to_s) * session[:recalculation]).round(1), precision: 1, strip_insignificant_zeros: true) : number_with_precision(ingredient.quantity, precision: 1, strip_insignificant_zeros: true) %></td>-->
-                    <td class="text-left"><%= session[:recalculation].present? ? material_quantity_after_conversion(ingredient.quantity) : material_quantity(ingredient.quantity) %></td>
+                    <td class="text-left align-middle"><%= session[:recalculation].present? ? material_quantity_after_conversion(ingredient.quantity) : material_quantity(ingredient.quantity) %></td>
                   <% else %>
                     <!--<td class="text-right"><%#= session[:recalculation].present? ? number_with_precision((BigDecimal(ingredient.quantity.to_s) * session[:recalculation]).round(1), precision: 1, strip_insignificant_zeros: true) : number_with_precision(ingredient.quantity, precision: 1, strip_insignificant_zeros: true) %></td>-->
-                    <td class="text-right"><%= session[:recalculation].present? ? material_quantity_after_conversion(ingredient.quantity) : material_quantity(ingredient.quantity) %></td>
-                    <td class="text-left"><%= ingredient.unit.name %></td>
+                    <td class="text-right align-middle"><%= session[:recalculation].present? ? material_quantity_after_conversion(ingredient.quantity) : material_quantity(ingredient.quantity) %></td>
+                    <td class="text-left align-middle"><%= ingredient.unit.name %></td>
                   <% end %>
-                  <td><%= f.number_field (ingredient.id).to_s,  placeholder: "分量", min: 0.1, step: 0.1, class:"ingredient-quantity d-block mx-auto text-center w-100"%></td>
+                  <td class="align-middle"><%= f.number_field (ingredient.id).to_s,  placeholder: "分量", min: 0.1, step: 0.1, class:"ingredient-quantity d-block mx-auto text-center w-100"%></td>
                 </tr>
               </tbody>
             <% end %>
