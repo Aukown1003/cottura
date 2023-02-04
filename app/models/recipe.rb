@@ -30,6 +30,11 @@ class Recipe < ApplicationRecord
   validates :recipe_ingredients, length: {minimum: 1}
   validates :recipe_steps, length: {minimum: 1}
 
+  scope :open, -> { where(is_open: true).includes(:recipe_steps, :recipe_ingredients) }
+  scope :ordered_by_updated_time, -> { order(updated_at: :asc) }
+  scope :by_category, -> (id) { where(category: id) }
+  scope :by_time, -> (time) { where(total_time: ..time) }
+
   def favorited_by(user)
     favorites.exists?(user_id: user.id)
   end
@@ -48,7 +53,6 @@ class Recipe < ApplicationRecord
       image.attach(io: File.open(file_path), filename: 'default-recipe-image.png', content_type: 'image/png')
     end
     image.variant(resize_to_fill: [width, height]).processed
-
   end
 
   # 調理時間作成メソッド

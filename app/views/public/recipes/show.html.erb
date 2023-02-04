@@ -86,10 +86,12 @@
                   <% if ingredient.unit.name == "大さじ" || ingredient.unit.name == "小さじ"%>
                     <td class="text-right align-middle"><%= ingredient.unit.name %></td>
                     <!--<td class="text-left"><%#= session[:recalculation].present? ? number_with_precision((BigDecimal(ingredient.quantity.to_s) * session[:recalculation]).round(1), precision: 1, strip_insignificant_zeros: true) : number_with_precision(ingredient.quantity, precision: 1, strip_insignificant_zeros: true) %></td>-->
-                    <td class="text-left align-middle"><%= session[:recalculation].present? ? material_quantity_after_conversion(ingredient.quantity) : material_quantity(ingredient.quantity) %></td>
+                    <!--<td class="text-left align-middle"><%#= session[:recalculation].present? ? material_quantity_after_conversion(ingredient.quantity) : material_quantity(ingredient.quantity) %></td>-->
+                    <td class="text-left align-middle"><%= ingredient_quantity(ingredient) %></td>
                   <% else %>
                     <!--<td class="text-right"><%#= session[:recalculation].present? ? number_with_precision((BigDecimal(ingredient.quantity.to_s) * session[:recalculation]).round(1), precision: 1, strip_insignificant_zeros: true) : number_with_precision(ingredient.quantity, precision: 1, strip_insignificant_zeros: true) %></td>-->
-                    <td class="text-right align-middle"><%= session[:recalculation].present? ? material_quantity_after_conversion(ingredient.quantity) : material_quantity(ingredient.quantity) %></td>
+                    <!--<td class="text-right align-middle"><%#= session[:recalculation].present? ? material_quantity_after_conversion(ingredient.quantity) : material_quantity(ingredient.quantity) %></td>-->
+                    <td class="text-right align-middle"><%= ingredient_quantity(ingredient) %></td>
                     <td class="text-left align-middle"><%= ingredient.unit.name %></td>
                   <% end %>
                   <td class="align-middle"><%= f.number_field (ingredient.id).to_s,  placeholder: "分量", min: 0.1, step: 0.1, class:"ingredient-quantity d-block mx-auto text-center w-100"%></td>

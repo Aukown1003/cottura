@@ -7,11 +7,12 @@
     <div class="col-md-6 text-center my-auto">
       <div class="preview">
         <div id="preview">
-          <% unless recipe.image.attached? %>
-            <%= image_tag 'no_image_item.png', class: "img-fluid default-image" %>
-          <% else %>
-            <%= image_tag recipe.get_recipe_image(480, 480), class: "img-fluid" %>
-          <% end %>
+          <%= recipe_image(recipe) %>
+          <%# unless recipe.image.attached? %>
+            <%#= image_tag 'no_image_item.png', class: "img-fluid default-image" %>
+          <%# else %>
+            <%#= image_tag recipe.get_recipe_image(480, 480), class: "img-fluid" %>
+          <%# end %>
         </div>
       </div>
 
@@ -58,28 +59,34 @@
 
     <div class="col-md-10 mb-3 mx-auto">
       <h5 class="font-weight-bold border-bottom border-secondary required mt-3 mb-4">ジャンル選択</h5>
-      <% if recipe.category.present? %>
-        <div class="selectdiv mb-3">
-          <%= f.collection_select(:genre_id, @genre, :id, :name, {}, selected: recipe.category.genre ) %>
-        </div>
-      <% else %>
-        <div class="selectdiv mb-3">
-          <%= f.collection_select(:genre_id, @genre, :id, :name, include_blank: "ジャンルを選択してください") %>
-        </div>
-      <% end %>
+      <div class="selectdiv mb-3">
+        <%= genre_select(f, recipe) %>
+      </div>
+      <!--<%# if recipe.category.present? %>-->
+      <!--  <div class="selectdiv mb-3">-->
+      <!--    <%#= f.collection_select(:genre_id, @genre, :id, :name, {}, selected: recipe.category.genre ) %>-->
+      <!--  </div>-->
+      <!--<%# else %>-->
+      <!--  <div class="selectdiv mb-3">-->
+      <!--    <%#= f.collection_select(:genre_id, @genre, :id, :name, include_blank: "ジャンルを選択してください") %>-->
+      <!--  </div>-->
+      <!--<%# end %>-->
     </div>
 
     <div class="col-md-10 mb-3 mx-auto">
       <h5 class="font-weight-bold border-bottom border-secondary required mt-3 mb-4">カテゴリ選択</h5>
-      <% if recipe.category.present? %>
-        <div class="selectdiv mb-3">
-          <%= f.collection_select(:category_id, @category.all, :id, :name, {include_blank: "ジャンルを選択後、選択可能になります"}, selected: recipe.category )%>
-        </div>
-      <% else %>
-        <div class="selectdiv mb-3">
-          <%= f.collection_select(:category_id, @category.all, :id, :name, {include_blank: "ジャンルを選択後、選択可能になります"}, disabled: true )%>
-        </div>
-      <% end %>
+      <div class="selectdiv mb-3">
+        <%= category_select(f, recipe) %>
+      </div>
+      <!--<%# if recipe.category.present? %>-->
+      <!--  <div class="selectdiv mb-3">-->
+      <!--    <%#= f.collection_select(:category_id, @category.all, :id, :name, {include_blank: "ジャンルを選択後、選択可能になります"}, selected: recipe.category )%>-->
+      <!--  </div>-->
+      <!--<%# else %>-->
+      <!--  <div class="selectdiv mb-3">-->
+      <!--    <%#= f.collection_select(:category_id, @category.all, :id, :name, {include_blank: "ジャンルを選択後、選択可能になります"}, disabled: true )%>-->
+      <!--  </div>-->
+      <!--<%# end %>-->
     </div>
   </div>
 
@@ -197,7 +204,7 @@ class addFields {
 
     // 以下カスタマイズ草案
     var getId = "recipe_recipe_steps_attributes_" + time + "_image"
-    console.log(getId)
+    // console.log(getId)
   }
 }
 
@@ -245,6 +252,12 @@ document.addEventListener('turbolinks:load', () => {
    // id = recipe_imageを取得(ファイルを選択時のボタン)、クリック時に以下の処理を実行
   if (document.getElementById('recipe_image') != null ) {
     document.getElementById('recipe_image').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file.name.endsWith(".webp")) {
+        alert("webp形式の画像は選択できません");
+        e.target.value = "";
+        return
+      }
       const imageContent = document.querySelector('img');
       // getelemntByClassname
       // imageContentに値が入っている場合remove
@@ -252,10 +265,38 @@ document.addEventListener('turbolinks:load', () => {
         imageContent.remove();
       }
 
-      const file = e.target.files[0];
+      // const file = e.target.files[0];
       const blob = window.URL.createObjectURL(file);
       createImageHTML(blob);
     });
   }
 })
+
+
+class alertImage {
+    constructor() {
+      this.iterateLinks()
+    }
+
+    iterateLinks() {
+      document.addEventListener('change', e => {
+        if (e.target && e.target.className == 'test') {
+          this.handleClick(e)
+        }
+      })
+    }
+
+    handleClick(event) {
+      const file = event.target.files[0];
+      console.log(file)
+      if (file.name.endsWith(".webp")) {
+        alert("webp形式の画像は選択できません");
+        event.target.value = "";
+        return
+      }
+    }
+  }
+  
+window.addEventListener('turbolinks:load', () => new alertImage())
+
 </script>
