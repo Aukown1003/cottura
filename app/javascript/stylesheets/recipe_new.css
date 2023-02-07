@@ -116,12 +116,28 @@ a.add_fields:hover,a.add_fields:visited{
 }
 
 .btn-check:checked + .radio-form {
-    background: #6c757d;
-    color: #fff;
-    text-shadow: 0 0 1px rgba(0,0,0,.7);
-    font-weight: 400;
+  background: #6c757d;
+  color: #fff;
+  text-shadow: 0 0 1px rgba(0,0,0,.7);
+  font-weight: 400;
 }
 
+.recipe_step{
+  counter-reset: number 0;
+}
+.step_number{
+  border-radius: 3px;
+  margin: auto;
+  width: 35px;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+}
+
+.step_number::before {
+  counter-increment: number 1;
+  content: "Step." counter(number);
+}
 
 /*メディクリ*/
 
