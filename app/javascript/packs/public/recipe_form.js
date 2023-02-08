@@ -1,11 +1,12 @@
-// $(function() {
-//   $('#recipe_genre_id').change(function() {
-//     $.get({
-//       url: "<%= search_category_recipe_path %>",
-//       data: { genre_id: $('#recipe_genre_id').has('option:selected').val() }
-//     });
-//   });
-// });
+/*global $*/
+$(function() {
+  $('#recipe_genre_id').change(function() {
+    $.get({
+      url: "/recipe/search_category",
+      data: { genre_id: $('#recipe_genre_id').has('option:selected').val() }
+    });
+  });
+});
 
 window.addEventListener('turbolinks:load', function () {
   new textFieldWidth();

@@ -35,18 +35,14 @@
   margin-top: auto;
 }
 
-.modal-open {
-  /*width: 50vw;*/
-}
-
 .jenre-item {
   border: 1px solid black;
-  /*border-top: 1px solid black;*/
-  /*border-bottom: 1px solid black;*/
-  /*border-right: 1px solid black;*/
   position: relative;
-  z-index: +1;
   cursor: pointer;
+}
+
+.jenre-item .genre-name, .jenre-item .time-name {
+  text-align: center;
 }
 
 .category-list {
@@ -75,10 +71,6 @@
 
 #modal {
   position: absolute;
-  /*top: 17.5vh;*/
-  /*left: 0;*/
-  /*right: 0;*/
-  /*margin: 0 auto;*/
   transform: translate(0, 0) scale(1); /*平行移動（translate）、拡大縮小（scale）の指定*/
   transition: 0.5s; /*上記trancsformに要する時間、今回は0.2秒*/
   z-index: 2; /*z-index を持つ要素はより小さな要素の上に重なる*/
@@ -105,21 +97,15 @@
   .modal-open {
     display: block;
   }
-  .lg-1 {
+  .box-lg {
     display: none;
   }
   .jenre-item {
     border-left: 1px solid black;
   }
   
-  .jenre-item p {
-    display: flex;
-    justify-content: space-between;
-    padding-left: 20px;
-  }
-  
-  .jenre-item span {
-    padding-right: 2vw;
+  .jenre-item .genre-name, .jenre-item .time-name {
+    text-align: left;
   }
   
   .category-item a {
