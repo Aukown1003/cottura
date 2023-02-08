@@ -95,7 +95,7 @@ class Public::RecipesController < ApplicationController
   def search_category
     @category = Category.where(genre_id: params[:genre_id])
     if @category.empty?
-      @category = [""]
+      @category = nil
     end
   end
 

@@ -74,8 +74,8 @@
 }
 
 #modal {
-  position: fixed;/* スクロールで移動しないようmodalの位置を固定 */
-  top: 17.5vh;
+  position: absolute;
+  /*top: 17.5vh;*/
   /*left: 0;*/
   /*right: 0;*/
   /*margin: 0 auto;*/

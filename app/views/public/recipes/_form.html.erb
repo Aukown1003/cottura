@@ -133,170 +133,180 @@
   </div>
 <% end %>
 
+<%= javascript_pack_tag 'public/recipe_form' %>
 
 <script>
-let genreForm = document.getElementById('recipe_genre_id');
-let categoryForm = document.getElementById('recipe_category_id');
-let categoryValue = categoryForm.options[0];
-genreForm.onchange = inputChange;
-function inputChange(){
-  // console.log(genreForm.value)
-  if(genreForm.value == ''){
-    categoryForm.disabled = true;
-    categoryForm.insertBefore(categoryValue, categoryForm.options[0]);
-  } else {
-    categoryForm.disabled = false ;
-  }
-}
+// let genreForm = document.getElementById('recipe_genre_id');
+// let categoryForm = document.getElementById('recipe_category_id');
+// let categoryValue = categoryForm.options[0];
+// genreForm.onchange = inputChange;
+// function inputChange(){
+//   // console.log(genreForm.value)
+//   if(genreForm.value == ''){
+//     categoryForm.disabled = true;
+//     categoryForm.insertBefore(categoryValue, categoryForm.options[0]);
+//   } else {
+//     categoryForm.disabled = false ;
+//   }
+// }
 
 $(function() {
   $('#recipe_genre_id').change(function() {
     $.get({
-      url: "<%= search_category_recipe_path %>",
+      url: "<%#= search_category_recipe_path %>",
       data: { genre_id: $('#recipe_genre_id').has('option:selected').val() }
     });
   });
 });
 
-// テキストエリアの可変処理
-window.addEventListener('turbolinks:load', () => {
-  // textareaタグを全て取得
-  const textareaEls = document.querySelectorAll("textarea");
+// // テキストエリアの横方向の可変処理
+// window.addEventListener('turbolinks:load', () => {
+//   let textFields = document.querySelectorAll("input[type='text']");
+//   textFields.forEach(function(textField) {
+//     textField.addEventListener("input", function() {
+//       this.style.width = 17 + this.value.length + "ch";
+//     });
+//   });
+// });
 
-  textareaEls.forEach((textareaEl) => {
-    // デフォルト値としてスタイル属性を付与
-    textareaEl.setAttribute("style", `height: ${textareaEl.scrollHeight}px;`);
-    // inputイベントが発生するたびに関数呼び出し
-    textareaEl.addEventListener("input", setTextareaHeight);
-  });
+// // テキストエリアの縦方向の可変処理
+// window.addEventListener('turbolinks:load', () => {
+//   // textareaタグを全て取得
+//   var textareaEls = document.querySelectorAll("textarea");
+//   textareaEls.forEach((textareaEl) => {
+//     // デフォルト値としてスタイル属性を付与
+//     textareaEl.setAttribute("style", `height: ${textareaEl.scrollHeight}px;`);
+//     // inputイベントが発生するたびに関数呼び出し
+//     textareaEl.addEventListener("input", setTextareaHeight);
+//   });
 
-  // textareaの高さを計算して指定する関数
-  function setTextareaHeight() {
-    this.style.height = "auto";
-    this.style.height = `${this.scrollHeight}px`;
-  }
-});
+//   // textareaの高さを計算して指定する関数
+//   function setTextareaHeight() {
+//     this.style.height = "auto";
+//     this.style.height = `${this.scrollHeight}px`;
+//   }
+// });
 
-// 項目追加
-class addFields {
-  constructor() {
-    this.links = document.querySelectorAll('.add_fields')
-    this.iterateLinks()
-  }
+// // 項目追加
+// class addFields {
+//   constructor() {
+//     this.links = document.querySelectorAll('.add_fields')
+//     this.iterateLinks()
+//   }
 
-  iterateLinks() {
-    if (this.links.length === 0) return
-    this.links.forEach(link => {
-      link.addEventListener('click', e => {
-        this.handleClick(link, e)
-      })
-    })
-  }
+//   iterateLinks() {
+//     if (this.links.length === 0) return
+//     this.links.forEach(link => {
+//       link.addEventListener('click', e => {
+//         this.handleClick(link, e)
+//       })
+//     })
+//   }
 
-  handleClick(link, e) {
-    if (!link || !e) return
-    e.preventDefault()
-    let time = new Date().getTime()
-    let linkId = link.dataset.id
-    let regexp = linkId ? new RegExp(linkId, 'g') : null
-    let newFields = regexp ? link.dataset.fields.replace(regexp, time) : null
-    newFields ? link.insertAdjacentHTML('beforebegin', newFields) : null
+//   handleClick(link, e) {
+//     if (!link || !e) return
+//     e.preventDefault()
+//     let time = new Date().getTime()
+//     let linkId = link.dataset.id
+//     let regexp = linkId ? new RegExp(linkId, 'g') : null
+//     let newFields = regexp ? link.dataset.fields.replace(regexp, time) : null
+//     newFields ? link.insertAdjacentHTML('beforebegin', newFields) : null
 
-    // 以下カスタマイズ草案
-    var getId = "recipe_recipe_steps_attributes_" + time + "_image"
-    // console.log(getId)
-  }
-}
+//     // 以下カスタマイズ草案
+//     var getId = "recipe_recipe_steps_attributes_" + time + "_image"
+//     // console.log(getId)
+//   }
+// }
 
-window.addEventListener('turbolinks:load', () => new addFields())
-  // 項目削除
-  class removeFields {
-    constructor() {
-      this.iterateLinks()
-    }
+// window.addEventListener('turbolinks:load', () => new addFields())
+//   // 項目削除
+//   class removeFields {
+//     constructor() {
+//       this.iterateLinks()
+//     }
 
-    iterateLinks() {
-      document.addEventListener('click', e => {
-        if (e.target && e.target.className == 'remove_fields') {
-          this.handleClick(e.target, e)
-        }
-      })
-    }
+//     iterateLinks() {
+//       document.addEventListener('click', e => {
+//         if (e.target && e.target.className == 'remove_fields') {
+//           this.handleClick(e.target, e)
+//         }
+//       })
+//     }
 
-    handleClick(link, e) {
-      if (!link || !e) return
-      e.preventDefault()
-      let fieldParent = link.closest('.nested-fields')
-      let deleteField = fieldParent
-        ? fieldParent.querySelector('input[type="hidden"]')
-        : null
-      if (deleteField) {
-        deleteField.value = 1
-        fieldParent.style.display = 'none'
-      }
-    }
-  }
+//     handleClick(link, e) {
+//       if (!link || !e) return
+//       e.preventDefault()
+//       let fieldParent = link.closest('.nested-fields')
+//       let deleteField = fieldParent
+//         ? fieldParent.querySelector('input[type="hidden"]')
+//         : null
+//       if (deleteField) {
+//         deleteField.value = 1
+//         fieldParent.style.display = 'none'
+//       }
+//     }
+//   }
   
-window.addEventListener('turbolinks:load', () => new removeFields())
+// window.addEventListener('turbolinks:load', () => new removeFields())
 
-document.addEventListener('turbolinks:load', () => {
-  const createImageHTML = (blob) => {
-    const imageElement = document.getElementById('preview');
-    const blobImage = document.createElement('img');
-    // class属性の追加
-    blobImage.setAttribute('class', 'new-img img-fluid');
-    blobImage.setAttribute('src', blob);
+// document.addEventListener('turbolinks:load', () => {
+//   const createImageHTML = (blob) => {
+//     const imageElement = document.getElementById('preview');
+//     const blobImage = document.createElement('img');
+//     // class属性の追加
+//     blobImage.setAttribute('class', 'new-img img-fluid');
+//     blobImage.setAttribute('src', blob);
 
-    imageElement.appendChild(blobImage);
-  };
-   // id = recipe_imageを取得(ファイルを選択時のボタン)、クリック時に以下の処理を実行
-  if (document.getElementById('recipe_image') != null ) {
-    document.getElementById('recipe_image').addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (file.name.endsWith(".webp")) {
-        alert("webp形式の画像は選択できません");
-        e.target.value = "";
-        return
-      }
-      const imageContent = document.querySelector('img');
-      // getelemntByClassname
-      // imageContentに値が入っている場合remove
-      if (imageContent){
-        imageContent.remove();
-      }
+//     imageElement.appendChild(blobImage);
+//   };
+//   // id = recipe_imageを取得(ファイルを選択時のボタン)、クリック時に以下の処理を実行
+//   if (document.getElementById('recipe_image') != null ) {
+//     document.getElementById('recipe_image').addEventListener('change', (e) => {
+//       const file = e.target.files[0];
+//       if (file.name.endsWith(".webp")) {
+//         alert("webp形式の画像は選択できません");
+//         e.target.value = "";
+//         return
+//       }
+//       const imageContent = document.querySelector('img');
+//       // getelemntByClassname
+//       // imageContentに値が入っている場合remove
+//       if (imageContent){
+//         imageContent.remove();
+//       }
 
-      // const file = e.target.files[0];
-      const blob = window.URL.createObjectURL(file);
-      createImageHTML(blob);
-    });
-  }
-})
+//       // const file = e.target.files[0];
+//       const blob = window.URL.createObjectURL(file);
+//       createImageHTML(blob);
+//     });
+//   }
+// })
 
 
-class alertImage {
-    constructor() {
-      this.iterateLinks()
-    }
+// class alertImage {
+//     constructor() {
+//       this.iterateLinks()
+//     }
 
-    iterateLinks() {
-      document.addEventListener('change', e => {
-        if (e.target && e.target.className == 'test') {
-          this.handleClick(e)
-        }
-      })
-    }
+//     iterateLinks() {
+//       document.addEventListener('change', e => {
+//         if (e.target && e.target.className == 'test') {
+//           this.handleClick(e)
+//         }
+//       })
+//     }
 
-    handleClick(event) {
-      const file = event.target.files[0];
-      console.log(file)
-      if (file.name.endsWith(".webp")) {
-        alert("webp形式の画像は選択できません");
-        event.target.value = "";
-        return
-      }
-    }
-  }
+//     handleClick(event) {
+//       const file = event.target.files[0];
+//       console.log(file)
+//       if (file.name.endsWith(".webp")) {
+//         alert("webp形式の画像は選択できません");
+//         event.target.value = "";
+//         return
+//       }
+//     }
+//   }
   
-window.addEventListener('turbolinks:load', () => new alertImage())
+// window.addEventListener('turbolinks:load', () => new alertImage())
 
 </script>
