@@ -91,5 +91,17 @@ module Public::RecipesHelper
   def ingredient_quantity(ingredient)
     session[:recalculation].present? ? material_quantity_after_conversion(ingredient.quantity) : material_quantity(ingredient.quantity)
   end
-
+  
+  # レシピの分量の分数表示
+  def convert_rational(ingredient)
+    float_num = BigDecimal(ingredient.to_s) - BigDecimal((ingredient.to_i).to_s)
+    rational_num = Rational(float_num).rationalize(Rational('0.01'))
+    if rational_num.to_f == 0.0
+      ingredient
+    elsif ingredient.to_i == 0
+      rational_num.to_s
+    else
+      "#{ingredient.to_i}と" + rational_num.to_s
+    end
+  end
 end

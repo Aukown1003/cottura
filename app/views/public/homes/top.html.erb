@@ -12,9 +12,16 @@
           みなさんの献立にお役立てください！
         </p>
       </div>
-      <div class="text-center my-4 ">
-        <%= link_to "レシピ一覧", recipes_path, class:"btn btn-lg btn-success"%>
+      
+      <div class="text-center my-4">
+        <button class="learn-more">
+          <span class="circle" aria-hidden="true">
+            <span class="icon arrow"></span>
+          </span>
+          <%= link_to "レシピ一覧", recipes_path, class:"button-text"%>
+        </button>
       </div>
+
     </div>
   </div>
   <h5 class="font-weight-bold border-bottom border-secondary mb-3">新着レシピ！</h5>

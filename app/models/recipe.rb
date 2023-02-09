@@ -136,5 +136,4 @@ class Recipe < ApplicationRecord
     }
     return data
   end
-
 end
