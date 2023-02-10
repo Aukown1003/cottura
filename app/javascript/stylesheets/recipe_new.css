@@ -128,7 +128,8 @@ a.add_fields:hover,a.add_fields:visited{
 .step_number{
   border-radius: 3px;
   margin: auto;
-  width: 50px;
+  width: 55px;
+  padding-right: 10px;
   height: 20px;
   line-height: 20px;
   text-align: center;

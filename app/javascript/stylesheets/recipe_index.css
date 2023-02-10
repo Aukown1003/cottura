@@ -1,3 +1,32 @@
+/*index試作中*/
+.recipe-index-time {
+  background-color: rgba(0,0,0,0.6);
+  color: #fff;
+  border-radius: 50%;
+  padding: 10px;
+  top: 2%;
+  left: 2%;
+  text-shadow: 2px 1px 1px black;
+  margin-left: 0 !important; /*後で消す*/
+}
+
+.recipe-index-title {
+  color: #fff;
+  font-size: 24px;
+  top: 76%;
+  left: 50%;
+  width: 100%;
+  text-align: center;
+  background-color: rgba(0,0,0,0.6);
+  -ms-transform: translate(-50%,-24%);
+  -webkit-transform: translate(-50%,-24%);
+  transform: translate(-50%,-24%);
+  text-shadow: 2px 1px 1px black;
+  margin-left: 0 !important; /*後で消す*/
+}
+
+/*ここまで*/
+
 .index-row {
   margin-right: 0px;
 }
