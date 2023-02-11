@@ -8,7 +8,8 @@ $(function() {
   });
 });
 
-window.addEventListener('turbolinks:load', function () {
+//document.addEventListener('turbolinks:load', function () {
+$(function() {
   new textFieldWidth();
   new textFieldHeight();
   new addFields();
@@ -74,10 +75,15 @@ class addFields {
     let regexp = linkId ? new RegExp(linkId, 'g') : null
     let newFields = regexp ? link.dataset.fields.replace(regexp, time) : null
     newFields ? link.insertAdjacentHTML('beforebegin', newFields) : null
-
-    // 以下カスタマイズ草案
-    var getId = "recipe_recipe_steps_attributes_" + time + "_image"
-    // console.log(getId)
+    
+    let textareaEls = document.getElementsByClassName('step-content textArea');
+    for (let i = 0;i < textareaEls.length;i++) {
+      textareaEls[i].setAttribute("style", `height: ${textareaEls[i].scrollHeight}px;`);
+      textareaEls[i].addEventListener("input",function() {
+        textareaEls[i].style.height = "auto";
+        textareaEls[i].style.height = `${textareaEls[i].scrollHeight}px`;
+      });
+    }
   }
 }
 
@@ -157,7 +163,7 @@ class alertImage {
 
   iterateLinks() {
     document.addEventListener('change', e => {
-      if (e.target && e.target.className == 'test') {
+      if (e.target && e.target.className == 'stepImage') {
         this.handleClick(e)
       }
     })
@@ -183,6 +189,6 @@ function inputChange(){
     categoryForm.disabled = true;
     categoryForm.insertBefore(categoryValue, categoryForm.options[0]);
   } else {
-    categoryForm.disabled = false;
+    categoryForm.disabled = false ;
   }
 }

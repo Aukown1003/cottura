@@ -1,7 +1,7 @@
 <div class="nested-fields border-bottom border-secondary my-3">
   <%= f.hidden_field :_destroy %>
   <div class="recipe_step_inputBox d-flex justify-content-around mb-3">
-    <!--<div class="step-sample-image me-1">-->
+    <!--<div class="step-sample-image my-auto me-1">-->
     <!--  <%# if current_page?(new_recipe_path) %>-->
     <!--    <%#= image_tag 'no_image_item.png', class: "img-fluid default-image" %>-->
     <!--  <%# else %>-->
@@ -12,7 +12,7 @@
     <!--    <%# end %>-->
     <!--  <%# end %>-->
     <!--</div>-->
-    <div class="step-sample-image me-1">
+    <div class="step-sample-image my-auto me-1">
       <%= step_image(f, @recipe) %>
     </div>
     <p class="step_number"></p>
@@ -24,7 +24,7 @@
     
   <div class="recipe_step_iamage_field my-3">
     <%= f.label :image, "手順の画像：", class: "" %>
-    <%= f.file_field :image, accept: "image/*", class: "test", id: "hoge" %>
+    <%= f.file_field :image, accept: "image/*", class: "stepImage" %>
   </div>
     
 </div>

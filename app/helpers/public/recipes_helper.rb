@@ -22,39 +22,24 @@ module Public::RecipesHelper
     end
   end
   
-  # 検索用時間表示ヘルパー
-  def view_search_data(time)
+  # 時間表示ヘルパー
+  def view_time_data(time, suffix = "")
     hour_min = 60
     time = time.to_i
     if time < hour_min
-      time = "#{time}分以内"
+      time = "#{time}分#{suffix}"
     elsif time % hour_min == 0
       hour =  time / hour_min
-      time = "#{hour}時間以内"
+      time = "#{hour}時間#{suffix}"
     else
       hour = time / hour_min
       min = time % hour_min
-      time = "#{hour}時間" + "#{min}分以内"
-    end
-    return time
-  end
-
-  # レシピ用時間表示ヘルパー
-  def view_time_data(time)
-    hour_min = 60
-    if time < hour_min
-      time = "#{time}分"
-    elsif time % hour_min == 0
-      hour =  time / hour_min
-      time = "#{hour}時間"
-    else
-      hour = time / hour_min
-      min = time % hour_min
-      time = "#{hour}時間" + "#{min}分"
+      time = "#{hour}時間" + "#{min}分#{suffix}"
     end
     return time
   end
   
+  # レビューの平均スコア
   def review_average(score)
     score.average(:score).to_f.round(1)
   end

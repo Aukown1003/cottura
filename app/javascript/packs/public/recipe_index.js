@@ -8,7 +8,7 @@ $(function(){
   });
 });
 
-window.addEventListener('turbolinks:load', function() {
+$(function() {
   new modalForm();
 })
 

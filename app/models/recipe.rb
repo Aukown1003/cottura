@@ -47,11 +47,6 @@ class Recipe < ApplicationRecord
 
   def get_recipe_image(width, height)
     attach_default_image unless image.attached?
-    image.variant(resize_to_limit: [width, height]).processed
-  end
-
-  def get_recipe_index_image(width, height)
-    attach_default_image unless image.attached?
     image.variant(resize_to_fill: [width, height]).processed
   end
 
@@ -60,7 +55,7 @@ class Recipe < ApplicationRecord
   #     file_path = Rails.root.join('app/assets/images/no_image_item.png')
   #     image.attach(io: File.open(file_path), filename: 'default-recipe-image.png', content_type: 'image/png')
   #   end
-  #   image.variant(resize_to_limit: [width, height]).processed
+  #   image.variant(resize_to_fill: [width, height]).processed
   # end
 
   # def get_recipe_index_image(width, height)
@@ -71,54 +66,7 @@ class Recipe < ApplicationRecord
   #   image.variant(resize_to_fill: [width, height]).processed
   # end
 
-  # # 調理時間作成メソッド
-  # def self.select_time_data
-  #   # 登録したい時間
-  #   hour = 7
-  #   # 何分刻みで登録するか
-  #   min = 15
-
-  #   data = []
-  #   count = hour * (60 / min)
-  #   (1..count).each { |x|
-  #     total_min = min * x
-  #     if total_min < 60
-  #       time = "#{total_min}分"
-  #     elsif total_min % 60 == 0
-  #       time = "#{total_min / 60}時間"
-  #     else
-  #       time = "#{total_min / 60}時間" + "#{ total_min % 60 }分"
-  #     end
-  #       arr = [time, total_min]
-  #       data.push(arr)
-  #   }
-  #   return data
-  # end
-  
-  #   # 調理時間絞り込み要メソッド
-  # def self.search_time_data
-  #   # 登録したい時間
-  #   hour = 3
-  #   # 何分刻みで登録するか
-  #   min = 30
-
-  #   data = []
-  #   count = hour * (60 / min)
-  #   (1..count).each { |x|
-  #     total_min = min * x
-  #     if total_min < 60
-  #       time = "#{total_min}分以内"
-  #     elsif total_min % 60 == 0
-  #       time = "#{total_min / 60}時間以内"
-  #     else
-  #       time = "#{total_min / 60}時間" + "#{ total_min % 60 }分以内"
-  #     end
-  #       arr = [time, total_min]
-  #       data.push(arr)
-  #   }
-  #   return data
-  # end
-
+  # 調理時間、絞り込み時間一覧作成メソッド
   def self.time_data(hour, min, suffix = "")
     data = []
     count = hour * (60 / min)

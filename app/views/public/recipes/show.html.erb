@@ -75,7 +75,6 @@
               <tr>
                 <th>材料名</th>
                 <th class="text-right">分量</th>
-                <!--<th class="px-0" style="width: 13%;"></th>-->
                 <th style="width: 20%;"></th>
               </tr>
             </thead>
@@ -201,29 +200,33 @@
   // });
   
   document.addEventListener('turbolinks:load', function() {
-    $('#review_<%= @recipe.id %>').empty();
-    let raty_<%= @recipe.id %> = document.querySelector('#review_<%= @recipe.id %>');
-    let option_<%= @recipe.id %> = {
-      starOn: "<%= asset_path('star-on.png') %>",
-      starOff: "<%= asset_path('star-off.png') %>",
-      starHalf: "<%= asset_path('star-half.png') %>",
-      readOnly: true,
-      score: <%= @recipe.reviews.average(:score).to_f.round(1) %>,
-    };
-    raty(raty_<%= @recipe.id %> ,option_<%= @recipe.id %>);
+    if($('#review_<%= @recipe.id %>').length) {
+      $('#review_<%= @recipe.id %>').empty();
+      let raty_<%= @recipe.id %> = document.querySelector('#review_<%= @recipe.id %>');
+      let option_<%= @recipe.id %> = {
+        starOn: "<%= asset_path('star-on.png') %>",
+        starOff: "<%= asset_path('star-off.png') %>",
+        starHalf: "<%= asset_path('star-half.png') %>",
+        readOnly: true,
+        score: <%= @recipe.reviews.average(:score).to_f.round(1) %>,
+      };
+      raty(raty_<%= @recipe.id %> ,option_<%= @recipe.id %>);
+    }
   });
 
 
   document.addEventListener('turbolinks:load', function() {
-    $('#recipe_review').empty();
-    const elem = document.querySelector('#recipe_review');
-    const opt = {
-      starOn: "<%= asset_path('star-on.png') %>",
-      starOff: "<%= asset_path('star-off.png') %>",
-      starHalf: "<%= asset_path('star-half.png') %>",
-      scoreName: 'review[score]',
-    };
-    raty(elem,opt);
+    if($('#recipe_review').length) {
+      $('#recipe_review').empty();
+      const elem = document.querySelector('#recipe_review');
+      const opt = {
+        starOn: "<%= asset_path('star-on.png') %>",
+        starOff: "<%= asset_path('star-off.png') %>",
+        starHalf: "<%= asset_path('star-half.png') %>",
+        scoreName: 'review[score]',
+      };
+      raty(elem,opt);
+    }
   });
 
   // document.addEventListener('turbolinks:load', function() {
