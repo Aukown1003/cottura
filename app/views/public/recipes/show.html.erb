@@ -13,9 +13,9 @@
         <% end %>
       </div>
     </div>
-
-    <% if user_signed_in? || admin_signed_in? %>
-      <% if current_admin.present? || @recipe.user.id == current_user.id %>
+    
+    <% if signed_in? %>
+      <% if authorized_user?(@recipe.user) %>
         <div class="col-12 d-flex justify-content-end mb-3">
           <%= link_to "レシピ編集", edit_recipe_path(@recipe.id), class: "btn btn-success me-3", 'data-turbolinks': false %>
           <%= link_to "レシピ削除", recipe_path(@recipe.id), method: :delete, data: { confirm: '削除してもよろしいですか？' }, class: "btn btn-danger" %>
@@ -34,6 +34,7 @@
         </div>
       <% end %>
     <% end %>
+    
     <div class="col-lg-6 mb-3 my-md-auto  text-center">
       <%= image_tag @recipe.get_recipe_image(480, 480), class: "img-fluid" %>
 
@@ -82,7 +83,7 @@
               <tbody>
                 <tr>
                   <td class="text-break"><%= ingredient.name %></td>
-                  <% if ingredient.unit.name == "大さじ" || ingredient.unit.name == "小さじ"%>
+                  <% if teaspoon_or_tablespoon?(ingredient) %>
                     <td class="text-right align-middle"><%= ingredient.unit.name %><span><%=" "%></span><%= convert_rational(ingredient_quantity(ingredient)) %></td>
                     <!--<td class="text-left"><%#= session[:recalculation].present? ? number_with_precision((BigDecimal(ingredient.quantity.to_s) * session[:recalculation]).round(1), precision: 1, strip_insignificant_zeros: true) : number_with_precision(ingredient.quantity, precision: 1, strip_insignificant_zeros: true) %></td>-->
                     <!--<td class="text-left align-middle"><%#= session[:recalculation].present? ? material_quantity_after_conversion(ingredient.quantity) : material_quantity(ingredient.quantity) %></td>-->
@@ -121,16 +122,14 @@
           </tr>
         </thead>
         <tbody>
-          <% counter = 1 %>
-          <% @recipe.recipe_steps.each do |step| %>
+          <% @recipe.recipe_steps.each.with_index(1) do |step, i| %>
             <tr class="border-bottom">
               <td class="align-middle"><%= image_tag step.get_recipe_step_image(90, 90) %></td>
               <td class="text-left bottom-0">
-                <h6><%= "Step.#{counter}" %></h6>
+                <h6><%= "Step.#{i}" %></h6>
                 <p class="mb-0"><%= br_attach(step.content) %></p>
               </td>
             </tr>
-          <% counter = counter.to_i + 1 %>
           <% end %>
         </tbody>
       </table>
@@ -147,12 +146,10 @@
       </div>
     <% end %>
 
-    <% if user_signed_in? %>
-      <% if @recipe.user.id != current_user.id && current_user.email != "guest@example.com"  %>
-        <div class="col-md-11 mx-auto mt-3">
-          <%= render "/public/recipes/review_new_form", recipe: @recipe, review: @review %>
-        </div>
-      <% end %>
+    <% if signed_in_and_not_guest_or_myself?(@recipe.user) %>
+      <div class="col-md-11 mx-auto mt-3">
+        <%= render "/public/recipes/review_new_form", recipe: @recipe, review: @review %>
+      </div>
     <% end %>
 
     <% unless @recipe.reviews.empty? %>
@@ -164,10 +161,8 @@
             <div class="mb-1"><%= link_to "投稿者：#{review.user.name}", user_path(review.user.id) %></div>
             <div class="mb-1"><%= br_attach(review.content) %></div>
             <div class="mb-1"><%= jp_time_date(review.created_at) %></div>
-            <% if user_signed_in? || admin_signed_in? %>
-              <% if current_admin.present? || review.user.id == current_user.id %>
-                <div class="mb-1"><%= link_to "このコメントを削除", review_path(id: review.id, recipe_id: @recipe.id), method: :delete, data: { confirm: '削除してもよろしいですか？' }, class:"btn btn-sm btn-danger" %></div>
-              <% end %>
+            <% if signed_in? && authorized_user?(review.user) %>
+              <div class="mb-1"><%= link_to "このコメントを削除", review_path(id: review.id, recipe_id: @recipe.id), method: :delete, data: { confirm: '削除してもよろしいですか？' }, class:"btn btn-sm btn-danger" %></div>
             <% end %>
           </div>
         <% end %>

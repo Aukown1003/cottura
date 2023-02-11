@@ -29,11 +29,16 @@ class Recipe < ApplicationRecord
   validates :total_time, presence: true
   validates :recipe_ingredients, length: {minimum: 1}
   validates :recipe_steps, length: {minimum: 1}
-
-  scope :open, -> { where(is_open: true).includes(:recipe_steps, :recipe_ingredients) }
-  scope :ordered_by_updated_time, -> { order(updated_at: :asc) }
+  
+  # スコープ
+  scope :with_user, -> { includes(:user) }
+  scope :with_ingredient_and_step, -> { includes(:recipe_steps, :recipe_ingredients) }
+  scope :with_recipe_detail_and_review, -> { includes(:recipe_ingredients, :recipe_steps, :tags, :reviews) }
+  scope :by_open, -> { where(is_open: true) }
+  scope :by_show_user, ->(user) { where(users: {id: user.id}) }
   scope :by_category, -> (id) { where(category: id) }
   scope :by_time, -> (time) { where(total_time: ..time) }
+  scope :ordered_by_updated_time, -> { order(updated_at: :desc) }
 
   def favorited_by(user)
     favorites.exists?(user_id: user.id)

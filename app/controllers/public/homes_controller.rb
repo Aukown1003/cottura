@@ -1,5 +1,5 @@
 class Public::HomesController < ApplicationController
   def top
-    @new_recipes = Recipe.where(is_open: true).order(created_at: :desc).limit(4)
+    @new_recipes = Recipe.by_open.ordered_by_updated_time.limit(4)
   end
 end

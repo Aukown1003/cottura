@@ -44,7 +44,7 @@ module Public::RecipesHelper
     score.average(:score).to_f.round(1)
   end
   
-  # ジャンルの表示メソッド
+  # ジャンルの表示
   def genre_select(form, recipe)
     if recipe.category.present?
       form.collection_select(:genre_id, @genre, :id, :name, {}, selected: recipe.category.genre )
@@ -53,7 +53,7 @@ module Public::RecipesHelper
     end
   end
   
-  # カテゴリーの表示メソッド
+  # カテゴリーの表示
   def category_select(form, recipe)
     if recipe.category.present?
       form.collection_select(:category_id, @category.all, :id, :name, {include_blank: "ジャンルを選択後、選択可能になります"}, selected: recipe.category )
@@ -62,19 +62,24 @@ module Public::RecipesHelper
     end
   end
 
-  # レシピの再計算ヘルパー(再計算した場合)
+  # レシピの再計算(再計算した場合)
   def material_quantity_after_conversion(quantity)
     number_with_precision((BigDecimal(quantity.to_s) * session[:recalculation]).round(1), precision: 1, strip_insignificant_zeros: true)
   end
   
-  # レシピの再計算ヘルパー(再計算しない場合)  
+  # レシピの再計算(再計算しない場合)  
   def material_quantity(quantity)
     number_with_precision(quantity, precision: 1, strip_insignificant_zeros: true)
   end
   
-  # レシピの再計算ヘルパー(上記２項目統合)
+  # レシピの再計算(上記２項目統合)
   def ingredient_quantity(ingredient)
     session[:recalculation].present? ? material_quantity_after_conversion(ingredient.quantity) : material_quantity(ingredient.quantity)
+  end
+  
+  # 大さじか小さじの場合
+  def teaspoon_or_tablespoon?(ingredient)
+    ingredient.unit.name == "大さじ" || ingredient.unit.name == "小さじ"
   end
   
   # レシピの分量の分数表示
@@ -89,4 +94,10 @@ module Public::RecipesHelper
       "#{ingredient.to_i}と" + rational_num.to_s
     end
   end
+  
+  # 自分以外のログインしているユーザーの場合(ゲストユーザーを除く)
+  def signed_in_and_not_guest_or_myself?(user)
+    user_signed_in? && user.id != current_user.id && current_user.email != "guest@example.com"
+  end
+
 end

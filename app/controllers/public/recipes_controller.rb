@@ -22,11 +22,11 @@ class Public::RecipesController < ApplicationController
     # end
     # @genres = Genre.all.includes(:categories)
 
-    @recipes = Recipe.open.ordered_by_updated_time
+    @recipes = Recipe.by_open.ordered_by_updated_time
     @recipes = @recipes.by_category(session[:category_id]) if session[:category_id].present?
     @recipes = @recipes.by_time(session[:search_time].to_i) if session[:search_time].present?
     @categories = Category.by_id(session[:category_id]) if session[:category_id].present?
-    @genres = Genre.includes(:categories)
+    @genres = Genre.with_category
 
     if params[:search].present?
       # params[:search] => "文字 文字"
@@ -48,7 +48,7 @@ class Public::RecipesController < ApplicationController
   end
 
   def show
-    @recipe = Recipe.includes(:recipe_ingredients, :recipe_steps, :tags, :reviews).find(params[:id])
+    @recipe = Recipe.with_recipe_detail_and_review.find(params[:id])
     @review = Review.new
     impressionist(@recipe, nil, unique: [:ip_address])
   end
@@ -68,9 +68,9 @@ class Public::RecipesController < ApplicationController
   end
 
   def edit
-    @recipe = Recipe.includes(:category).find(params[:id])
+    @recipe = Recipe.find(params[:id])
     @genre = Genre.all
-    @category = Category.where(genre_id: @recipe.category.genre.id)
+    @category = Category.by_genre(@recipe.category.genre.id)
   end
 
   def update
@@ -80,7 +80,7 @@ class Public::RecipesController < ApplicationController
     else
       @recipe.reload
       @genre = Genre.all
-      @category = Category.where(genre_id: @recipe.category.genre.id)
+      @category = Category.by_genre(@recipe.category.genre.id)
       flash.now[:alert] = "編集に失敗しました"
       render :edit
     end
@@ -186,6 +186,7 @@ class Public::RecipesController < ApplicationController
   #     redirect_to root_path, alert: '他の会員のレシピの更新、削除はできません。'
   #   end
   # end
+  
   def user_check
     recipe = Recipe.find(params[:id])
     return redirect_to root_path, alert: '未ログイン時、レシピの更新、削除はできません。' unless user_signed_in? || admin_signed_in?

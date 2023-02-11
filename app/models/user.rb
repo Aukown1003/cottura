@@ -45,6 +45,7 @@ class User < ApplicationRecord
     end
   end
   
+  # ユーザーの状態確認メソッド
   def active_for_authentication?
     super && (is_active == true)
   end

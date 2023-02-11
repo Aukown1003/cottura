@@ -40,7 +40,6 @@ class Public::ReviewsController < ApplicationController
       elsif current_user.id == recipe_user
         redirect_to recipes_path, alert: '自身のレシピにレビューを投稿、削除することは出来ません'
       end
-
     else
       redirect_to recipes_path, alert: '未ログイン時、レビューを投稿、削除することは出来ません'
     end

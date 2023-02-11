@@ -106,13 +106,12 @@
     <div class="col-md-10 border-bottom border-secondary pb-4 mx-auto">
       <h5 class="font-weight-bold border-bottom border-secondary required mt-3 mb-4">公開状況</h5>
       
-      <% if current_user.present? && current_user.email == "guest@example.com" %>
+      <% if guest_user? %>
         <div class="input-gest-radio text-center rounded-lg mx-auto">
           <%= f.radio_button(:is_open, :false, checked: "checked", class:"btn-check d-none") %>
           <%= f.label :is_open, "非公開", value: false, class:"radio-form m-0 w-100 py-2"%>
           <p class="mt-1 mb-0">※ゲストユーザーはレシピを公開できません</p>
         </div>
-        
       <% else %>
         <div class="row radio_button_group d-flex justify-content-around">
           <div class="input-radio text-center rounded-lg">
