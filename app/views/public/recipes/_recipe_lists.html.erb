@@ -12,25 +12,7 @@
   </div>
 
   <div class="d-flex justify-content-center my-1">
-    <%= render "/public/recipes/review", recipe: recipe %>
+    <%= render "/public/recipes/review_average", recipe: recipe %>
+    <span class="ms-2 review-average"><%= review_average(recipe.reviews) %>/ 5.0</span>
   </div>
 </div>
-
-
-<!--<div class="recipe-index-item border border-dark mb-4">-->
-<!--  <div class="recipe-image text-center">-->
-<!--    <%#= link_to image_tag(recipe.get_recipe_image(217, 217)), recipe_path(recipe.id), class:"img-fluid" %>-->
-<!--  </div>-->
-  
-<!--  <div class="recipe-index-title font-weight-bold text-truncate my-1">-->
-<!--    <%#= recipe.title %>-->
-<!--  </div>-->
-
-<!--  <div class="recipe-index-time my-1">-->
-<!--    <i class="far fa-clock"></i><span class="ps-2"><%#= view_time_data(recipe.total_time) %></span>-->
-<!--  </div>-->
-
-<!--  <div class="d-flex justify-content-center mb-2">-->
-<!--    <%#= render "/public/recipes/review", recipe: recipe %>-->
-<!--  </div>-->
-<!--</div>-->

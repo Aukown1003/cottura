@@ -39,7 +39,7 @@
 
       <div class="d-flex justify-content-center mt-3">
         <span class="me-2"><%= review_average(@recipe.reviews) %></span>
-        <div id="review_<%= @recipe.id %>"></div>
+        <%= render "/public/recipes/review_average", recipe: @recipe %>
         <span class="ms-2">(<%= @recipe.reviews.count %>)</span>
       </div>
 
@@ -150,13 +150,7 @@
     <% if user_signed_in? %>
       <% if @recipe.user.id != current_user.id && current_user.email != "guest@example.com"  %>
         <div class="col-md-11 mx-auto mt-3">
-          <%= form_with model: @review, url: reviews_path(@recipe.id), method: :post, local: true do |f| %>
-            <h5 class="font-weight-bold border-bottom border-secondary mb-3">レビュー入力</h5>
-            <%= f.hidden_field :recipe_id, value: @recipe.id %>
-            <div id="recipe_review" class ="mb-3"></div>
-            <%= f.text_area :content, placeholder: "コメントをここに入力", maxlength: "140", class:"w-100 textArea input-review  mb-2", required:"required", rows: 1 %>
-            <%= f.submit "レビューを投稿", class: "btn btn-secondary mb-3" %>
-          <% end %>
+          <%= render "/public/recipes/review_new_form", recipe: @recipe, review: @review %>
         </div>
       <% end %>
     <% end %>
@@ -199,36 +193,6 @@
   //   }
   // });
   
-  document.addEventListener('turbolinks:load', function() {
-    if($('#review_<%= @recipe.id %>').length) {
-      $('#review_<%= @recipe.id %>').empty();
-      let raty_<%= @recipe.id %> = document.querySelector('#review_<%= @recipe.id %>');
-      let option_<%= @recipe.id %> = {
-        starOn: "<%= asset_path('star-on.png') %>",
-        starOff: "<%= asset_path('star-off.png') %>",
-        starHalf: "<%= asset_path('star-half.png') %>",
-        readOnly: true,
-        score: <%= @recipe.reviews.average(:score).to_f.round(1) %>,
-      };
-      raty(raty_<%= @recipe.id %> ,option_<%= @recipe.id %>);
-    }
-  });
-
-
-  document.addEventListener('turbolinks:load', function() {
-    if($('#recipe_review').length) {
-      $('#recipe_review').empty();
-      const elem = document.querySelector('#recipe_review');
-      const opt = {
-        starOn: "<%= asset_path('star-on.png') %>",
-        starOff: "<%= asset_path('star-off.png') %>",
-        starHalf: "<%= asset_path('star-half.png') %>",
-        scoreName: 'review[score]',
-      };
-      raty(elem,opt);
-    }
-  });
-
   // document.addEventListener('turbolinks:load', function() {
   //   const elements = document.getElementsByClassName('ingredient-quantity')
   //   for(i = 0; i < elements.length; i++) {

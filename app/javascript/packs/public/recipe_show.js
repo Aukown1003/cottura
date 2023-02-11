@@ -1,4 +1,5 @@
-window.addEventListener('turbolinks:load', function () {
+/*global $*/
+$(function() {
   new textFieldHeight();
   const elements = document.getElementsByClassName('ingredient-quantity');
   const recalculationFormChange = new recalculationForm(elements);

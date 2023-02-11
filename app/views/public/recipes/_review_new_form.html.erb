@@ -1,0 +1,23 @@
+<%= form_with model: review, url: reviews_path(recipe.id), method: :post, local: true do |f| %>
+  <h5 class="font-weight-bold border-bottom border-secondary mb-3">レビュー入力</h5>
+  <%= f.hidden_field :recipe_id, value: recipe.id %>
+  <div id="recipe_review" class ="mb-3"></div>
+  <%= f.text_area :content, placeholder: "コメントをここに入力", maxlength: "140", class:"w-100 textArea input-review  mb-2", required:"required", rows: 1 %>
+  <%= f.submit "レビューを投稿", class: "btn btn-secondary mb-3" %>
+<% end %>
+
+<script>
+  document.addEventListener('turbolinks:load', function() {
+    if($('#recipe_review').length) {
+      $('#recipe_review').empty();
+      const elem = document.querySelector('#recipe_review');
+      const opt = {
+        starOn: "<%= asset_path('star-on.png') %>",
+        starOff: "<%= asset_path('star-off.png') %>",
+        starHalf: "<%= asset_path('star-half.png') %>",
+        scoreName: 'review[score]',
+      };
+      raty(elem,opt);
+    }
+  });
+</script>

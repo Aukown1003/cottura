@@ -2,16 +2,16 @@
 
 <script>
   document.addEventListener('turbolinks:load', function() {
-    $('#review_show_<%= review.id %>').empty();
-    let raty_<%= review.id %> = document.querySelector('#review_show_<%= review.id %>');
-    let option_<%= review.id %> = {
-      starOn: "<%= asset_path('star-on.png') %>",
-      starOff: "<%= asset_path('star-off.png') %>",
-      starHalf: "<%= asset_path('star-half.png') %>",
-      readOnly: true,
-      score: <%= review.score %>,
-    };
-    if (raty_<%= review.id %>) {
+    if($('#review_<%= @recipe.id %>').length) {
+      $('#review_show_<%= review.id %>').empty();
+      let raty_<%= review.id %> = document.querySelector('#review_show_<%= review.id %>');
+      let option_<%= review.id %> = {
+        starOn: "<%= asset_path('star-on.png') %>",
+        starOff: "<%= asset_path('star-off.png') %>",
+        starHalf: "<%= asset_path('star-half.png') %>",
+        readOnly: true,
+        score: <%= review.score %>,
+      };
       raty(raty_<%= review.id %>, option_<%= review.id %>);
     }
   });
