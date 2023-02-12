@@ -25,7 +25,7 @@ module ApplicationHelper
     admin_signed_in? || user_signed_in?
   end
   
-  # ユーザーがゲストユーザーの場合 これもレシピだけかな
+  # ユーザーがゲストユーザーの場合
   def guest_user?
     current_user.present? && current_user.email == "guest@example.com"
   end
@@ -36,14 +36,10 @@ module ApplicationHelper
   end
   
   # 管理者か本人の場合
-  # user_controllerはmodel.idじゃないとだめ
   def authorized_user?(model)
     current_admin.present? || model.id == current_user.id
   end
   
-  # 管理者かゲストユーザー以外の本人の場合
-  def authorized_user_without_guest?(user)
-    current_admin.present? || (current_user.email != "guest@example.com" && user.id == current_user.id)
-  end
+
   
 end

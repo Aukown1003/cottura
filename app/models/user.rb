@@ -18,6 +18,9 @@ class User < ApplicationRecord
   has_many :favorited_recipes, through: :favorites, source: :recipe
   has_many :reports, dependent: :destroy
 
+  # スコープ
+  scope :with_favorited_recipes, -> { includes(:favorited_recipes) }
+
   # ユーザーアカウント状態メソッド
   def active?
     if self.is_active == true

@@ -3,7 +3,7 @@ class Public::UsersController < ApplicationController
   include ApplicationHelper
   
   def show
-    @user = User.find(params[:id])
+    @user = User.with_favorited_recipes.find(params[:id])
     @recipes = Recipe.with_user.by_show_user(@user).by_open.page(params[:page])
     @favorited_recipes = @user.favorited_recipes.page(params[:page])
 

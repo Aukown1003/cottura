@@ -32,6 +32,7 @@ class Recipe < ApplicationRecord
   
   # スコープ
   scope :with_user, -> { includes(:user) }
+  scope :with_reviews, -> { includes(:reviews) }
   scope :with_ingredient_and_step, -> { includes(:recipe_steps, :recipe_ingredients) }
   scope :with_recipe_detail_and_review, -> { includes(:recipe_ingredients, :recipe_steps, :tags, :reviews) }
   scope :by_open, -> { where(is_open: true) }

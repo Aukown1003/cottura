@@ -2,7 +2,8 @@ class Public::RecipesController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create]
   before_action :user_check, only: [:edit, :update, :destroy]
   before_action :gest_user_request_check, only: [:create, :update]
-
+  include ApplicationHelper
+  
   def new
     @recipe = Recipe.new
     @genre = Genre.all
@@ -22,7 +23,7 @@ class Public::RecipesController < ApplicationController
     # end
     # @genres = Genre.all.includes(:categories)
 
-    @recipes = Recipe.by_open.ordered_by_updated_time
+    @recipes = Recipe.with_reviews.by_open.ordered_by_updated_time
     @recipes = @recipes.by_category(session[:category_id]) if session[:category_id].present?
     @recipes = @recipes.by_time(session[:search_time].to_i) if session[:search_time].present?
     @categories = Category.by_id(session[:category_id]) if session[:category_id].present?
@@ -188,9 +189,9 @@ class Public::RecipesController < ApplicationController
   # end
   
   def user_check
-    recipe = Recipe.find(params[:id])
-    return redirect_to root_path, alert: '未ログイン時、レシピの更新、削除はできません。' unless user_signed_in? || admin_signed_in?
-    return redirect_to root_path, alert: '他の会員のレシピの更新、削除はできません。' unless admin_signed_in? || recipe.user_id == current_user.id
+    recipe = Recipe.with_user.find(params[:id])
+    return redirect_to root_path, alert: '未ログイン時、レシピの更新、削除はできません。' unless signed_in?
+    return redirect_to root_path, alert: '他の会員のレシピの更新、削除はできません。' unless authorized_user?(recipe.user)
   end
   
   # def gest_user_request_check
@@ -203,8 +204,9 @@ class Public::RecipesController < ApplicationController
 
   def gest_user_request_check
     return if admin_signed_in?
-    return unless current_user.present? && current_user.email == "guest@example.com" && params[:recipe][:is_open] == "true"
-    redirect_to new_recipe_path, alert: 'ゲストユーザーはレシピを公開することは出来ません'
+    if guest_user? && params[:recipe][:is_open] == "true"
+      redirect_to new_recipe_path, alert: 'ゲストユーザーはレシピを公開することは出来ません'
+    end
   end
 
 end

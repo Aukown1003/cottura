@@ -100,4 +100,9 @@ module Public::RecipesHelper
     user_signed_in? && user.id != current_user.id && current_user.email != "guest@example.com"
   end
 
+  # 管理者か本人の場合(ゲストユーザーを除く)
+  def authorized_user_without_guest?(user)
+    current_admin.present? || (current_user.email != "guest@example.com" && user.id == current_user.id)
+  end
+
 end
