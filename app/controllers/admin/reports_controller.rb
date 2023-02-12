@@ -1,7 +1,7 @@
 class Admin::ReportsController < ApplicationController
   before_action :authenticate_admin!
   def show
-    @report = Report.includes(:user, recipe: :user).find(params[:id])
+    @report = Report.with_user_and_recipe.find(params[:id])
   end
 
   def destroy

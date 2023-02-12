@@ -81,7 +81,7 @@
 
 <script>
   window.onload = addToNewUrl();
-    function addToNewUrl() {
+  function addToNewUrl() {
     let path = location.pathname;
     let pattern = /^.*\/sign_up.*$/
   
@@ -89,52 +89,94 @@
     history.replaceState('', '', `${ path }/sign_up`)
   }
 
-// テキストエリアの可変処理
-  window.addEventListener('turbolinks:load', () => {
-    // textareaタグを全て取得
-    const textareaEls = document.querySelectorAll("textarea");
+  document.addEventListener('turbolinks:load', function () {
+    new textFieldHeight();
+    new imagePreview();
+  })
   
-    textareaEls.forEach((textareaEl) => {
-      // デフォルト値としてスタイル属性を付与
-      textareaEl.setAttribute("style", `height: ${textareaEl.scrollHeight}px;`);
-      // inputイベントが発生するたびに関数呼び出し
-      textareaEl.addEventListener("input", setTextareaHeight);
-    });
-  
-    // textareaの高さを計算して指定する関数
-    function setTextareaHeight() {
-      this.style.height = "auto";
-      this.style.height = `${this.scrollHeight}px`;
+  // テキストエリアの高さの自動調整
+  class textFieldHeight {
+    constructor() {
+      this.textareaEls = document.querySelectorAll("textarea");
+      this.textHeight();
     }
-  });
-
-
-
-
-  document.addEventListener('turbolinks:load', () => {
-    const createImageHTML = (blob) => {
-      const imageElement = document.getElementById('preview_user');
-      const blobImage = document.createElement('img');
-      // class属性の追加
-      blobImage.setAttribute('class', 'new-user-img img-fluid user_profile_image');
-      blobImage.setAttribute('src', blob);
-
-      imageElement.appendChild(blobImage);
-    };
-     // id = recipe_imageを取得(ファイルを選択時のボタン)、クリック時に以下の処理を実行
-     if (document.getElementById('user_image') != null ){
-        document.getElementById('user_image').addEventListener('change', (e) => {
-        const imageContent = document.querySelector(".new-user-img");
-        // getelemntByClassname
-        // imageContentに値が入っている場合remove
-        if (imageContent){
-          imageContent.remove();
-        }
-
-        const file = e.target.files[0];
-        const blob = window.URL.createObjectURL(file);
-        createImageHTML(blob);
+    textHeight() {
+      this.textareaEls.forEach(function(textareaEl) {
+        textareaEl.setAttribute("style", `height: ${textareaEl.scrollHeight}px;`);
+        textareaEl.addEventListener("input",function() {
+          this.style.height = "auto";
+          this.style.height = `${this.scrollHeight}px`;
         });
-     }
-  });
+      });
+    }
+  }
+
+  // レシピ画像のプレビュー
+  class imagePreview {
+    constructor() {
+      this.previewElement = document.getElementById('preview_user');
+      this.userImageElement = document.getElementById('user_image');
+      this.bindEvent();
+    }
+    
+    bindEvent() {
+      if (this.userImageElement) {
+        this.userImageElement.addEventListener('change', this.handleChange.bind(this));
+      }
+    }
+    
+    handleChange(e) {
+      const file = e.target.files[0];
+      if (file.name.endsWith(".webp")) {
+        alert("webp形式の画像は選択できません");
+        e.target.value = "";
+        return;
+      }
+      this.removeImageContent();
+      this.createImageHTML(window.URL.createObjectURL(file));
+    }
+    
+    removeImageContent() {
+      const imageContent = document.querySelector(".new-user-img");
+      if (imageContent) {
+        imageContent.remove();
+      }
+    }
+    
+    createImageHTML(blob) {
+      const blobImage = document.createElement('img');
+      blobImage.setAttribute('class', 'new-user-img img-fluid user_profile_image');
+      blobImage.setAttribute('width', '100');
+      blobImage.setAttribute('height', '100');
+      blobImage.setAttribute('src', blob);
+      this.previewElement.appendChild(blobImage);
+    }
+  }
+  
+  // document.addEventListener('turbolinks:load', () => {
+  //   const createImageHTML = (blob) => {
+  //     const imageElement = document.getElementById('preview_user');
+  //     const blobImage = document.createElement('img');
+  //     // class属性の追加
+  //     blobImage.setAttribute('class', 'new-user-img img-fluid user_profile_image');
+  //     blobImage.setAttribute('src', blob);
+
+  //     imageElement.appendChild(blobImage);
+  //   };
+  //   // id = recipe_imageを取得(ファイルを選択時のボタン)、クリック時に以下の処理を実行
+  //   if (document.getElementById('user_image') != null ){
+  //       document.getElementById('user_image').addEventListener('change', (e) => {
+  //       const imageContent = document.querySelector(".new-user-img");
+  //       // getelemntByClassname
+  //       // imageContentに値が入っている場合remove
+  //       if (imageContent){
+  //         imageContent.remove();
+  //       }
+
+  //       const file = e.target.files[0];
+  //       const blob = window.URL.createObjectURL(file);
+  //       createImageHTML(blob);
+  //       });
+  //   }
+  // });
 </script>

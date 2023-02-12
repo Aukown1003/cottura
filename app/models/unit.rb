@@ -4,4 +4,7 @@ class Unit < ApplicationRecord
   
   # バリデーション
   validates :name, presence: true
+  
+  # スコープ
+  scope :with_recipe_ingredients, -> { includes(:recipe_ingredients) }
 end
