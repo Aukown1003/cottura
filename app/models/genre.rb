@@ -5,4 +5,7 @@ class Genre < ApplicationRecord
   
   # バリデーション
   validates :name, presence: true
+  
+  # スコープ
+  scope :with_category, -> { includes(:categories) }
 end

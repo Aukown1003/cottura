@@ -2,7 +2,7 @@
 
 class Public::RegistrationsController < Devise::RegistrationsController
   before_action :ensure_normal_user, only: [:edit, :update, :destroy]
-# only: %i[update edit destroy]
+
   protected
   
   def ensure_normal_user

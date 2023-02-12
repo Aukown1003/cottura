@@ -1,14 +1,14 @@
 class Public::UsersController < ApplicationController
   before_action :user_check, only: [:edit, :update]
+  include ApplicationHelper
   
   def show
-    @user = User.find(params[:id])
-    @recipes = Recipe.includes(:user).where(users: {id: @user.id})
-                                    .where(recipes: { is_open: true }).page(params[:page])
+    @user = User.with_favorited_recipes.find(params[:id])
+    @recipes = Recipe.with_user.by_show_user(@user).by_open.page(params[:page])
     @favorited_recipes = @user.favorited_recipes.page(params[:page])
 
-    if admin_signed_in? || user_signed_in?
-      if current_admin.present? || current_user.id == User.find(params[:id]).id
+    if signed_in?
+      if authorized_user?(User.find(params[:id]))
         @recipes = @user.recipes.page(params[:page])
       end
     end
@@ -41,18 +41,11 @@ class Public::UsersController < ApplicationController
   def user_params
     params.require(:user).permit(:name, :content, :image)
   end
-  
+
   def user_check
-    unless user_signed_in? || admin_signed_in?
-      redirect_to root_path, alert: '未ログイン時、ユーザーの編集は行なえません'
-      return
-    end
-    user = User.find(params[:id])
-    if current_admin.present?
-      return
-    elsif user.id != current_user.id || user.email == 'guest@example.com'
-      redirect_to root_path, alert: 'ゲストユーザーや他の会員の情報の更新はできません。'
-    end
+    return if admin_signed_in?
+    return redirect_to root_path, alert: '未ログイン時、ユーザーの編集は行なえません' unless signed_in?
+    return redirect_to root_path, alert: 'ゲストユーザーや他の会員の情報の更新はできません' if unauthorized_user?(User.find(params[:id]))
   end
 
 end

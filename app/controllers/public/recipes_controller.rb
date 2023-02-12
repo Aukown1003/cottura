@@ -2,7 +2,8 @@ class Public::RecipesController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create]
   before_action :user_check, only: [:edit, :update, :destroy]
   before_action :gest_user_request_check, only: [:create, :update]
-
+  include ApplicationHelper
+  
   def new
     @recipe = Recipe.new
     @genre = Genre.all
@@ -10,17 +11,23 @@ class Public::RecipesController < ApplicationController
   end
 
   def index
-    @recipes = Recipe.where(is_open: true).includes(:recipe_steps, :recipe_ingredients).order(category_id: :asc)
-    if session[:category_id].present? && session[:search_time].present?
-      @recipes = @recipes.where(category: session[:category_id]).where(total_time: ..session[:search_time].to_i)
-      @categories = Category.where(id: session[:category_id])
-    elsif session[:category_id].present?
-      @recipes = @recipes.where(category: session[:category_id])
-      @categories = Category.where(id: session[:category_id])
-    elsif session[:search_time].present?
-      @recipes = @recipes.where(total_time: ..session[:search_time].to_i)
-    end
-    @genres = Genre.all.includes(:categories)
+    # @recipes = Recipe.where(is_open: true).includes(:recipe_steps, :recipe_ingredients).order(category_id: :asc)
+    # if session[:category_id].present? && session[:search_time].present?
+    #   @recipes = @recipes.where(category: session[:category_id]).where(total_time: ..session[:search_time].to_i)
+    #   @categories = Category.where(id: session[:category_id])
+    # elsif session[:category_id].present?
+    #   @recipes = @recipes.where(category: session[:category_id])
+    #   @categories = Category.where(id: session[:category_id])
+    # elsif session[:search_time].present?
+    #   @recipes = @recipes.where(total_time: ..session[:search_time].to_i)
+    # end
+    # @genres = Genre.all.includes(:categories)
+
+    @recipes = Recipe.with_reviews.by_open.ordered_by_updated_time
+    @recipes = @recipes.by_category(session[:category_id]) if session[:category_id].present?
+    @recipes = @recipes.by_time(session[:search_time].to_i) if session[:search_time].present?
+    @categories = Category.by_id(session[:category_id]) if session[:category_id].present?
+    @genres = Genre.with_category
 
     if params[:search].present?
       # params[:search] => "文字 文字"
@@ -42,7 +49,7 @@ class Public::RecipesController < ApplicationController
   end
 
   def show
-    @recipe = Recipe.includes(:recipe_ingredients, :recipe_steps, :tags, :reviews).find(params[:id])
+    @recipe = Recipe.with_recipe_detail_and_review.find(params[:id])
     @review = Review.new
     impressionist(@recipe, nil, unique: [:ip_address])
   end
@@ -62,9 +69,9 @@ class Public::RecipesController < ApplicationController
   end
 
   def edit
-    @recipe = Recipe.includes(:category).find(params[:id])
+    @recipe = Recipe.find(params[:id])
     @genre = Genre.all
-    @category = Category.where(genre_id: @recipe.category.genre.id)
+    @category = Category.by_genre(@recipe.category.genre.id)
   end
 
   def update
@@ -74,7 +81,7 @@ class Public::RecipesController < ApplicationController
     else
       @recipe.reload
       @genre = Genre.all
-      @category = Category.where(genre_id: @recipe.category.genre.id)
+      @category = Category.by_genre(@recipe.category.genre.id)
       flash.now[:alert] = "編集に失敗しました"
       render :edit
     end
@@ -89,7 +96,7 @@ class Public::RecipesController < ApplicationController
   def search_category
     @category = Category.where(genre_id: params[:genre_id])
     if @category.empty?
-      @category = [""]
+      @category = nil
     end
   end
 
@@ -136,8 +143,8 @@ class Public::RecipesController < ApplicationController
 
   def recalculation
     arry = {}
-    if params[:recipe].keys[1].present?
-      redirect_to request.referer, alert: '２つ以上の値で再計算は行なえません'
+    if params[:recipe].keys.size > 1
+      redirect_to request.referer, alert: '2つ以上の値で再計算は行なえません'
       return
     end
     params[:recipe].each do |key, value|
@@ -170,21 +177,34 @@ class Public::RecipesController < ApplicationController
       )
   end
   
+  # def user_check
+  #   user_id = Recipe.find(params[:id]).user_id
+  #   unless user_signed_in? || admin_signed_in?
+  #     redirect_to root_path, alert: '未ログイン時、レシピの更新、削除はできません。'
+  #     return
+  #   end
+  #   unless admin_signed_in? || user_id == current_user.id
+  #     redirect_to root_path, alert: '他の会員のレシピの更新、削除はできません。'
+  #   end
+  # end
+  
   def user_check
-    user_id = Recipe.find(params[:id]).user_id
-    unless user_signed_in? || admin_signed_in?
-      redirect_to root_path, alert: '未ログイン時、レシピの更新、削除はできません。'
-      return
-    end
-    unless admin_signed_in? || user_id == current_user.id
-      redirect_to root_path, alert: '他の会員のレシピの更新、削除はできません。'
-    end
+    recipe = Recipe.with_user.find(params[:id])
+    return redirect_to root_path, alert: '未ログイン時、レシピの更新、削除はできません。' unless signed_in?
+    return redirect_to root_path, alert: '他の会員のレシピの更新、削除はできません。' unless authorized_user?(recipe.user)
   end
   
+  # def gest_user_request_check
+  #   if admin_signed_in?
+  #     return
+  #   elsif current_user.present? && current_user.email == "guest@example.com" && params[:recipe][:is_open] == "true"
+  #     redirect_to new_recipe_path, alert: 'ゲストユーザーはレシピを公開することは出来ません'
+  #   end
+  # end
+
   def gest_user_request_check
-    if admin_signed_in?
-      return
-    elsif current_user.present? && current_user.email == "guest@example.com" && params[:recipe][:is_open] == "true"
+    return if admin_signed_in?
+    if guest_user? && params[:recipe][:is_open] == "true"
       redirect_to new_recipe_path, alert: 'ゲストユーザーはレシピを公開することは出来ません'
     end
   end

@@ -6,17 +6,15 @@
     <div class="col-md-6 text-center text-md-left offset-md-1">
       <h2 class="mb-2 mt-3 mt-md-0"><%= @user.name %>のキッチン</h2>
       <p><%= br_attach(@user.content) %></p>
-      <% if user_signed_in? || admin_signed_in? %>
-        <% if current_admin.present? || current_user.email != "guest@example.com" && @user.id == current_user.id %>
-          <div class="d-flex justify-content-center justify-content-md-start">
-            <div class="m-1">
-              <%= link_to "プロフィール編集", edit_user_path, class:"btn btn-sm btn-success" %>
-            </div>
-            <div class="m-1">
-              <%= link_to "ユーザー情報編集", edit_user_registration_path, class:"btn btn-sm btn-success" %>
-            </div>
+      <% if signed_in? && authorized_user_without_guest?(@user) %>
+        <div class="d-flex justify-content-center justify-content-md-start">
+          <div class="m-1">
+            <%= link_to "プロフィール編集", edit_user_path, class:"btn btn-sm btn-success" %>
           </div>
-        <% end %>
+          <div class="m-1">
+            <%= link_to "ユーザー情報編集", edit_user_registration_path, class:"btn btn-sm btn-success" %>
+          </div>
+        </div>
       <% end %>
     </div>
   </div>

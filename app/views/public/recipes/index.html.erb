@@ -1,5 +1,5 @@
 <div class="container-fluid p-0">
-  <div class="row">
+  <div class="row index-row">
     <div class="col-12 search-form">
       <%= form_with url: recipes_path, method: :get, class:"w-50 mx-auto my-2" do |f| %>
       <div class="text-center d-flex">
@@ -27,7 +27,7 @@
         <% if session[:search_time].present? %>
           <label class="tag_labels ms-1">
             <%= link_to category_id_delete_recipe_path(destroy_time_id: true), method: :delete, class:"btn btn-dark px-2" do %>
-              <%= view_search_data(session[:search_time]) %><span class="ms-1"><i class="fas fa-times"></i></span>
+              <%= view_time_data(session[:search_time],"以内") %><span class="ms-1"><i class="fas fa-times"></i></span>
             <% end %>
           </label>
         <% end %>
@@ -35,34 +35,20 @@
       </div>
     <% end %>
   </div>
-
-  <div class="jenre-category-box row ml-0 mr-0 w-100">
-    <% @genres.each do |genre| %>
-    <div class="col jenre-items p-0">
-      <div class="jenre-item text-center font-weight-bold p-2"><%= genre.name %><span class="ps-1"><i class="fas fa-caret-square-down"></i></span></div>
-      <div class="category-list">
-        <% genre.categories.each do |category| %>
-          <div class="category-item">
-            <%= link_to category.name, search_recipe_path(category_id: category.id), class:"w-100 btn"%>
-          </div>
-        <% end %>
-      </div>
-    </div>
-    <% end %>
-
-    <div class="col jenre-items p-0">
-      <div class="jenre-item text-center font-weight-bold p-2">時間で選ぶ<span class="ps-1"><i class="fas fa-caret-square-down"></i></span></div>
-      <div class="category-list">
-        <% Recipe.search_time_data.each do |search_time| %>
-          <div class="category-item">
-            <%= link_to search_time[0], search_recipe_path(search_time: search_time[1]), class:"w-100 d-block btn" %>
-          </div>
-        <% end %>
-      </di>
+  
+  <div class="jenre-category-box">
+    <botton class="modal-open btn btn-secondary rounded-0 w-100" id="modalOpen">
+      カテゴリー、時間で絞り込み
+    </botton>
+    <div id="mask" class="hidden"></div>
+    <div id="modal" class="hidden">
+      <%= render "/public/recipes/jenre-category-box", genres: @genres %>
     </div>
   </div>
 
-  
+  <div class="box-lg jenre-category-box row ml-0 mr-0 w-100">
+    <%= render "/public/recipes/jenre-category-box", genres: @genres %>
+  </div>
 </div>
 
 <div class="container my-5">
@@ -78,13 +64,30 @@
   </div>
 </div>
 
+<%= javascript_pack_tag 'public/recipe_index' %>
+
 <script>
-  $(function(){
-    $('.jenre-item').click(function(){
-      $(this).next('.category-list').slideToggle();
-      $(this).toggleClass("open");
-      $('.jenre-item').not($(this)).next('.category-list').slideUp();
-      $('.jenre-item').not($(this)).removeClass("open");
-    });
-  });
+  // $(function(){
+  //   $('.jenre-item').click(function(){
+  //     $(this).next('.category-list').slideToggle();
+  //     $(this).toggleClass("open");
+  //     $('.jenre-item').not($(this)).next('.category-list').slideUp();
+  //     $('.jenre-item').not($(this)).removeClass("open");
+  //   });
+  // });
+  
+  // window.addEventListener('turbolinks:load', function () {
+  //   const modalButton = document.getElementById('modalOpen');
+  //   const modal = document.getElementById('modal');
+  //   const mask = document.getElementById('mask');
+  //   if (!modalButton){ return false;}
+  //   modalButton.addEventListener('click', () => {
+  //     modal.classList.remove('hidden');
+  //     mask.classList.remove('hidden');
+  //   });
+  //   mask.addEventListener('click', () => {
+  //     modal.classList.add('hidden');
+  //     mask.classList.add('hidden');
+  //   });
+  // });
 </script>

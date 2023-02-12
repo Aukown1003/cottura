@@ -3,11 +3,12 @@ Rails.application.routes.draw do
     get 'units/index'
     get 'units/edit'
   end
-  # 制限有りはdevise_for :users,skip: [:passwords], controllers: {
+  
   devise_for :users, controllers: {
     registrations: "public/registrations",
     sessions: 'public/sessions'
   }
+  
   devise_scope :user do
     post 'user/guest_sign_in', to: 'public/sessions#guest_sign_in'
   end
@@ -34,20 +35,18 @@ Rails.application.routes.draw do
     resources :reviews, only: [:create, :destroy]
     resource :reports, only: [:new, :create]
   end
-
-  # registrationsは後で削除
+  
   devise_for :admin ,controllers: {
-    registrations: "admin/registrations",
     sessions: "admin/sessions"
   }
+  
   namespace :admin do
     root to: 'homes#top'
     resources :users, except: [:new, :create]
-    resources :genres, except: [:new]
-    resources :categories
-    resources :units
+    resources :genres, except: [:new, :show]
+    resources :categories, except: [:new, :index, :show]
+    resources :units, except: [:new, :show]
     resources :reports, only: [:show, :destroy]
-    #以下adminはすべてこの中に
   end
 
 end

@@ -1,3 +1,46 @@
+.recipe-index-item {
+  box-shadow: 6px 6px 10px 0px rgba(0, 0, 0, 0.4);
+  margin-right: 0.5rem;
+  width: 219px !important;
+  box-sizing: border-box;
+}
+
+.recipe-image {
+  overflow: hidden;
+}
+
+.img-fluid img:hover {
+  transform:scale(1.2,1.2);
+  transition:0.7s all;
+}
+
+.recipe-index-title {
+  color: #fff;
+  font-size: 18px;
+  top: 78%;
+  left: 50%;
+  width: 100%;
+  text-align: center;
+  background-color: rgba(0,0,0,0.6);
+  -ms-transform: translate(-50%,-22%);
+  -webkit-transform: translate(-50%,-22%);
+  transform: translate(-50%,-22%);
+  text-shadow: 2px 1px 1px black;
+}
+
+.recipe-index-time {
+  background-color: rgba(0,0,0,0.6);
+  color: #fff;
+  border-radius: 50%;
+  padding: 10px;
+  top: 2%;
+  left: 2%;
+  text-shadow: 2px 1px 1px black;
+}
+
+.index-row {
+  margin-right: 0px;
+}
 .search-form, .search-category{
   background-color: peachpuff;
 }
@@ -5,16 +48,6 @@
 .tag_labels {
   border-radius: 0.25rem;
   box-shadow: 6px 6px 10px 0px rgba(0, 0, 0, 0.4);
-}
-
-.recipe-index-item {
-  box-shadow: 6px 6px 10px 0px rgba(0, 0, 0, 0.4);
-  margin-right: 0.5rem;
-  width: 219px !important;
-  box-sizing: border-box;
-}
-.recipe-index-title, .recipe-index-time {
-  margin-left: 5%;
 }
 
 .page-item.active .page-link {
@@ -32,6 +65,84 @@
   margin-top: auto;
 }
 
+.jenre-item {
+  border: 1px solid black;
+  position: relative;
+  cursor: pointer;
+}
+
+.jenre-item .genre-name, .jenre-item .time-name {
+  text-align: center;
+}
+
+.category-list {
+  display: none;
+  box-sizing: border-box;
+}
+.category-item{
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+}
+
+.category-item .btn{
+  text-align: left;
+}
+
+#mask {
+  background-color: rgba(0, 0, 0, 0.5);/*背景色の指定*/
+  position: fixed; /* スクロールで移動しないようmodalの位置を固定 */
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 1; /*z-index を持つ要素はより小さな要素の上に重なる*/
+}
+
+#modal {
+  position: absolute;
+  transform: translate(0, 0) scale(1); /*平行移動（translate）、拡大縮小（scale）の指定*/
+  transition: 0.5s; /*上記trancsformに要する時間、今回は0.2秒*/
+  z-index: 2; /*z-index を持つ要素はより小さな要素の上に重なる*/
+  width: 50vw; /*モーダルの幅の指定、今回はvwを用いて画面の50%幅でモーダルを作成*/
+  background-color: white; /*背景色*/
+}
+
+#mask.hidden {
+  opacity: 0; /*透明度*/
+  visibility: hidden; /*視認性、最初は隠しておきたいのでhiddenを指定*/
+}
+
+#modal.hidden {
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-500px, 0) scale(1);
+}
+
+.modal-open {
+  display: none;
+}
+
+@media (max-width:767px) {
+  .modal-open {
+    display: block;
+  }
+  .box-lg {
+    display: none;
+  }
+  .jenre-item {
+    border-left: 1px solid black;
+  }
+  
+  .jenre-item .genre-name, .jenre-item .time-name {
+    text-align: left;
+  }
+  
+  .category-item a {
+    padding-left: 5vw;
+  }
+}
+  
 @media (min-width:1400px) {
   .recipe-index-items .recipe-index-item:nth-child(5n+1){
     margin-left: 0.35rem;
@@ -66,6 +177,9 @@
   .recipe-index-items .recipe-index-item:nth-child(3n){
      margin-right: 0;
   }
+  .jenre-item p, .category-item a{
+    font-size: 15px;
+  }
 }
 
 
@@ -87,21 +201,7 @@
   .recipe-index-item {
     margin: 0 auto;
   }
-  .jenre-category-box{
+  .jenre-category-box, .category-item a {
     font-size: 12px;
   }
-}
-
-.jenre-item {
-  border: 1px solid black;
-  position: relative;
-  z-index: +1;
-  cursor: pointer;
-}
-.category-list {
-    display: none;
-    box-sizing: border-box;
-}
-.category-item{
-    border-bottom: 1px solid black;
 }

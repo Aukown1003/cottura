@@ -13,11 +13,11 @@
         <% end %>
       </div>
     </div>
-
-    <% if user_signed_in? || admin_signed_in? %>
-      <% if current_admin.present? || @recipe.user.id == current_user.id %>
+    
+    <% if signed_in? %>
+      <% if authorized_user?(@recipe.user) %>
         <div class="col-12 d-flex justify-content-end mb-3">
-          <%= link_to "レシピ編集", edit_recipe_path(@recipe.id), class: "btn btn-success me-3" %>
+          <%= link_to "レシピ編集", edit_recipe_path(@recipe.id), class: "btn btn-success me-3", 'data-turbolinks': false %>
           <%= link_to "レシピ削除", recipe_path(@recipe.id), method: :delete, data: { confirm: '削除してもよろしいですか？' }, class: "btn btn-danger" %>
         </div>
       <% else %>
@@ -34,12 +34,13 @@
         </div>
       <% end %>
     <% end %>
-    <div class="col-md-6 mb-3 my-md-auto  text-center">
+    
+    <div class="col-lg-6 mb-3 my-md-auto  text-center">
       <%= image_tag @recipe.get_recipe_image(480, 480), class: "img-fluid" %>
 
       <div class="d-flex justify-content-center mt-3">
         <span class="me-2"><%= review_average(@recipe.reviews) %></span>
-        <div id="review_<%= @recipe.id %>"></div>
+        <%= render "/public/recipes/review_average", recipe: @recipe %>
         <span class="ms-2">(<%= @recipe.reviews.count %>)</span>
       </div>
 
@@ -51,7 +52,7 @@
 
     </div>
 
-    <div class="col-md-6">
+    <div class="col-lg-6">
       <div class="mb-3">
         <h5 class="font-weight-bold border-bottom border-secondary mb-3">レシピ紹介</h5>
         <p class="p-2"><%= br_attach(@recipe.content) %></p>
@@ -74,23 +75,22 @@
             <thead>
               <tr>
                 <th>材料名</th>
-                <th class="text-right" style="width: 24%;">分量</th>
-                <th style="width: 7%;"></th>
-                <th style="width: 19%;"></th>
+                <th class="text-right">分量</th>
+                <th style="width: 20%;"></th>
               </tr>
             </thead>
             <% @recipe.recipe_ingredients.each do |ingredient| %>
               <tbody>
                 <tr>
                   <td class="text-break"><%= ingredient.name %></td>
-                  <% if ingredient.unit.name == "大さじ" || ingredient.unit.name == "小さじ"%>
-                    <td class="text-right align-middle"><%= ingredient.unit.name %></td>
+                  <% if teaspoon_or_tablespoon?(ingredient) %>
+                    <td class="text-right align-middle"><%= ingredient.unit.name %><span><%=" "%></span><%= convert_rational(ingredient_quantity(ingredient)) %></td>
                     <!--<td class="text-left"><%#= session[:recalculation].present? ? number_with_precision((BigDecimal(ingredient.quantity.to_s) * session[:recalculation]).round(1), precision: 1, strip_insignificant_zeros: true) : number_with_precision(ingredient.quantity, precision: 1, strip_insignificant_zeros: true) %></td>-->
-                    <td class="text-left align-middle"><%= session[:recalculation].present? ? material_quantity_after_conversion(ingredient.quantity) : material_quantity(ingredient.quantity) %></td>
+                    <!--<td class="text-left align-middle"><%#= session[:recalculation].present? ? material_quantity_after_conversion(ingredient.quantity) : material_quantity(ingredient.quantity) %></td>-->
                   <% else %>
                     <!--<td class="text-right"><%#= session[:recalculation].present? ? number_with_precision((BigDecimal(ingredient.quantity.to_s) * session[:recalculation]).round(1), precision: 1, strip_insignificant_zeros: true) : number_with_precision(ingredient.quantity, precision: 1, strip_insignificant_zeros: true) %></td>-->
-                    <td class="text-right align-middle"><%= session[:recalculation].present? ? material_quantity_after_conversion(ingredient.quantity) : material_quantity(ingredient.quantity) %></td>
-                    <td class="text-left align-middle"><%= ingredient.unit.name %></td>
+                    <!--<td class="text-right align-middle"><%#= session[:recalculation].present? ? material_quantity_after_conversion(ingredient.quantity) : material_quantity(ingredient.quantity) %></td>-->
+                    <td class="text-right align-middle"><%= ingredient_quantity(ingredient) %><span><%=" "%></span><%= ingredient.unit.name %></td>
                   <% end %>
                   <td class="align-middle"><%= f.number_field (ingredient.id).to_s,  placeholder: "分量", min: 0.1, step: 0.1, class:"ingredient-quantity d-block mx-auto text-center w-100"%></td>
                 </tr>
@@ -101,7 +101,7 @@
             <% end %>
             <tbody>
               <tr class="text-center border-0">
-                <td colspan="3" class="text-right"><%= link_to "分量のリセット", recipe_path(@recipe.id), class:"btn btn-secondary" %></td>
+                <td colspan="2" class="text-right"><%= link_to "分量のリセット", recipe_path(@recipe.id), class:"btn btn-secondary" %></td>
                 <td><%= f.submit "再計算", class:"btn btn-primary" %></td>
               </tr>
             </tbody>
@@ -122,16 +122,14 @@
           </tr>
         </thead>
         <tbody>
-          <% counter = 1 %>
-          <% @recipe.recipe_steps.each do |step| %>
+          <% @recipe.recipe_steps.each.with_index(1) do |step, i| %>
             <tr class="border-bottom">
               <td class="align-middle"><%= image_tag step.get_recipe_step_image(90, 90) %></td>
               <td class="text-left bottom-0">
-                <h6><%= "Step.#{counter}" %></h6>
+                <h6><%= "Step.#{i}" %></h6>
                 <p class="mb-0"><%= br_attach(step.content) %></p>
               </td>
             </tr>
-          <% counter = counter.to_i + 1 %>
           <% end %>
         </tbody>
       </table>
@@ -148,18 +146,10 @@
       </div>
     <% end %>
 
-    <% if user_signed_in? %>
-      <% if @recipe.user.id != current_user.id && current_user.email != "guest@example.com"  %>
-        <div class="col-md-11 mx-auto mt-3">
-          <%= form_with model: @review, url: reviews_path(@recipe.id), method: :post, local: true do |f| %>
-            <h5 class="font-weight-bold border-bottom border-secondary mb-3">レビュー入力</h5>
-            <%= f.hidden_field :recipe_id, value: @recipe.id %>
-            <div id="recipe_review" class ="mb-3"></div>
-            <%= f.text_area :content, placeholder: "コメントをここに入力", maxlength: "140", class:"w-100 textArea input-review  mb-2", required:"required", rows: 1 %>
-            <%= f.submit "レビューを投稿", class: "btn btn-secondary mb-3" %>
-          <% end %>
-        </div>
-      <% end %>
+    <% if signed_in_and_not_guest_or_myself?(@recipe.user) %>
+      <div class="col-md-11 mx-auto mt-3">
+        <%= render "/public/recipes/review_new_form", recipe: @recipe, review: @review %>
+      </div>
     <% end %>
 
     <% unless @recipe.reviews.empty? %>
@@ -171,10 +161,8 @@
             <div class="mb-1"><%= link_to "投稿者：#{review.user.name}", user_path(review.user.id) %></div>
             <div class="mb-1"><%= br_attach(review.content) %></div>
             <div class="mb-1"><%= jp_time_date(review.created_at) %></div>
-            <% if user_signed_in? || admin_signed_in? %>
-              <% if current_admin.present? || review.user.id == current_user.id %>
-                <div class="mb-1"><%= link_to "このコメントを削除", review_path(id: review.id, recipe_id: @recipe.id), method: :delete, data: { confirm: '削除してもよろしいですか？' }, class:"btn btn-sm btn-danger" %></div>
-              <% end %>
+            <% if signed_in? && authorized_user?(review.user) %>
+              <div class="mb-1"><%= link_to "このコメントを削除", review_path(id: review.id, recipe_id: @recipe.id), method: :delete, data: { confirm: '削除してもよろしいですか？' }, class:"btn btn-sm btn-danger" %></div>
             <% end %>
           </div>
         <% end %>
@@ -183,68 +171,41 @@
 
   </div>
 </div>
+<%= javascript_pack_tag 'public/recipe_show' %>
 
 <script>
+  // window.addEventListener('turbolinks:load', () => {
+  //   const textareaEls = document.querySelectorAll("textarea");
 
-  window.addEventListener('turbolinks:load', () => {
-    const textareaEls = document.querySelectorAll("textarea");
+  //   textareaEls.forEach((textareaEl) => {
+  //     textareaEl.setAttribute("style", `height: ${textareaEl.scrollHeight}px;`);
+  //     textareaEl.addEventListener("input", setTextareaHeight);
+  //   });
 
-    textareaEls.forEach((textareaEl) => {
-      textareaEl.setAttribute("style", `height: ${textareaEl.scrollHeight}px;`);
-      textareaEl.addEventListener("input", setTextareaHeight);
-    });
-
-    function setTextareaHeight() {
-      this.style.height = "auto";
-      this.style.height = `${this.scrollHeight}px`;
-    }
-  });
-
-
-  document.addEventListener('turbolinks:load', function() {
-    $('#review_<%= @recipe.id %>').empty();
-    let raty_<%= @recipe.id %> = document.querySelector('#review_<%= @recipe.id %>');
-    let option_<%= @recipe.id %> = {
-      starOn: "<%= asset_path('star-on.png') %>",
-      starOff: "<%= asset_path('star-off.png') %>",
-      starHalf: "<%= asset_path('star-half.png') %>",
-      readOnly: true,
-      score: <%= @recipe.reviews.average(:score).to_f.round(1) %>,
-    };
-    raty(raty_<%= @recipe.id %> ,option_<%= @recipe.id %>);
-  });
-
-
-  document.addEventListener('turbolinks:load', function() {
-    $('#recipe_review').empty();
-    const elem = document.querySelector('#recipe_review');
-    const opt = {
-      starOn: "<%= asset_path('star-on.png') %>",
-      starOff: "<%= asset_path('star-off.png') %>",
-      starHalf: "<%= asset_path('star-half.png') %>",
-      scoreName: 'review[score]',
-    };
-    raty(elem,opt);
-  });
-
-  document.addEventListener('turbolinks:load', function() {
-    const elements = document.getElementsByClassName('ingredient-quantity')
-    for(i = 0; i < elements.length; i++) {
-      elements[i].addEventListener('change', () => {
+  //   function setTextareaHeight() {
+  //     this.style.height = "auto";
+  //     this.style.height = `${this.scrollHeight}px`;
+  //   }
+  // });
   
-        Array.prototype.forEach.call(elements, (element) => {
-          if (!element.value) {
-            element.disabled = true
-          }
-        })
+  // document.addEventListener('turbolinks:load', function() {
+  //   const elements = document.getElementsByClassName('ingredient-quantity')
+  //   for(i = 0; i < elements.length; i++) {
+  //     elements[i].addEventListener('change', () => {
   
-        const inputValues = Array.prototype.map.call(elements, e => e.value)
-        if(inputValues.filter(e => e).length == 0) {
-          Array.prototype.forEach.call(elements, (element) => {
-            element.disabled = false
-          })
-        }
-      })
-    }
-  });
+  //       Array.prototype.forEach.call(elements, (element) => {
+  //         if (!element.value) {
+  //           element.disabled = true
+  //         }
+  //       })
+  
+  //       const inputValues = Array.prototype.map.call(elements, e => e.value)
+  //       if(inputValues.filter(e => e).length == 0) {
+  //         Array.prototype.forEach.call(elements, (element) => {
+  //           element.disabled = false
+  //         })
+  //       }
+  //     })
+  //   }
+  // });
 </script>
