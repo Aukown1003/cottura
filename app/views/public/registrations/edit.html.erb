@@ -60,4 +60,13 @@
   </div>
 </div>
 
-<%= javascript_pack_tag 'public/url_changer' %>
+<script>
+  window.onload = addToNewUrl();
+  function addToNewUrl() {
+    let path = location.pathname;
+    let pattern = /^.*\/edit.*$/
+  
+    if(path.match(pattern)) return;
+    history.replaceState('', '', `${ path }/edit`)
+  }
+</script>

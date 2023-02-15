@@ -8,8 +8,9 @@
   object-fit: cover;
 }
 /* レシピ画像(新規) */
-.recipe-img{
+.new-recipe-image {
   width: 480px;
+  height: 480px;
   object-fit: cover;
 }
 

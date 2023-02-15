@@ -60,18 +60,16 @@
 
 <%= javascript_pack_tag 'public/user_edit' %>
 <%= javascript_pack_tag 'public/text_field' %>
-<%= javascript_pack_tag 'public/url_changer' %>
 
 <script>
-
-  // window.onload = addToNewUrl();
-  // function addToNewUrl() {
-  //   let path = location.pathname;
-  //   let pattern = /^.*\/edit.*$/
+  window.onload = addToNewUrl();
+  function addToNewUrl() {
+    let path = location.pathname;
+    let pattern = /^.*\/edit.*$/
   
-  //   if(path.match(pattern)) return;
-  //   history.replaceState('', '', `${ path }/edit`)
-  // }
+    if(path.match(pattern)) return;
+    history.replaceState('', '', `${ path }/edit`)
+  }
 
   // document.addEventListener('turbolinks:load', function () {
   //   new textFieldHeight();

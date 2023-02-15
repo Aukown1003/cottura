@@ -32,6 +32,14 @@
 <%= javascript_pack_tag 'public/text_field' %>
 
 <script>
+  window.onload = addToNewUrl();
+  function addToNewUrl() {
+    let path = location.pathname;
+    let pattern = /^.*\/new.*$/
+  
+    if(path.match(pattern)) return;
+    history.replaceState('', '', `${ path }/new`)
+  }
   // document.addEventListener('turbolinks:load', function () {
   //   const textfield = new textFieldHeight();
   //   if (textfield.textareaEls.length > 0) {
