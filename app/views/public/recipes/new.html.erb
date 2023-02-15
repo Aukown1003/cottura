@@ -3,13 +3,15 @@
   <%= render 'form', recipe: @recipe %>
 </div>
 
-<script>
-window.onload = addToNewUrl();
-  function addToNewUrl() {
-  let path = location.pathname;
-  let pattern = /^.*\/new.*$/
+<%= javascript_pack_tag 'public/url_changer' %>
 
-  if(path.match(pattern)) return;
-  history.replaceState('', '', `${ path }/new`)
-}
+<script>
+// window.onload = addToNewUrl();
+//   function addToNewUrl() {
+//   let path = location.pathname;
+//   let pattern = /^.*\/new.*$/
+
+//   if(path.match(pattern)) return;
+//   history.replaceState('', '', `${ path }/new`)
+// }
 </script>

@@ -79,62 +79,83 @@
   </div>
 </div>
 
+<%= javascript_pack_tag 'public/text_field' %>
+<%= javascript_pack_tag 'public/url_changer' %>
+<%= javascript_pack_tag 'public/user_new' %>
+
 <script>
-  window.onload = addToNewUrl();
-    function addToNewUrl() {
-    let path = location.pathname;
-    let pattern = /^.*\/sign_up.*$/
+
+
+  // document.addEventListener('turbolinks:load', function () {
+  //   new imagePreview('preview_user', 'user_image', 'user_profile_image', 'new-user-img img-fluid user_profile_image');
+  // })
+
+  // // ユーザーの画像のプレビュー
+  // class imagePreview {
+  //   constructor(previewElement, imageElement, removeClassName, addClassName) {
+  //     this.previewElement = document.getElementById(previewElement);
+  //     this.imageElement = document.getElementById(imageElement);
+  //     this.removeClass = removeClassName;
+  //     this.addClass = addClassName;
+  //     this.bindEvent();
+  //   }
+    
+  //   bindEvent() {
+  //     if (this.imageElement) {
+  //       this.imageElement.addEventListener('change', this.handleChange.bind(this));
+  //     }
+  //   }
+    
+  //   handleChange(e) {
+  //     const file = e.target.files[0];
+  //     if (file.name.endsWith(".webp")) {
+  //       alert("webp形式の画像は選択できません");
+  //       e.target.value = "";
+  //       return;
+  //     }
+  //     this.removeImageContent();
+  //     this.createImageHTML(window.URL.createObjectURL(file));
+  //   }
+    
+  //   removeImageContent() {
+  //     const imageContent = document.querySelector(`.${this.removeClass}`);
+  //     if (imageContent) {
+  //       imageContent.remove();
+  //     }
+  //   }
   
-    if(path.match(pattern)) return;
-    history.replaceState('', '', `${ path }/sign_up`)
-  }
-
-// テキストエリアの可変処理
-  window.addEventListener('turbolinks:load', () => {
-    // textareaタグを全て取得
-    const textareaEls = document.querySelectorAll("textarea");
+  //   createImageHTML(blob) {
+  //     const blobImage = document.createElement('img');
+  //     blobImage.setAttribute('class', `${this.addClass}`);
+  //     blobImage.setAttribute('src', blob);
+  //     this.previewElement.appendChild(blobImage);
+  //   }
+  // }
   
-    textareaEls.forEach((textareaEl) => {
-      // デフォルト値としてスタイル属性を付与
-      textareaEl.setAttribute("style", `height: ${textareaEl.scrollHeight}px;`);
-      // inputイベントが発生するたびに関数呼び出し
-      textareaEl.addEventListener("input", setTextareaHeight);
-    });
-  
-    // textareaの高さを計算して指定する関数
-    function setTextareaHeight() {
-      this.style.height = "auto";
-      this.style.height = `${this.scrollHeight}px`;
-    }
-  });
+  // document.addEventListener('turbolinks:load', () => {
+  //   const createImageHTML = (blob) => {
+  //     const imageElement = document.getElementById('preview_user');
+  //     const blobImage = document.createElement('img');
+  //     // class属性の追加
+  //     blobImage.setAttribute('class', 'new-user-img img-fluid user_profile_image');
+  //     blobImage.setAttribute('src', blob);
 
+  //     imageElement.appendChild(blobImage);
+  //   };
+  //   // id = recipe_imageを取得(ファイルを選択時のボタン)、クリック時に以下の処理を実行
+  //   if (document.getElementById('user_image') != null ){
+  //       document.getElementById('user_image').addEventListener('change', (e) => {
+  //       const imageContent = document.querySelector(".new-user-img");
+  //       // getelemntByClassname
+  //       // imageContentに値が入っている場合remove
+  //       if (imageContent){
+  //         imageContent.remove();
+  //       }
 
-
-
-  document.addEventListener('turbolinks:load', () => {
-    const createImageHTML = (blob) => {
-      const imageElement = document.getElementById('preview_user');
-      const blobImage = document.createElement('img');
-      // class属性の追加
-      blobImage.setAttribute('class', 'new-user-img img-fluid user_profile_image');
-      blobImage.setAttribute('src', blob);
-
-      imageElement.appendChild(blobImage);
-    };
-     // id = recipe_imageを取得(ファイルを選択時のボタン)、クリック時に以下の処理を実行
-     if (document.getElementById('user_image') != null ){
-        document.getElementById('user_image').addEventListener('change', (e) => {
-        const imageContent = document.querySelector(".new-user-img");
-        // getelemntByClassname
-        // imageContentに値が入っている場合remove
-        if (imageContent){
-          imageContent.remove();
-        }
-
-        const file = e.target.files[0];
-        const blob = window.URL.createObjectURL(file);
-        createImageHTML(blob);
-        });
-     }
-  });
+  //       const file = e.target.files[0];
+  //       const blob = window.URL.createObjectURL(file);
+  //       createImageHTML(blob);
+  //       });
+  //   }
+  // });
 </script>

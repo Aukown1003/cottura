@@ -1,7 +1,7 @@
 class Admin::UnitsController < ApplicationController
   before_action :authenticate_admin!
   def index
-    @units = Unit.all.includes(:recipe_ingredients)
+    @units = Unit.with_recipe_ingredients
     @unit = Unit.new
   end
   

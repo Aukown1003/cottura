@@ -8,48 +8,12 @@ $(function() {
   });
 });
 
-//document.addEventListener('turbolinks:load', function () {
 $(function() {
-  new textFieldWidth();
-  new textFieldHeight();
   new addFields();
   new removeFields();
   new alertImage();
-  new imagePreview();
+  new imagePreview('preview', 'recipe_image', 'recipe-image', 'recipe-image img-fluid');
 })
-
-// テキストフィールドの幅の自動調整
-class textFieldWidth {
-  constructor() {
-    this.textFields = document.querySelectorAll("input[type='text']");
-    this.textWidth()
-  }
-  
-  textWidth() {
-    this.textFields.forEach(function(textField) {
-      textField.addEventListener("input", function() {
-        this.style.width = 17 + this.value.length + "ch";
-      });
-    });
-  }
-}
-
-// テキストエリアの高さの自動調整
-class textFieldHeight {
-  constructor() {
-    this.textareaEls = document.querySelectorAll("textarea");
-    this.textHeight();
-  }
-  textHeight() {
-    this.textareaEls.forEach(function(textareaEl) {
-      textareaEl.setAttribute("style", `height: ${textareaEl.scrollHeight}px;`);
-      textareaEl.addEventListener("input",function() {
-        this.style.height = "auto";
-        this.style.height = `${this.scrollHeight}px`;
-      });
-    });
-  }
-}
 
 // 材料、作り方、タグの項目追加
 class addFields {
@@ -117,18 +81,20 @@ class removeFields {
 
 // レシピ画像のプレビュー
 class imagePreview {
-  constructor() {
-    this.previewElement = document.getElementById('preview');
-    this.recipeImageElement = document.getElementById('recipe_image');
+  constructor(previewElement, imageElement, removeClassName, addClassName) {
+    this.previewElement = document.getElementById(previewElement);
+    this.imageElement = document.getElementById(imageElement);
+    this.removeClass = removeClassName;
+    this.addClass = addClassName;
     this.bindEvent();
   }
-
+  
   bindEvent() {
-    if (this.recipeImageElement) {
-      this.recipeImageElement.addEventListener('change', this.handleChange.bind(this));
+    if (this.imageElement) {
+      this.imageElement.addEventListener('change', this.handleChange.bind(this));
     }
   }
-
+  
   handleChange(e) {
     const file = e.target.files[0];
     if (file.name.endsWith(".webp")) {
@@ -139,9 +105,9 @@ class imagePreview {
     this.removeImageContent();
     this.createImageHTML(window.URL.createObjectURL(file));
   }
-
+  
   removeImageContent() {
-    const imageContent = document.querySelector('img');
+    const imageContent = document.querySelector(`.${this.removeClass}`);
     if (imageContent) {
       imageContent.remove();
     }
@@ -149,7 +115,7 @@ class imagePreview {
 
   createImageHTML(blob) {
     const blobImage = document.createElement('img');
-    blobImage.setAttribute('class', 'new-img img-fluid');
+    blobImage.setAttribute('class', `${this.addClass}`);
     blobImage.setAttribute('src', blob);
     this.previewElement.appendChild(blobImage);
   }

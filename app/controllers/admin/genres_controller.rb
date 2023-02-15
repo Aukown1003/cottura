@@ -4,7 +4,7 @@ class Admin::GenresController < ApplicationController
     @genres = Genre.all
     @genre = Genre.new
     if params[:genre_id].present?
-      @categories = Category.where(genre_id: params[:genre_id]).order(id: :ASC)
+      @categories = Category.by_genre(params[:genre_id]).order(id: :ASC)
     else
       @categories = Category.order(genre_id: :ASC)
     end

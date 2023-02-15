@@ -8,8 +8,8 @@
   object-fit: cover;
 }
 /* レシピ画像(新規) */
-.new-img{
-  width: 500px;
+.recipe-img{
+  width: 480px;
   object-fit: cover;
 }
 
@@ -36,7 +36,6 @@
   width: 30%;
   text-align: center;
   border-radius: 10px;
-  /*margin-top: 10px;*/
   margin: auto 0;
   padding: 10px 5px;
   color: white;
@@ -124,15 +123,6 @@ a.add_fields:hover,a.add_fields:visited{
 
 .recipe_step{
   counter-reset: number 0;
-}
-.step_number{
-  border-radius: 3px;
-  margin: auto;
-  width: 55px;
-  padding-right: 10px;
-  height: 20px;
-  line-height: 20px;
-  text-align: center;
 }
 
 .step_number::before {

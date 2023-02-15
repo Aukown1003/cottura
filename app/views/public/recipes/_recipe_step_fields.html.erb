@@ -15,8 +15,10 @@
     <div class="step-sample-image my-auto me-1">
       <%= step_image(f, @recipe) %>
     </div>
-    <p class="step_number"></p>
-    <%= f.text_area :content, placeholder: "作り方をここに記述！", class:"step-content textArea w-75", rows: 1%>
+    <div class="d-flex flex-column w-75">
+      <p class="step_number mb-1"></p>
+      <%= f.text_area :content, placeholder: "作り方をここに記述！", class:"step-content textArea"%>
+    </div>
     <%= link_to '#', class: "remove-field-btn" do %>
       <%= image_tag 'trash.svg', class:"remove_fields" %>
     <% end %>
