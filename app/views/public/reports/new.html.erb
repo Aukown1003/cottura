@@ -29,36 +29,30 @@
   </div>
 </div>
 
+<%= javascript_pack_tag 'public/text_field' %>
+
 <script>
-  document.addEventListener('turbolinks:load', function () {
-    new textFieldHeight();
-  })
-  class textFieldHeight {
-    constructor() {
-      this.textareaEls = document.querySelectorAll("textarea");
-      this.textHeight();
-    }
-    textHeight() {
-      this.textareaEls.forEach(function(textareaEl) {
-        textareaEl.setAttribute("style", `height: ${textareaEl.scrollHeight}px;`);
-        textareaEl.addEventListener("input",function() {
-          this.style.height = "auto";
-          this.style.height = `${this.scrollHeight}px`;
-        });
-      });
-    }
-  }
-  // window.addEventListener('turbolinks:load', () => {
-  //   const textareaEls = document.querySelectorAll("textarea");
-
-  //   textareaEls.forEach((textareaEl) => {
-  //     textareaEl.setAttribute("style", `height: ${textareaEl.scrollHeight}px;`);
-  //     textareaEl.addEventListener("input", setTextareaHeight);
-  //   });
-
-  //   function setTextareaHeight() {
-  //     this.style.height = "auto";
-  //     this.style.height = `${this.scrollHeight}px`;
+  // document.addEventListener('turbolinks:load', function () {
+  //   const textfield = new textFieldHeight();
+  //   if (textfield.textareaEls.length > 0) {
+  //     textfield.textHeight();
   //   }
-  // });
+  // })
+  
+  // class textFieldHeight {
+  //   constructor() {
+  //     this.textareaEls = document.querySelectorAll("textarea");
+  //     this.textHeight();
+  //   }
+  //   textHeight() {
+  //     this.textareaEls.forEach(function(textareaEl) {
+  //       textareaEl.setAttribute("style", `height: ${textareaEl.scrollHeight}px;`);
+  //       textareaEl.addEventListener("input",function() {
+  //         this.style.height = "auto";
+  //         this.style.height = `${this.scrollHeight}px`;
+  //       });
+  //     });
+  //   }
+  // }
+
 </script>

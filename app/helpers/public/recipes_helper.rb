@@ -3,9 +3,9 @@ module Public::RecipesHelper
   # レシピ写真ヘルパー
   def recipe_image(recipe)
     if recipe.image.attached?
-      image_tag recipe.get_recipe_image(480, 480), class: "img-fluid"
+      image_tag recipe.get_recipe_image(480, 480), class: "recipe-image img-fluid"
     else
-      image_tag 'no_image_item.png', class: "img-fluid default-image"
+      image_tag 'no_image_item.png', class: "recipe-image img-fluid"
     end
   end
 
