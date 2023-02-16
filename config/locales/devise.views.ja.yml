@@ -47,6 +47,10 @@ ja:
               blank: "が入力されていません。"
             genre:
               required: "が選択されていません。"
+        genre:
+          attributes:
+            name:
+              blank: "が入力されていません。"
         user:
           attributes:
             name:
