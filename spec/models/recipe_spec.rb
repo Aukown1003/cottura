@@ -9,7 +9,7 @@ describe Recipe, type: :model do
     let!(:recipe) { build(:recipe, user_id: user.id, category_id: category.id) }
     
     
-    it "レシピ名、調理時間、調理時間があれば保存できる" do
+    it "レシピ名、調理時間、調理時間、と材料と作り方が一つあれば保存できる" do
       recipe.recipe_ingredients.build(attributes_for(:recipe_ingredient, unit_id: unit.id)) 
       recipe.recipe_steps.build(attributes_for(:recipe_step))
       expect(recipe).to be_valid
@@ -66,13 +66,13 @@ describe Recipe, type: :model do
     end
     
     it "ログインしていないと保存できない" do
-      recipe.user = nil
+      recipe.user_id = nil
       recipe.valid?
       expect(recipe.errors[:user]).to include("が選択されていません。")
     end
     
     it "カテゴリーが未選択だと保存できない" do
-      recipe.category = nil
+      recipe.category_id = nil
       recipe.valid?
       expect(recipe.errors[:category]).to include("が選択されていません。")
     end

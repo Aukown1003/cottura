@@ -27,6 +27,8 @@ ja:
               required: "が選択されていません。"
         recipe_ingredient:
           attributes:
+            recipe:
+              required: "がありません。"
             name:
               blank: "が入力されていません。"
             quantity:
@@ -35,10 +37,14 @@ ja:
               required: "が選択されていません。"
         recipe_step:
           attributes:
+            recipe:
+              required: "がありません。"
             content:
               blank: "が入力されていません。"
         tag:
           attributes:
+            recipe:
+              required: "がありません。"
             name:
               blank: "が入力されていません。"
         category:
@@ -48,6 +54,32 @@ ja:
             genre:
               required: "が選択されていません。"
         genre:
+          attributes:
+            name:
+              blank: "が入力されていません。"
+        favorite:
+          attributes:
+            user:
+              required: "がありません。"
+            recipe:
+              required: "がありません。"
+        report:
+          attributes:
+            user:
+              required: "がありません。"
+            recipe:
+              required: "がありません。"
+            content:
+              blank: "が入力されていません。"
+        review:
+          attributes:
+            recipe:
+              required: "がありません。"
+            user:
+              required: "がありません。"
+            content:
+              blank: "が入力されていません。"
+        unit:
           attributes:
             name:
               blank: "が入力されていません。"
