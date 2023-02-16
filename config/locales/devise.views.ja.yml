@@ -7,7 +7,7 @@ ja:
         recipe:
           attributes:
             user_id:
-              blank: "が入力されていません。"
+              blank: "が入力されていません。不要かも"
             user:
               required: "が選択されていません。"
             title:
@@ -41,6 +41,12 @@ ja:
           attributes:
             name:
               blank: "が入力されていません。"
+        category:
+          attributes:
+            name:
+              blank: "が入力されていません。"
+            genre:
+              required: "が選択されていません。"
         user:
           attributes:
             name:

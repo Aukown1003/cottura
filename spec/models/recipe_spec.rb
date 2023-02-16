@@ -3,8 +3,9 @@ require 'rails_helper'
 describe Recipe, type: :model do
   describe 'レシピ保存時' do
     let(:user) { create(:user) }
-    let(:category) { create(:category) }
+    let(:genre) { create(:genre) }
     let(:unit) { create(:unit) }
+    let!(:category) { create(:category, genre_id: genre.id) }
     let!(:recipe) { build(:recipe, user_id: user.id, category_id: category.id) }
     
     
@@ -64,12 +65,50 @@ describe Recipe, type: :model do
       expect(recipe.errors[:total_time]).to include("が未選択です。")
     end
     
+    it "ログインしていないと保存できない" do
+      recipe.user = nil
+      recipe.valid?
+      expect(recipe.errors[:user]).to include("が選択されていません。")
+    end
+    
+    it "カテゴリーが未選択だと保存できない" do
+      recipe.category = nil
+      recipe.valid?
+      expect(recipe.errors[:category]).to include("が選択されていません。")
+    end
   end
   
   describe 'アソシエーション' do
-    it 'Recipe : User = N : 1' do
+    it 'レシピとユーザーは、N対1である' do
       expect(Recipe.reflect_on_association(:user).macro).to eq :belongs_to
     end
+    
+    it 'レシピとカテゴリーは、N対1である' do
+      expect(Recipe.reflect_on_association(:category).macro).to eq :belongs_to
+    end
+    
+    it 'レシピとレシピの材料は、1対Nである' do
+      expect(Recipe.reflect_on_association(:recipe_ingredients).macro).to eq :has_many
+    end
+    
+    it 'レシピとレシピの作り方は、1対Nである' do
+      expect(Recipe.reflect_on_association(:recipe_steps).macro).to eq :has_many
+    end
+    
+    it 'レシピとレビューは、1対Nである' do
+      expect(Recipe.reflect_on_association(:reviews).macro).to eq :has_many
+    end
+    
+    it 'レシピとタグは、1対Nである' do
+      expect(Recipe.reflect_on_association(:tags).macro).to eq :has_many
+    end
+    
+    it 'レシピとお気にいりは、1対Nである' do
+      expect(Recipe.reflect_on_association(:favorites).macro).to eq :has_many
+    end
+    
+    it 'レシピとレポートは、1対Nである' do
+      expect(Recipe.reflect_on_association(:reports).macro).to eq :has_many
+    end
   end
-
 end
