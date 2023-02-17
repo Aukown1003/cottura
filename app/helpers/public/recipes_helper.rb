@@ -67,7 +67,7 @@ module Public::RecipesHelper
     number_with_precision((BigDecimal(quantity.to_s) * session[:recalculation]).round(1), precision: 1, strip_insignificant_zeros: true)
   end
   
-  # レシピの再計算(再計算しない場合)  
+  # レシピの再計算(再計算しない場合)
   def material_quantity(quantity)
     number_with_precision(quantity, precision: 1, strip_insignificant_zeros: true)
   end

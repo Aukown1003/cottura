@@ -28,7 +28,7 @@ class Public::RecipesController < ApplicationController
     @recipes = @recipes.by_time(session[:search_time].to_i) if session[:search_time].present?
     @categories = Category.by_id(session[:category_id]) if session[:category_id].present?
     @genres = Genre.with_category
-
+    
     if params[:search].present?
       # params[:search] => "文字 文字"
       # .split(/ |　/) => ["文字","文字"] スペースで区切って配列に
@@ -142,18 +142,18 @@ class Public::RecipesController < ApplicationController
   end
 
   def recalculation
-    arry = {}
+    recipe_array = {}
     if params[:recipe].keys.size > 1
       redirect_to request.referer, alert: '2つ以上の値で再計算は行なえません'
       return
     end
     params[:recipe].each do |key, value|
       unless value.empty?
-        arry.store(key, value)
+        recipe_array.store(key, value)
       end
     end
-    get_recipe_id = arry.first[0]
-    get_quantity = arry.first[1]
+    get_recipe_id = recipe_array.first[0]
+    get_quantity = recipe_array.first[1]
     ingredient_quantity = RecipeIngredient.find(get_recipe_id).quantity
     ratio = (BigDecimal(get_quantity.to_s) / ingredient_quantity).to_f
     session[:recalculation] = ratio
