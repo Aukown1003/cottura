@@ -3,9 +3,9 @@ module Public::RecipesHelper
   # レシピ写真ヘルパー
   def recipe_image(recipe)
     if recipe.image.attached?
-      image_tag recipe.get_recipe_image(480, 480), class: "recipe-image img-fluid"
+      image_tag recipe.get_recipe_image(480, 480), class: "new-recipe-image img-fluid"
     else
-      image_tag 'no_image_item.png', class: "recipe-image img-fluid"
+      image_tag 'no_image_item.png', class: "new-recipe-image img-fluid"
     end
   end
 
@@ -47,18 +47,18 @@ module Public::RecipesHelper
   # ジャンルの表示
   def genre_select(form, recipe)
     if recipe.category.present?
-      form.collection_select(:genre_id, @genre, :id, :name, {}, selected: recipe.category.genre )
+      form.collection_select(:genre_id, @genres, :id, :name, {}, selected: recipe.category.genre )
     else
-      form.collection_select(:genre_id, @genre, :id, :name, include_blank: "ジャンルを選択してください")
+      form.collection_select(:genre_id, @genres, :id, :name, include_blank: "ジャンルを選択してください")
     end
   end
   
   # カテゴリーの表示
   def category_select(form, recipe)
     if recipe.category.present?
-      form.collection_select(:category_id, @category.all, :id, :name, {include_blank: "ジャンルを選択後、選択可能になります"}, selected: recipe.category )
+      form.collection_select(:category_id, @categories.all, :id, :name, {include_blank: "ジャンルを選択後、選択可能になります"}, selected: recipe.category )
     else
-      form.collection_select(:category_id, @category.all, :id, :name, {include_blank: "ジャンルを選択後、選択可能になります"}, disabled: true )
+      form.collection_select(:category_id, @categories.all, :id, :name, {include_blank: "ジャンルを選択後、選択可能になります"}, disabled: true )
     end
   end
 
@@ -67,7 +67,7 @@ module Public::RecipesHelper
     number_with_precision((BigDecimal(quantity.to_s) * session[:recalculation]).round(1), precision: 1, strip_insignificant_zeros: true)
   end
   
-  # レシピの再計算(再計算しない場合)  
+  # レシピの再計算(再計算しない場合)
   def material_quantity(quantity)
     number_with_precision(quantity, precision: 1, strip_insignificant_zeros: true)
   end

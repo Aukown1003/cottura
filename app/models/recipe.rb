@@ -1,6 +1,4 @@
 class Recipe < ApplicationRecord
-  #after_update :update_recipe_any_ingredients
-  #after_update :update_recipe_any_steps
   has_one_attached :image
   attribute :payload, :text
   is_impressionable counter_cache: true
@@ -23,7 +21,6 @@ class Recipe < ApplicationRecord
   has_many :reports, dependent: :destroy
 
   # バリデーション
-  validates :user_id, presence: true
   validates :title, presence: true, length: {maximum: 32}
   validates :content, presence: true, length: {maximum: 140}
   validates :total_time, presence: true

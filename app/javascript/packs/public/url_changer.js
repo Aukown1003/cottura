@@ -8,24 +8,34 @@
   
   function addToSignUpUrl() {
     let path = location.pathname;
-    let pattern = /^.*\/sign_up.*$/
-  
+    let pattern = /^.*\/edit.*$/
     if(path.match(pattern)) return;
-    history.replaceState('', '', `${ path }/sign_up`)
+    history.replaceState('', '', `/users/sign_up`)
   }
   
   function addToNewUrl() {
     let path = location.pathname;
-    let pattern = /^.*\/new.*$/
-  
+    let pattern = /^.*\/edit.*$/
     if(path.match(pattern)) return;
-    history.replaceState('', '', `${ path }/new`)
+    pattern = /^.*\/sign_up.*$/
+    if(path.match(pattern)) return;
+
+    history.replaceState('', '', `/recipes/new`)
   }
   
   function addToEditUrl() {
     let path = location.pathname;
-    let pattern = /^.*\/edit.*$/
-  
+    let pattern = /^.*\/new.*$/
     if(path.match(pattern)) return;
-    history.replaceState('', '', `${ path }/edit`)
+    pattern = /^.*\/sign_up.*$/
+    if(path.match(pattern)) return;
+    
+    
+    pattern = /^.*\/recipes.*$/
+    if(path.match(pattern)) {
+      history.replaceState('', '', `/recipes/edit`)
+      return;
+    }
+    history.replaceState('', '', `/users/edit`)
+    
   }

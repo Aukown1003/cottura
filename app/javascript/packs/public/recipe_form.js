@@ -8,11 +8,12 @@ $(function() {
   });
 });
 
+import { imagePreview } from "../image_preview.js"
 $(function() {
   new addFields();
   new removeFields();
   new alertImage();
-  new imagePreview('preview', 'recipe_image', 'recipe-image', 'recipe-image img-fluid');
+  new imagePreview('preview', 'recipe_image', 'new-recipe-image', 'new-recipe-image img-fluid');
 })
 
 // 材料、作り方、タグの項目追加
@@ -80,46 +81,46 @@ class removeFields {
 }
 
 // レシピ画像のプレビュー
-class imagePreview {
-  constructor(previewElement, imageElement, removeClassName, addClassName) {
-    this.previewElement = document.getElementById(previewElement);
-    this.imageElement = document.getElementById(imageElement);
-    this.removeClass = removeClassName;
-    this.addClass = addClassName;
-    this.bindEvent();
-  }
+// class imagePreview {
+//   constructor(previewElement, imageElement, removeClassName, addClassName) {
+//     this.previewElement = document.getElementById(previewElement);
+//     this.imageElement = document.getElementById(imageElement);
+//     this.removeClass = removeClassName;
+//     this.addClass = addClassName;
+//     this.bindEvent();
+//   }
   
-  bindEvent() {
-    if (this.imageElement) {
-      this.imageElement.addEventListener('change', this.handleChange.bind(this));
-    }
-  }
+//   bindEvent() {
+//     if (this.imageElement) {
+//       this.imageElement.addEventListener('change', this.handleChange.bind(this));
+//     }
+//   }
   
-  handleChange(e) {
-    const file = e.target.files[0];
-    if (file.name.endsWith(".webp")) {
-      alert("webp形式の画像は選択できません");
-      e.target.value = "";
-      return;
-    }
-    this.removeImageContent();
-    this.createImageHTML(window.URL.createObjectURL(file));
-  }
+//   handleChange(e) {
+//     const file = e.target.files[0];
+//     if (file.name.endsWith(".webp")) {
+//       alert("webp形式の画像は選択できません");
+//       e.target.value = "";
+//       return;
+//     }
+//     this.removeImageContent();
+//     this.createImageHTML(window.URL.createObjectURL(file));
+//   }
   
-  removeImageContent() {
-    const imageContent = document.querySelector(`.${this.removeClass}`);
-    if (imageContent) {
-      imageContent.remove();
-    }
-  }
+//   removeImageContent() {
+//     const imageContent = document.querySelector(`.${this.removeClass}`);
+//     if (imageContent) {
+//       imageContent.remove();
+//     }
+//   }
 
-  createImageHTML(blob) {
-    const blobImage = document.createElement('img');
-    blobImage.setAttribute('class', `${this.addClass}`);
-    blobImage.setAttribute('src', blob);
-    this.previewElement.appendChild(blobImage);
-  }
-}
+//   createImageHTML(blob) {
+//     const blobImage = document.createElement('img');
+//     blobImage.setAttribute('class', `${this.addClass}`);
+//     blobImage.setAttribute('src', blob);
+//     this.previewElement.appendChild(blobImage);
+//   }
+// }
 
 // 作り方でwebpファイルが添付された際の警告、ファイルの削除
 class alertImage {

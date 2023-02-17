@@ -84,7 +84,14 @@
 <%= javascript_pack_tag 'public/user_new' %>
 
 <script>
-
+  window.onload = addToNewUrl();
+  function addToNewUrl() {
+    let path = location.pathname;
+    let pattern = /^.*\/sign_up.*$/
+  
+    if(path.match(pattern)) return;
+    history.replaceState('', '', `${ path }/sign_up`)
+  }
 
   // document.addEventListener('turbolinks:load', function () {
   //   new imagePreview('preview_user', 'user_image', 'user_profile_image', 'new-user-img img-fluid user_profile_image');

@@ -6,7 +6,6 @@ class Category < ApplicationRecord
   
   # バリデーション
   validates :name, presence: true
-  validates :genre_id, presence: true
   
   # スコープ
   scope :by_id, -> (id) { where(id: id) }
