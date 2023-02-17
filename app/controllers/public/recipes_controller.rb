@@ -6,8 +6,8 @@ class Public::RecipesController < ApplicationController
   
   def new
     @recipe = Recipe.new
-    @genre = Genre.all
-    @category = Category.all
+    @genres = Genre.all
+    @categories = Category.all
   end
 
   def index

@@ -47,18 +47,18 @@ module Public::RecipesHelper
   # ジャンルの表示
   def genre_select(form, recipe)
     if recipe.category.present?
-      form.collection_select(:genre_id, @genre, :id, :name, {}, selected: recipe.category.genre )
+      form.collection_select(:genre_id, @genres, :id, :name, {}, selected: recipe.category.genre )
     else
-      form.collection_select(:genre_id, @genre, :id, :name, include_blank: "ジャンルを選択してください")
+      form.collection_select(:genre_id, @genres, :id, :name, include_blank: "ジャンルを選択してください")
     end
   end
   
   # カテゴリーの表示
   def category_select(form, recipe)
     if recipe.category.present?
-      form.collection_select(:category_id, @category.all, :id, :name, {include_blank: "ジャンルを選択後、選択可能になります"}, selected: recipe.category )
+      form.collection_select(:category_id, @categories.all, :id, :name, {include_blank: "ジャンルを選択後、選択可能になります"}, selected: recipe.category )
     else
-      form.collection_select(:category_id, @category.all, :id, :name, {include_blank: "ジャンルを選択後、選択可能になります"}, disabled: true )
+      form.collection_select(:category_id, @categories.all, :id, :name, {include_blank: "ジャンルを選択後、選択可能になります"}, disabled: true )
     end
   end
 

@@ -55,15 +55,6 @@
       <div class="selectdiv mb-3">
         <%= genre_select(f, recipe) %>
       </div>
-      <!--<%# if recipe.category.present? %>-->
-      <!--  <div class="selectdiv mb-3">-->
-      <!--    <%#= f.collection_select(:genre_id, @genre, :id, :name, {}, selected: recipe.category.genre ) %>-->
-      <!--  </div>-->
-      <!--<%# else %>-->
-      <!--  <div class="selectdiv mb-3">-->
-      <!--    <%#= f.collection_select(:genre_id, @genre, :id, :name, include_blank: "ジャンルを選択してください") %>-->
-      <!--  </div>-->
-      <!--<%# end %>-->
     </div>
 
     <div class="col-md-10 mb-3 mx-auto">
@@ -71,15 +62,7 @@
       <div class="selectdiv mb-3">
         <%= category_select(f, recipe) %>
       </div>
-      <!--<%# if recipe.category.present? %>-->
-      <!--  <div class="selectdiv mb-3">-->
-      <!--    <%#= f.collection_select(:category_id, @category.all, :id, :name, {include_blank: "ジャンルを選択後、選択可能になります"}, selected: recipe.category )%>-->
-      <!--  </div>-->
-      <!--<%# else %>-->
-      <!--  <div class="selectdiv mb-3">-->
-      <!--    <%#= f.collection_select(:category_id, @category.all, :id, :name, {include_blank: "ジャンルを選択後、選択可能になります"}, disabled: true )%>-->
-      <!--  </div>-->
-      <!--<%# end %>-->
+
     </div>
   </div>
 
