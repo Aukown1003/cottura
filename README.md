@@ -46,7 +46,7 @@
 ER図
 - https://app.diagrams.net/#G1wGo1P4-u-lNbNLx2ljPa1Z98Af7KatTV
 
-テーブル定義書、アプリケーション詳細設計(作成中)
+テーブル定義書、アプリケーション詳細設計
 - https://docs.google.com/spreadsheets/d/1jnGbXNi4KXIugBe_R0kpUMbWws8Fr0oqK7ycwsBHSDc/edit#gid=856357510
 
 ## 開発環境
