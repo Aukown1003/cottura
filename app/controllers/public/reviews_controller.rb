@@ -57,12 +57,11 @@ class Public::ReviewsController < ApplicationController
       return
     end
   
-    if params[:create] == "create"
+    if params[:action] == "create"
       recipe = Recipe.find(params[:review][:recipe_id])
     elsif params[:action] == "destroy"
       recipe = Recipe.find(params[:recipe_id])
     end
-  
     if current_user.id == recipe.user_id
       redirect_to recipes_path, alert: '自身のレシピにレビューを投稿、削除することは出来ません'
     end
