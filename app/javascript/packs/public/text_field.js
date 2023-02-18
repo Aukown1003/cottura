@@ -1,4 +1,5 @@
   /*global $*/
+  
   $(function() {
     const textHeightChange = new textFieldHeight();
     const textWidthChange = new textFieldWidth();

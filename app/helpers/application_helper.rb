@@ -40,6 +40,4 @@ module ApplicationHelper
     current_admin.present? || model.id == current_user.id
   end
   
-
-  
 end

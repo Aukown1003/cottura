@@ -29,6 +29,7 @@ class Public::UsersController < ApplicationController
     end
   end
   
+  # 退会処理
   def withdrawal
     @user = current_user
     @user.update(is_active: false)
@@ -47,5 +48,4 @@ class Public::UsersController < ApplicationController
     return redirect_to root_path, alert: '未ログイン時、ユーザーの編集は行なえません' unless signed_in?
     return redirect_to root_path, alert: 'ゲストユーザーや他の会員の情報の更新はできません' if unauthorized_user?(User.find(params[:id]))
   end
-
 end

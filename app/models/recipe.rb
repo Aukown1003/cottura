@@ -38,36 +38,22 @@ class Recipe < ApplicationRecord
   scope :by_time, -> (time) { where(total_time: ..time) }
   scope :ordered_by_updated_time, -> { order(updated_at: :desc) }
 
+  # お気にいりしているかの確認
   def favorited_by(user)
     favorites.exists?(user_id: user.id)
   end
 
-
+  # デフォルトイメージの設定
   def attach_default_image
     file_path = Rails.root.join('app/assets/images/no_image_item.png')
     image.attach(io: File.open(file_path), filename: 'default-recipe-image.png', content_type: 'image/png')
   end
-
+  
+  # レシピイメージの設定
   def get_recipe_image(width, height)
     attach_default_image unless image.attached?
     image.variant(resize_to_fill: [width, height]).processed
   end
-
-  # def get_recipe_image(width, height)
-  #   unless image.attached?
-  #     file_path = Rails.root.join('app/assets/images/no_image_item.png')
-  #     image.attach(io: File.open(file_path), filename: 'default-recipe-image.png', content_type: 'image/png')
-  #   end
-  #   image.variant(resize_to_fill: [width, height]).processed
-  # end
-
-  # def get_recipe_index_image(width, height)
-  #   unless image.attached?
-  #     file_path = Rails.root.join('app/assets/images/no_image_item.png')
-  #     image.attach(io: File.open(file_path), filename: 'default-recipe-image.png', content_type: 'image/png')
-  #   end
-  #   image.variant(resize_to_fill: [width, height]).processed
-  # end
 
   # 調理時間、絞り込み時間一覧作成メソッド
   def self.time_data(hour, min, suffix = "")

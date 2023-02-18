@@ -11,35 +11,18 @@ class Public::RecipesController < ApplicationController
   end
 
   def index
-    # @recipes = Recipe.where(is_open: true).includes(:recipe_steps, :recipe_ingredients).order(category_id: :asc)
-    # if session[:category_id].present? && session[:search_time].present?
-    #   @recipes = @recipes.where(category: session[:category_id]).where(total_time: ..session[:search_time].to_i)
-    #   @categories = Category.where(id: session[:category_id])
-    # elsif session[:category_id].present?
-    #   @recipes = @recipes.where(category: session[:category_id])
-    #   @categories = Category.where(id: session[:category_id])
-    # elsif session[:search_time].present?
-    #   @recipes = @recipes.where(total_time: ..session[:search_time].to_i)
-    # end
-    # @genres = Genre.all.includes(:categories)
-
     @recipes = Recipe.with_reviews.by_open.ordered_by_updated_time
     @recipes = @recipes.by_category(session[:category_id]) if session[:category_id].present?
     @recipes = @recipes.by_time(session[:search_time].to_i) if session[:search_time].present?
     @categories = Category.by_id(session[:category_id]) if session[:category_id].present?
     @genres = Genre.with_category
     
+    # レシピのワードでの検索
     if params[:search].present?
-      # params[:search] => "文字 文字"
-      # .split(/ |　/) => ["文字","文字"] スペースで区切って配列に
-      # .uniq => 重複を削除
-      # .compact => nillが含まれるものを削除
       keyword = params[:search].split(/ |　/).uniq.compact
-      # assign_attributesでpayloadにデータを追加
       @recipes.each do |recipe|
         recipe.assign_attributes(payload: (recipe.recipe_steps.pluck(:content).join + recipe.recipe_ingredients.pluck(:name).join + recipe.tags.pluck(:name).join + recipe.title ))
       end
-      # レシピを一つづつ見て、payloadにkeywordが含まれているものだけを取得する
       @recipes = @recipes.select do |o|
         result = keyword.map{ |k| o.payload.include?(k) }
         result.compact.uniq.size == 1 && result.compact.uniq.first == true
@@ -92,14 +75,16 @@ class Public::RecipesController < ApplicationController
     @recipe.destroy
     redirect_to user_path(@recipe.user_id), notice: "レシピを削除しました"
   end
-
+  
+  # 投稿編集時のカテゴリーの絞り込み処理
   def search_category
     @category = Category.where(genre_id: params[:genre_id])
     if @category.empty?
       @category = nil
     end
   end
-
+  
+  # 一覧でのカテゴリー、時間での絞り込み
   def search
     if params[:search_time].present?
       time_data = params[:search_time]
@@ -122,6 +107,7 @@ class Public::RecipesController < ApplicationController
     redirect_to recipes_path
   end
 
+  # 一覧での絞り込みの削除
   def category_id_delete
     if params[:destroy_time_id].present?
       session[:search_time] = nil
@@ -135,12 +121,14 @@ class Public::RecipesController < ApplicationController
     redirect_to recipes_path
   end
 
+  # 一覧での絞り込みの全件削除
   def category_id_all_delete
     session[:category_id] = nil
     session[:search_time] = nil
     redirect_to recipes_path
   end
 
+  # 詳細でのレシピ材料の分量再計算
   def recalculation
     recipe_array = {}
     if params[:recipe].keys.size > 1
@@ -177,30 +165,11 @@ class Public::RecipesController < ApplicationController
       )
   end
   
-  # def user_check
-  #   user_id = Recipe.find(params[:id]).user_id
-  #   unless user_signed_in? || admin_signed_in?
-  #     redirect_to root_path, alert: '未ログイン時、レシピの更新、削除はできません。'
-  #     return
-  #   end
-  #   unless admin_signed_in? || user_id == current_user.id
-  #     redirect_to root_path, alert: '他の会員のレシピの更新、削除はできません。'
-  #   end
-  # end
-  
   def user_check
     recipe = Recipe.with_user.find(params[:id])
     return redirect_to root_path, alert: '未ログイン時、レシピの更新、削除はできません。' unless signed_in?
     return redirect_to root_path, alert: '他の会員のレシピの更新、削除はできません。' unless authorized_user?(recipe.user)
   end
-  
-  # def gest_user_request_check
-  #   if admin_signed_in?
-  #     return
-  #   elsif current_user.present? && current_user.email == "guest@example.com" && params[:recipe][:is_open] == "true"
-  #     redirect_to new_recipe_path, alert: 'ゲストユーザーはレシピを公開することは出来ません'
-  #   end
-  # end
 
   def gest_user_request_check
     return if admin_signed_in?
