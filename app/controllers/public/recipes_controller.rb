@@ -61,8 +61,8 @@ class Public::RecipesController < ApplicationController
         redirect_to user_path(current_user.id), notice: "レシピを投稿しました"
       else
         @recipe.image = nil
-        @genre = Genre.all
-        @category = Category.all
+        @genres = Genre.all
+        @categories = Category.all
         render :new
       end
     end
@@ -80,8 +80,8 @@ class Public::RecipesController < ApplicationController
       redirect_to user_path(@recipe.user_id), notice: "レシピを編集しました"
     else
       @recipe.reload
-      @genre = Genre.all
-      @category = Category.by_genre(@recipe.category.genre.id)
+      @genres = Genre.all
+      @categories = Category.by_genre(@recipe.category.genre.id)
       flash.now[:alert] = "編集に失敗しました"
       render :edit
     end
