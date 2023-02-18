@@ -70,8 +70,8 @@ class Public::RecipesController < ApplicationController
 
   def edit
     @recipe = Recipe.find(params[:id])
-    @genre = Genre.all
-    @category = Category.by_genre(@recipe.category.genre.id)
+    @genres = Genre.all
+    @categories = Category.by_genre(@recipe.category.genre.id)
   end
 
   def update
