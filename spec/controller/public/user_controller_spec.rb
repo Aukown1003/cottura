@@ -112,9 +112,9 @@ describe Public::UsersController, type: :controller do
       expect(@user.reload.is_active).to be_falsey
     end
     
-    # it "セッションが削除されている" do
-    #   expect(session.to_hash).to be_empty
-    # end
+    it "ユーザー情報の入ったセッションが削除されている" do
+      expect(session.to_hash["warden.user.user.key"]).to eq nil 
+    end
     
     it "トップページに移動しメッセージが出る" do
       expect(response).to redirect_to root_path
