@@ -1,10 +1,5 @@
 Rails.application.routes.draw do
-  namespace :admin do
-    get 'units/index'
-    get 'units/edit'
-  end
-  
-  devise_for :users, controllers: {
+  devise_for :users, skip: [:passwords], controllers: {
     registrations: "public/registrations",
     sessions: 'public/sessions'
   }
@@ -15,7 +10,7 @@ Rails.application.routes.draw do
 
   scope module: :public do
     root to: 'homes#top'
-    resources :users, except: [:new, :index, :create] do
+    resources :users, except: [:new, :index, :create ,:destroy] do
       get "unsubscribe"=>"users#unsubscribe"
       patch "withdrawal"=>"users#withdrawal"
     end
@@ -36,13 +31,13 @@ Rails.application.routes.draw do
     resource :reports, only: [:new, :create]
   end
   
-  devise_for :admin ,controllers: {
+  devise_for :admin, skip: [:passwords], controllers: {
     sessions: "admin/sessions"
   }
   
   namespace :admin do
     root to: 'homes#top'
-    resources :users, except: [:new, :create]
+    resources :users, except: [:new, :create, :destroy]
     resources :genres, except: [:new, :show]
     resources :categories, except: [:new, :index, :show]
     resources :units, except: [:new, :show]

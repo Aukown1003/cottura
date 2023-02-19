@@ -1,11 +1,12 @@
 # Cottura!
+<p align="center"><img src="https://user-images.githubusercontent.com/115121908/219905237-c744a716-9592-4503-ad98-7e6640934eb6.png" alt="Cottura_logo" width="30%" height="30%" ></p>
 
 ## サイト概要
 
 ### サイトテーマ
 投稿、閲覧の出来るレシピサイトです。ユーザーはレシピを投稿したり、他のユーザーが投稿したレシピを見たりする事が出来ます。
 またレシピに対してレビューを投稿したり、お気に入り登録を行う事もできます。
-
+<p align="center"><img src="https://user-images.githubusercontent.com/115121908/219905418-4ff5c49c-09a6-4c10-9939-aba4ee5b2fd7.png" alt="index画面"></p>
 
 ### テーマを選んだ理由
 生活の中で自炊をすることが多々ありますが、以下のような課題を感じています。
@@ -43,11 +44,12 @@
 
 
 ## 設計書
-ER図
-- https://app.diagrams.net/#G1wGo1P4-u-lNbNLx2ljPa1Z98Af7KatTV
+- ER図
 
-テーブル定義書、アプリケーション詳細設計
-- https://docs.google.com/spreadsheets/d/1jnGbXNi4KXIugBe_R0kpUMbWws8Fr0oqK7ycwsBHSDc/edit#gid=856357510
+<img width="1077" alt="ER図" src="https://user-images.githubusercontent.com/115121908/219905208-3f49ef9d-2a23-4254-810d-91effb6b9192.png">
+
+- [テーブル定義書](https://docs.google.com/spreadsheets/d/1jnGbXNi4KXIugBe_R0kpUMbWws8Fr0oqK7ycwsBHSDc/edit#gid=856357510)
+- [アプリケーション詳細設計](https://docs.google.com/spreadsheets/d/1AUkGpHbqGblt1CAEtsyFpFhF_2Sv1VkEG0Ie9eaWd5I/edit#gid=0)
 
 ## 開発環境
 - OS：Linux(CentOS)
@@ -57,6 +59,7 @@ ER図
 - IDE：Cloud9
 
 ## 使用素材
-- https://pixabay.com/ja/
-- https://illustration-free.net/
-- https://www.ac-illust.com/
+- [pixabay(画像)](https://pixabay.com/ja/ "pixabay")
+- [illust-ac(画像)](https://www.ac-illust.com/ "illust-ac")
+- [IFN(アイコン)](https://illustration-free.net/ "IFN")
+- [Canva(ロゴ)](https://www.canva.com/ "Canva")
