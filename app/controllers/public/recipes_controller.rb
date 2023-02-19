@@ -34,13 +34,12 @@ class Public::RecipesController < ApplicationController
   def show
     @recipe = Recipe.with_recipe_detail_and_review.find(params[:id])
     @review = Review.new
-    impressionist(@recipe, nil, unique: [:ip_address])
   end
 
   def create
     ActiveRecord::Base.transaction do
       @recipe = current_user.recipes.new(recipe_params)
-      if @recipe.save
+      if @recipe.save!
         redirect_to user_path(current_user.id), notice: "レシピを投稿しました"
       else
         @recipe.image = nil

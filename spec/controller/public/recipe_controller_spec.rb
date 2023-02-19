@@ -3,6 +3,7 @@ require 'rails_helper'
 describe Public::RecipesController, type: :controller do
   before do
     @user = create(:user)
+    @other_user = create(:user)
     request.env['devise.mapping'] = Devise.mappings[:user]
     sign_in @user
     @genre = create(:genre)
@@ -40,33 +41,32 @@ describe Public::RecipesController, type: :controller do
     it "レシピ一覧のビューが正しく表示されている" do
       expect(response).to render_template :index
     end
-
+    
     it "レシピが、インスタンス変数 @recipe に割り当てられている" do
       expect(assigns(:recipes)).to_not be_nil
     end
-
+    
     it "カテゴリーが、インスタンス変数 @categories に割り当てられている" do
       expect(assigns(:categories)).to_not be_nil
     end
-
+    
     it "ジャンルが、インスタンス変数 @genres　に割り当てられている" do
       expect(assigns(:genres)).to_not be_nil
     end
-
+    
     context "カテゴリでフィルタリングしたとき" do
-      
       it "@categoriesには指定したカテゴリのみが含まれる" do
         expect(assigns(:categories)).to eq([category])
       end
     end
-
+    
     context "時間でフィルタリングしたとき" do
       let(:category) { create(:category, genre_id: @genre.id) }
       let(:unit) { create(:unit) }
       let(:recipe1) { build(:recipe, user_id: @user.id, category_id: category.id, updated_at: 1.hour.ago, total_time: "30") }
-      let(:recipe2) { build(:recipe, user_id: @user.id, category_id: category.id, updated_at: 4.hours.ago, total_time: "90") }
-      let(:recipe3) { build(:recipe, user_id: @user.id, category_id: category.id, updated_at: 5.hours.ago, total_time: "120") }
-    
+      let(:recipe2) { build(:recipe, user_id: @user.id, category_id: category.id, updated_at: 4.hours.ago, total_time: "120") }
+      let(:recipe3) { build(:recipe, user_id: @user.id, category_id: category.id, updated_at: 5.hours.ago, total_time: "90") }
+      
       before do
         recipes = [recipe1, recipe2, recipe3]
         recipes.each do |recipe|
@@ -79,9 +79,71 @@ describe Public::RecipesController, type: :controller do
       end
     
       it "@recipesには調理時間が選択した時間以下レシピのみ含まれる" do
-        expect(assigns(:recipes)).to eq([recipe1, recipe2])
+        expect(assigns(:recipes)).to eq([recipe1, recipe3])
       end
     end
-
+  end
+  
+  describe 'GET #show' do
+    let(:category) { create(:category, genre_id: @genre.id) }
+    let(:unit) { create(:unit) }
+    let(:recipe) { build(:recipe, user_id: @user.id, category_id: category.id, updated_at: 1.hour.ago,) }
+    let(:other_user_recipe) { build(:recipe, user_id: @other_user.id, category_id: category.id, updated_at: 2.hour.ago,) }
+    
+    before do
+      recipes = [recipe, other_user_recipe]
+      recipes.each do |recipe|
+        recipe.recipe_ingredients.build(attributes_for(:recipe_ingredient, unit_id: unit.id))
+        recipe.recipe_steps.build(attributes_for(:recipe_step))
+        recipe.save
+      end
+      get :show, params: { id: recipe.id }
+    end
+    
+    it "レシピ詳細のビューが正しく表示されている" do
+      expect(response).to render_template :show
+    end
+    
+    it 'レシピが、インスタンス変数 @recipe に割り当てられている' do
+      expect(assigns(:recipe)).to eq recipe
+    end
+    
+    it 'レシピ他のユーザーの場合でも、インスタンス変数 @recipe に割り当てられている' do
+      get :show, params: { id: other_user_recipe.id }
+      expect(assigns(:recipe)).to eq other_user_recipe
+    end
+    
+    it '新しいレビューが、インスタンス変数 @review に割り当てられている' do
+      expect(assigns(:review)).to be_a_new Review
+    end
+    
+    
+    context '未ログイン時' do
+      before { sign_out @user }
+      
+      it "レシピ詳細のビューが正しく表示されている" do
+        expect(response).to render_template :show
+      end
+    end
+  end
+  
+  describe 'POST #create' do
+    let(:category) { create(:category, genre_id: @genre.id) }
+    let(:unit) { create(:unit) }
+    let(:recipe) { build(:recipe, user_id: @user.id, category_id: category.id) }
+    let(:invalid_recipe) { build(:recipe, user_id: @other_user_recipe.id, category_id: category.id) }
+    
+    before do
+      recipe.recipe_ingredients.build(attributes_for(:recipe_ingredient, unit_id: unit.id))
+      recipe.recipe_steps.build(attributes_for(:recipe_step))
+    end
+    
+    it "creates a new recipe" do
+      expect{post :create, params:{ recipe: 
+        recipe.attributes.merge(
+          recipe_ingredients_attributes: recipe.recipe_ingredients.first.attributes,
+          recipe_steps_attributes: recipe.recipe_steps.first.attributes
+      ) }}.to change(Recipe, :count).by(1)
+    end
   end
 end
