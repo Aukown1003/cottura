@@ -13,11 +13,11 @@ describe Public::UsersController, type: :controller do
   describe 'GET #show' do
     before { get :show, params: { id: @user.id } }
     
-    it 'レシピ詳細用のビューが正しく表示されている' do
+    it 'ユーザー詳細用のビューが正しく表示されている' do
       expect(response).to render_template :show
     end
     
-    it 'レシピが、コントローラーのインスタンス変数 @user に割り当てられている' do
+    it 'ユーザーが、コントローラーのインスタンス変数 @user に割り当てられている' do
       expect(assigns(:user)).to eq @user
     end
   end
@@ -25,11 +25,11 @@ describe Public::UsersController, type: :controller do
   describe 'GET #edit' do
     before { get :edit, params: { id: @user.id } }
     
-    it 'レシピ編集用のビューが正しく表示されている' do
+    it 'ユーザー編集用のビューが正しく表示されている' do
       expect(response).to render_template :edit
     end
 
-    it '編集する対象のレシピが、コントローラーのインスタンス変数 @user に割り当てられている' do
+    it '編集するユーザーが、コントローラーのインスタンス変数 @user に割り当てられている' do
       expect(assigns(:user)).to eq @user
     end
     
@@ -38,7 +38,7 @@ describe Public::UsersController, type: :controller do
         @other_user = create(:user)
       end
       
-      it 'トップページに戻りメッセージが出る' do
+      it 'トップページに移動しエラーメッセージが出る' do
         get :edit, params: { id: @other_user.id }
         expect(response).to redirect_to(root_path)
         expect(flash[:alert]).to eq 'ゲストユーザーや他の会員の情報の更新はできません'
@@ -46,10 +46,10 @@ describe Public::UsersController, type: :controller do
     end
     
     context 'ゲストユーザーの場合' do
-      it 'アクセス時トップページに戻りメッセージが出る' do
+      it 'アクセス時トップページに移動しエラーメッセージが出る' do
         user = create(:user, email: 'guest@example.com')
-        sign_in user
         request.env['devise.mapping'] = Devise.mappings[:user]
+        sign_in user
         get :edit, params: { id: user.id }
         expect(response).to redirect_to root_path
         expect(flash[:alert]).to eq 'ゲストユーザーや他の会員の情報の更新はできません'
@@ -59,7 +59,7 @@ describe Public::UsersController, type: :controller do
     context '未ログイン時' do
       before { sign_out @user }
 
-      it 'アクセス時トップページに戻りメッセージが出る' do
+      it 'アクセス時トップページに移動しエラーメッセージが出る' do
         get :edit, params: { id: @user.id }
         expect(response).to redirect_to root_path
         expect(flash[:alert]).to eq '未ログイン時、ユーザーの編集は行なえません'
@@ -98,7 +98,7 @@ describe Public::UsersController, type: :controller do
         expect(@user.reload.content).not_to eq ''
       end
       
-      it '編集画面に戻り、メッセージが出る' do
+      it '編集画面に移動し、エラーメッセージが出る' do
         expect(response).to render_template :edit
         expect(flash[:alert]).to eq '編集に失敗しました'
       end
