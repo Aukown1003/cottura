@@ -84,7 +84,7 @@ class Public::RecipesController < ApplicationController
   end
   
   # 一覧でのカテゴリー、時間での絞り込み
-  def search
+  def select_time_or_category
     if params[:search_time].present?
       time_data = params[:search_time]
       session[:search_time] = time_data

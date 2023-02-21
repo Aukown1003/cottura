@@ -21,7 +21,7 @@ Rails.application.routes.draw do
     end
     
     resource :recipe, only: [:search] do
-      get "search" => "recipes#search"
+      get "select_time_or_category" => "recipes#select_time_or_category"
       delete "category_id_delete" => "recipes#category_id_delete"
       delete "category_id_all_delete" => "recipes#category_id_all_delete"
       get "search_category" => "recipes#search_category"
