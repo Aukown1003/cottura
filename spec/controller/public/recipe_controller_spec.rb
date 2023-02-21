@@ -496,4 +496,34 @@ describe Public::RecipesController, type: :controller do
     end
   end
   
+  describe 'GET #recalculation' do
+    let(:quantity) { 100 }
+    before do
+      recipe.recipe_ingredients.build(attributes_for(:recipe_ingredient, quantity: 200, unit_id: unit.id))
+      recipe.recipe_steps.build(attributes_for(:recipe_step))
+      recipe.save
+    end
+    
+    context '正常系' do
+      let(:params_data) { { recipe_id: recipe.id, recipe: { recipe.recipe_ingredients.first.id => quantity } } }
+       it 'セッションに計算用の係数が保存され、レシピ詳細に戻る' do
+         request.env['HTTP_REFERER'] = recipe_path(recipe.id)
+         get :recalculation, params: params_data
+         expect(response).to redirect_to recipe_path(recipe.id)
+         expect(session[:recalculation]).to eq(0.5)
+       end
+    end
+    
+    context '異常系、２つ以上の値で再計算しようとした場合' do
+      let(:params_data) { { recipe_id: recipe.id, recipe: { recipe.recipe_ingredients.first.id => quantity, "2" => 20 } } }
+      
+      it 'レシピの詳細に戻り、エラーメッセージが表示される' do
+        request.env['HTTP_REFERER'] = recipe_path(recipe.id)
+        get :recalculation, params: params_data
+        expect(response).to redirect_to recipe_path(recipe.id)
+        expect(flash[:alert]).to eq('2つ以上の値で再計算は行なえません')
+      end
+    end
+  end
+  
 end
