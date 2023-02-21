@@ -336,8 +336,13 @@ describe Public::RecipesController, type: :controller do
     end
     
     context "異常系" do
-      it '' do
+      before do
         
+      end
+      context "他のユーザーのレシピを削除しようとした場合" do
+        it '' do
+          
+        end
       end
     end
 

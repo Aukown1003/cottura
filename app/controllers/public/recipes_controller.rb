@@ -1,4 +1,5 @@
 class Public::RecipesController < ApplicationController
+  rescue_from ActiveRecord::RecordNotFound, with: :redirect_to_toppage
   before_action :authenticate_user!, only: [:new, :create]
   before_action :user_check, only: [:edit, :update, :destroy]
   before_action :gest_user_request_check, only: [:create, :update]
@@ -145,6 +146,12 @@ class Public::RecipesController < ApplicationController
     ratio = (BigDecimal(get_quantity.to_s) / ingredient_quantity).to_f
     session[:recalculation] = ratio
     redirect_to request.referer
+  end
+
+  protected
+  
+  def redirect_to_toppage
+    redirect_to root_path, alert: 'レシピが見つかりませんでした'
   end
 
   private
