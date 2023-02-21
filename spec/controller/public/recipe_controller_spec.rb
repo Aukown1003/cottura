@@ -409,6 +409,11 @@ describe Public::RecipesController, type: :controller do
     let(:time) { 80 }
     let!(:category2) { create(:category, genre_id: @genre.id) }
     
+      it 'レシピ一覧にリダイレクトする' do
+        get :select_time_or_category
+        expect(response).to redirect_to(recipes_path)
+      end
+    
     context '時間で絞り込みをかけた場合' do
       it 'セッションに選んだ時間が保存される' do
         get :select_time_or_category, params: { search_time: time }
@@ -436,4 +441,38 @@ describe Public::RecipesController, type: :controller do
     end
   end
   
+  describe 'Delete #category_id_delete' do
+    let(:time) { 80 }
+    let!(:category2) { create(:category, genre_id: @genre.id) }
+    
+    before do
+      session[:category_id] = [category.id.to_s]
+      session[:search_time] = [ time.to_s ]
+    end
+    
+    context '時間の絞り込みを解除する場合' do
+      it 'セッションの中身が削除され、レシピ一覧にリダイレクトする' do
+        delete :category_id_delete, params: { destroy_time_id: time }
+        expect(session[:search_time]).to be_nil
+        expect(response).to redirect_to(recipes_path)
+      end
+    end
+    
+    context 'カテゴリの絞り込みを解除する場合' do
+      it 'セッションの中身が削除され、レシピ一覧にリダイレクトする' do
+        delete :category_id_delete, params: { destroy_category_id: category.id }
+        expect(session[:category_id]).to be_empty
+        expect(response).to redirect_to(recipes_path)
+      end
+    end
+    
+    context '複数カテゴリがある時、一つ絞り込みを解除する場合' do
+      before { session[:category_id] = [ (category.id).to_s, (category2.id).to_s ] }
+      
+       it '選択したカテゴリーのみ、セッションから削除される' do
+         delete :category_id_delete, params: { destroy_category_id: category2.id }
+         expect(session[:category_id]).to match_array([ (category.id).to_s ])
+       end
+     end
+  end
 end
