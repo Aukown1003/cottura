@@ -98,7 +98,6 @@ class Public::RecipesController < ApplicationController
       else
         data = [] << add_data
       end
-
       data.uniq!
       session[:category_id] = data
     end

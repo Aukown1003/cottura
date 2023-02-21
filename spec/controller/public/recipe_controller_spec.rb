@@ -405,4 +405,35 @@ describe Public::RecipesController, type: :controller do
     end
   end
   
+  describe 'GET #select_time_or_category' do
+    let(:time) { 80 }
+    let!(:category2) { create(:category, genre_id: @genre.id) }
+    
+    context '時間で絞り込みをかけた場合' do
+      it 'セッションに選んだ時間が保存される' do
+        get :select_time_or_category, params: { search_time: time }
+        expect(session[:search_time]).to eq(time.to_s)
+      end
+    end
+    
+    context 'カテゴリーで絞り込みをかけた場合' do
+      it 'セッションに選んだカテゴリーが保存される' do
+        get :select_time_or_category, params: { category_id: category.id }
+        expect(session[:category_id]).to match_array([ (category.id).to_s ])
+      end
+      
+      it 'カテゴリを追加した時、セッションに２つカテゴリーが保存される' do
+        session[:category_id] = [category.id.to_s]
+        get :select_time_or_category, params: { category_id: category2.id }
+        expect(session[:category_id]).to match_array([ (category.id).to_s, (category2.id).to_s ])
+      end
+      
+      it '同じカテゴリを追加した時、重複しない' do
+        session[:category_id] = [category.id.to_s]
+        get :select_time_or_category, params: { category_id: category.id }
+        expect(session[:category_id]).to match_array([ (category.id).to_s ])
+      end
+    end
+  end
+  
 end
