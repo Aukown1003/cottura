@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Public::UsersController, type: :controller do
-  
   before do
     @user = create(:user)
     request.env['devise.mapping'] = Devise.mappings[:user]

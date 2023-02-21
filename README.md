@@ -1,4 +1,4 @@
-# Cottura!
+# Cottura! [![Maintainability](https://api.codeclimate.com/v1/badges/77aa114ea3a6302893fb/maintainability)](https://codeclimate.com/github/Aukown1003/cottura/maintainability)
 <p align="center"><img src="https://user-images.githubusercontent.com/115121908/219905237-c744a716-9592-4503-ad98-7e6640934eb6.png" alt="Cottura_logo" width="30%" height="30%" ></p>
 
 ## サイト概要

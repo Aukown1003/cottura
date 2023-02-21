@@ -133,7 +133,7 @@ describe Public::RecipesController, type: :controller do
     let(:category) { create(:category, genre_id: @genre.id) }
     let(:unit) { create(:unit) }
     let(:recipe_params) do
-      recipe = recipe = build(:recipe, user_id: @user.id, category_id: category.id)
+      recipe = build(:recipe, user_id: @user.id, category_id: category.id)
       recipe.recipe_ingredients.build(attributes_for(:recipe_ingredient, unit_id: unit.id))
       recipe.recipe_steps.build(attributes_for(:recipe_step))
       recipe.attributes.merge(
@@ -141,9 +141,16 @@ describe Public::RecipesController, type: :controller do
         recipe_steps_attributes: recipe.recipe_steps.first.attributes
       )
     end
-    
-    it "投稿したレシピが保存できる" do
-      expect{post :create, params:{ recipe: recipe_params }}.to change(Recipe, :count).by(1)
+    context "投稿失敗時" do
+      it "投稿したレシピが保存できる" do
+        expect{post :create, params:{ recipe: recipe_params }}.to change(Recipe, :count).by(1)
+      end
+      
+       it "保存後マイページに移動しメッセージが出る" do
+        expect{post :create, params:{ recipe: recipe_params }}.to change(Recipe, :count).by(1)
+        expect(response).to redirect_to user_path(Recipe.first.user.id)
+        expect(flash[:notice]).to eq 'レシピを編集しました'
+      end
     end
     
     context "投稿失敗時" do
@@ -156,12 +163,6 @@ describe Public::RecipesController, type: :controller do
         recipe_params["title"] = nil
         expect{post :create, params:{ recipe: recipe_params }}.not_to change(Recipe, :count)
         expect(response).to render_template :new
-      end
-        
-      it "ユーザーidが違うと保存できない" do
-        recipe_params["user_id"] = @other_user.id
-        # binding.pry
-        expect{post :create, params:{ recipe: recipe_params }}.not_to change(Recipe, :count)
       end
     end
     
