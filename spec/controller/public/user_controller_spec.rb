@@ -37,7 +37,7 @@ describe Public::UsersController, type: :controller do
         @other_user = create(:user)
       end
       
-      it 'トップページに移動しエラーメッセージが出る' do
+      it 'トップページに移動しエラーメッセージが表示される' do
         get :edit, params: { id: @other_user.id }
         expect(response).to redirect_to(root_path)
         expect(flash[:alert]).to eq 'ゲストユーザーや他の会員の情報の更新はできません'
@@ -45,7 +45,7 @@ describe Public::UsersController, type: :controller do
     end
     
     context 'ゲストユーザーの場合' do
-      it 'アクセス時トップページに移動しエラーメッセージが出る' do
+      it 'アクセス時トップページに移動しエラーメッセージが表示される' do
         user = create(:user, email: 'guest@example.com')
         request.env['devise.mapping'] = Devise.mappings[:user]
         sign_in user
@@ -58,7 +58,7 @@ describe Public::UsersController, type: :controller do
     context '未ログイン時' do
       before { sign_out @user }
 
-      it 'アクセス時トップページに移動しエラーメッセージが出る' do
+      it 'アクセス時トップページに移動しエラーメッセージが表示される' do
         get :edit, params: { id: @user.id }
         expect(response).to redirect_to root_path
         expect(flash[:alert]).to eq '未ログイン時、ユーザーの編集は行なえません'
@@ -79,7 +79,7 @@ describe Public::UsersController, type: :controller do
         expect(@user.reload.content).to eq new_content
       end
       
-      it '編集後にマイページに移動しメッセージが出る' do
+      it '編集後にマイページに移動しメッセージが表示される' do
         expect(response).to redirect_to user_path(@user.id)
         expect(flash[:notice]).to eq 'ユーザー情報を編集しました。'
       end
@@ -97,7 +97,7 @@ describe Public::UsersController, type: :controller do
         expect(@user.reload.content).not_to eq ''
       end
       
-      it '編集画面に移動し、エラーメッセージが出る' do
+      it '編集画面に移動し、エラーメッセージが表示される' do
         expect(response).to render_template :edit
         expect(flash[:alert]).to eq '編集に失敗しました'
       end
@@ -115,7 +115,7 @@ describe Public::UsersController, type: :controller do
       expect(session.to_hash["warden.user.user.key"]).to eq nil 
     end
     
-    it "トップページに移動しメッセージが出る" do
+    it "トップページに移動しメッセージが表示される" do
       expect(response).to redirect_to root_path
       expect(flash[:notice]).to eq '退会が完了しました。'
     end
