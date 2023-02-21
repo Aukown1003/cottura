@@ -475,4 +475,25 @@ describe Public::RecipesController, type: :controller do
        end
      end
   end
+  
+  describe 'Delete #category_id_all_delete' do
+    let(:time) { 80 }
+    let!(:category2) { create(:category, genre_id: @genre.id) }
+    
+    before do
+      session[:category_id] = [ (category.id).to_s, (category2.id).to_s ]
+      session[:search_time] = [ time.to_s ]
+      delete :category_id_all_delete
+    end
+    
+    it '時間とカテゴリーの両方のセッションが削除される' do
+      expect(session[:search_time]).to be_nil
+      expect(session[:category_id]).to be_nil
+    end
+    
+    it '削除後、レシピ一覧に移動する' do
+      expect(response).to redirect_to(recipes_path)
+    end
+  end
+  
 end
