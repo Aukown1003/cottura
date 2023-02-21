@@ -78,9 +78,8 @@ class Public::RecipesController < ApplicationController
   
   # 投稿編集時のカテゴリーの絞り込み処理
   def search_category
-    @category = Category.where(genre_id: params[:genre_id])
-    if @category.empty?
-      @category = nil
+    if params[:genre_id].present?
+      @category = Category.where(genre_id: params[:genre_id])
     end
   end
   

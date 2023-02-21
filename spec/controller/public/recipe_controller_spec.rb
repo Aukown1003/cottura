@@ -95,7 +95,7 @@ describe Public::RecipesController, type: :controller do
       get :show, params: { id: recipe.id }
     end
     
-    context 'ログイン時' do
+    context '正常系' do
       it "レシピ詳細のビューが正しく表示されている" do
         expect(response).to render_template :show
       end
@@ -114,6 +114,13 @@ describe Public::RecipesController, type: :controller do
       end
     end
     
+    context '存在しないレシピにアクセスしようとした際' do
+      it "トップページに移動しエラーメッセージが表示される" do
+        get :show, params: { id: 0 }
+        expect(response).to redirect_to root_path
+        expect(flash[:alert]).to eq "レシピが見つかりませんでした"
+      end
+    end
     
     context '未ログイン時' do
       before { sign_out @user }
@@ -215,6 +222,14 @@ describe Public::RecipesController, type: :controller do
       end
     end
     
+    context '存在しないレシピを編集しようとした際' do
+      it "トップページに移動しエラーメッセージが表示される" do
+        get :edit, params: { id: 0 }
+        expect(response).to redirect_to root_path
+        expect(flash[:alert]).to eq "レシピが見つかりませんでした"
+      end
+    end
+    
     context '違うユーザーのレシピを編集しようとした際' do
       before { get :edit, params: { id: other_user_recipe.id } }
       
@@ -285,7 +300,7 @@ describe Public::RecipesController, type: :controller do
       
       it '編集画面に移動し、エラーメッセージが表示される' do
         expect(response).to redirect_to(root_path)
-        expect(flash[:alert]).to eq ': "他の会員のレシピの更新、削除はできません。'
+        expect(flash[:alert]).to eq '他の会員のレシピの更新、削除はできません。'
       end
     end
     
@@ -315,7 +330,7 @@ describe Public::RecipesController, type: :controller do
   end
   
   describe 'Delete #destroy' do
-    let(:other_user_recipe) { build(:recipe, user_id: @other_user.id, category_id: category.id, updated_at: 2.hour.ago) }
+    let!(:other_user_recipe) { build(:recipe, user_id: @other_user.id, category_id: category.id, updated_at: 2.hour.ago) }
     
     before do
       recipes = [recipe, other_user_recipe]
@@ -324,7 +339,6 @@ describe Public::RecipesController, type: :controller do
     
     context "正常系" do
       it "レシピが削除される" do
-        # expect(response).to change(Recipe, :count).by(-1)
         expect {delete :destroy, params: { id: recipe.id }}.to change(Recipe, :count).by(-1)
       end
       
@@ -336,12 +350,33 @@ describe Public::RecipesController, type: :controller do
     end
     
     context "異常系" do
-      before do
+      context "存在しないレシピを削除しようとした場合" do
+        # it "ActiveRecord::RecordNotFoundエラーが発生する" do
+        #   expect {delete :destroy, params: { id: 0 }}.to raise_error(ActiveRecord::RecordNotFound)
+        # end
         
+        it "トップページに移動しエラーメッセージが表示される" do
+          delete :destroy, params: { id: 0 }
+          expect(response).to redirect_to root_path
+          expect(flash[:alert]).to eq "レシピが見つかりませんでした"
+        end
       end
+      
       context "他のユーザーのレシピを削除しようとした場合" do
-        it '' do
-          
+        it 'トップページに移動しエラーメッセージが表示される' do
+          delete :destroy, params: { id: other_user_recipe.id }
+          expect(response).to redirect_to(root_path)
+          expect(flash[:alert]).to eq '他の会員のレシピの更新、削除はできません。'
+        end
+      end
+      
+      context '未ログイン時' do
+        before { sign_out @user }
+        
+        it "トップページに移動しエラーメッセージが表示される" do
+          delete :destroy, params: { id: recipe.id }
+          expect(response).to redirect_to(root_path)
+          expect(flash[:alert]).to eq '未ログイン時、レシピの更新、削除はできません。'
         end
       end
     end
