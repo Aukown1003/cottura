@@ -382,4 +382,27 @@ describe Public::RecipesController, type: :controller do
     end
 
   end
+  
+  describe 'GET #search_category' do
+    let(:genre2) { create(:genre) }
+    let(:genre3) { create(:genre) }
+    let!(:category2) { create(:category, genre_id: @genre.id) }
+    let!(:category3) { create(:category, genre_id: genre2.id) }
+    let!(:category4) { create(:category, genre_id: genre3.id) }
+    
+    context 'ジャンルを選択した場合' do
+      it '選択したジャンルを元にカテゴリーを絞り込み、そのデータが@categoryに代入される' do
+        get :search_category, params: { genre_id: @genre.id }, xhr: true
+        expect(assigns(:category)).to match_array([category, category2])
+      end
+    end
+    
+    context 'ジャンルを選択した場合' do
+      it '@categoryに値は存在しない' do
+        get :search_category, xhr: true
+        expect(assigns(:category)).to be_nil
+      end
+    end
+  end
+  
 end
