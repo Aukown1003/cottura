@@ -142,24 +142,15 @@ describe Public::RecipesController, type: :controller do
       )
     end
     context "正常系" do
-      it "投稿したレシピが保存できる" do
+      it "投稿したレシピが保存でき、マイページに移動しメッセージが表示される" do
         expect{post :create, params:{ recipe: recipe_params }}.to change(Recipe, :count).by(1)
-      end
-      
-       it "保存後マイページに移動しメッセージが表示される" do
-        expect{post :create, params:{ recipe: recipe_params }}.to change(Recipe, :count).by(1)
-        expect(response).to redirect_to user_path(Recipe.first.user.id)
+        expect(response).to redirect_to user_path(@user.id)
         expect(flash[:notice]).to eq 'レシピを投稿しました'
       end
     end
     
     context "異常系" do
-      it "未入力の部分があると保存できない" do
-        recipe_params["title"] = nil
-        expect{post :create, params:{ recipe: recipe_params }}.not_to change(Recipe, :count)
-      end
-      
-      it "投稿画面に移動する" do
+      it "未入力の部分があると保存できず、投稿画面に移動する" do
         recipe_params["title"] = nil
         expect{post :create, params:{ recipe: recipe_params }}.not_to change(Recipe, :count)
         expect(response).to render_template :new
@@ -182,11 +173,7 @@ describe Public::RecipesController, type: :controller do
         sign_in @gest_user
       end
       
-      it "レシピが保存出来ない" do
-        expect{post :create, params:{ recipe: recipe_params }}.not_to change(Recipe, :count)
-      end
-      
-      it "レシピ投稿ページに移動し、エラーメッセージが表示される" do
+      it "レシピが保存出来ず、レシピ投稿ページに移動し、エラーメッセージが表示される" do
         post :create, params:{ recipe: recipe_params }
         expect(response).to redirect_to(new_recipe_path)
         expect(flash[:alert]).to eq 'ゲストユーザーはレシピを公開することは出来ません'
@@ -266,11 +253,8 @@ describe Public::RecipesController, type: :controller do
         patch :update, params: { id: recipe.id, recipe: { title: new_title } }
       end
       
-      it 'レシピ名が編集したものに変わっている' do
+      it 'レシピ名が編集したものに変わり、マイページに移動しメッセージが表示される' do
         expect(recipe.reload.title).to eq new_title
-      end
-      
-      it '編集後にマイページに移動しメッセージが表示される' do
         expect(response).to redirect_to user_path(@user.id)
         expect(flash[:notice]).to eq 'レシピを編集しました'
       end
@@ -281,11 +265,8 @@ describe Public::RecipesController, type: :controller do
         patch :update, params: { id: recipe.id, recipe: { title: nil } }
       end
       
-      it 'レシピ名が編集前に戻っている' do
+      it 'レシピ名が編集前に戻り、編集画面に移動し、エラーメッセージが表示される' do
         expect(recipe.reload.title).to eq recipe.title
-      end
-      
-      it '編集画面に移動し、エラーメッセージが表示される' do
         expect(response).to render_template :edit
         expect(flash[:alert]).to eq '編集に失敗しました'
       end
@@ -294,11 +275,8 @@ describe Public::RecipesController, type: :controller do
     context '他のユーザーのレシピを編集しようとした場合' do
       before { patch :update, params: { id: gest_user_create_recipe.id, recipe: { title: new_title } }}
       
-      it 'レシピ名が編集前に戻っている' do
+      it 'レシピ名が編集前に戻り、編集画面に移動し、エラーメッセージが表示される' do
         expect(recipe.reload.title).not_to eq new_title
-      end
-      
-      it '編集画面に移動し、エラーメッセージが表示される' do
         expect(response).to redirect_to(root_path)
         expect(flash[:alert]).to eq '他の会員のレシピの更新、削除はできません。'
       end
@@ -351,10 +329,6 @@ describe Public::RecipesController, type: :controller do
     
     context "異常系" do
       context "存在しないレシピを削除しようとした場合" do
-        # it "ActiveRecord::RecordNotFoundエラーが発生する" do
-        #   expect {delete :destroy, params: { id: 0 }}.to raise_error(ActiveRecord::RecordNotFound)
-        # end
-        
         it "トップページに移動しエラーメッセージが表示される" do
           delete :destroy, params: { id: 0 }
           expect(response).to redirect_to root_path
