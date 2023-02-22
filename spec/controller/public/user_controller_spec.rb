@@ -39,8 +39,7 @@ describe Public::UsersController, type: :controller do
       
       it 'トップページに移動しエラーメッセージが表示される' do
         get :edit, params: { id: @other_user.id }
-        expect(response).to redirect_to(root_path)
-        expect(flash[:alert]).to eq 'ゲストユーザーや他の会員の情報の更新はできません'
+        expect_redirect_to_with_alert(root_path, 'ゲストユーザーや他の会員の情報の更新はできません')
       end
     end
     
@@ -50,8 +49,7 @@ describe Public::UsersController, type: :controller do
         request.env['devise.mapping'] = Devise.mappings[:user]
         sign_in user
         get :edit, params: { id: user.id }
-        expect(response).to redirect_to root_path
-        expect(flash[:alert]).to eq 'ゲストユーザーや他の会員の情報の更新はできません'
+        expect_redirect_to_with_alert(root_path, 'ゲストユーザーや他の会員の情報の更新はできません')
       end
     end
     
@@ -60,8 +58,7 @@ describe Public::UsersController, type: :controller do
 
       it 'アクセス時トップページに移動しエラーメッセージが表示される' do
         get :edit, params: { id: @user.id }
-        expect(response).to redirect_to root_path
-        expect(flash[:alert]).to eq '未ログイン時、ユーザーの編集は行なえません'
+        expect_redirect_to_with_alert(root_path, '未ログイン時、ユーザーの編集は行なえません')
       end
     end
   end
@@ -80,8 +77,7 @@ describe Public::UsersController, type: :controller do
       end
       
       it '編集後にマイページに移動しメッセージが表示される' do
-        expect(response).to redirect_to user_path(@user.id)
-        expect(flash[:notice]).to eq 'ユーザー情報を編集しました。'
+        expect_redirect_to_with_notice(user_path(@user.id), 'ユーザー情報を編集しました。')
       end
     end
     
@@ -98,8 +94,7 @@ describe Public::UsersController, type: :controller do
       end
       
       it '編集画面に移動し、エラーメッセージが表示される' do
-        expect(response).to render_template :edit
-        expect(flash[:alert]).to eq '編集に失敗しました'
+        expect_render_to_with_alert(:edit, '編集に失敗しました')
       end
     end
   end
@@ -116,8 +111,7 @@ describe Public::UsersController, type: :controller do
     end
     
     it "トップページに移動しメッセージが表示される" do
-      expect(response).to redirect_to root_path
-      expect(flash[:notice]).to eq '退会が完了しました。'
+      expect_redirect_to_with_notice(root_path, '退会が完了しました。')
     end
   end
 end

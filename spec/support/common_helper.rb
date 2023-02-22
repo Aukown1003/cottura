@@ -14,4 +14,9 @@ module CommonHelpers
     expect(response).to redirect_to path
     expect(flash[:alert]).to eq messege
   end
+  
+  def expect_render_to_with_alert(action, messege)
+    expect(response).to render_template action
+    expect(flash[:alert]).to eq messege
+  end
 end
