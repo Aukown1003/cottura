@@ -71,11 +71,7 @@ describe Public::RecipesController, type: :controller do
       
       before do
         recipes = [recipe1, recipe2, recipe3]
-        recipes.each do |recipe|
-          recipe.recipe_ingredients.build(attributes_for(:recipe_ingredient, unit_id: unit.id))
-          recipe.recipe_steps.build(attributes_for(:recipe_step))
-          recipe.save
-        end
+        recipes.each { |recipe| save_recipe_with_ingredient_and_step(recipe, unit) }
         session[:search_time] = "90"
         get :index
       end
@@ -117,8 +113,7 @@ describe Public::RecipesController, type: :controller do
     context '存在しないレシピにアクセスしようとした際' do
       it "トップページに移動しエラーメッセージが表示される" do
         get :show, params: { id: 0 }
-        expect(response).to redirect_to root_path
-        expect(flash[:alert]).to eq "レシピが見つかりませんでした"
+        expect_redirect_to_with_alert(root_path, "レシピが見つかりませんでした")
       end
     end
     
@@ -141,11 +136,11 @@ describe Public::RecipesController, type: :controller do
         recipe_steps_attributes: recipe.recipe_steps.first.attributes
       )
     end
+    
     context "正常系" do
       it "投稿したレシピが保存でき、マイページに移動しメッセージが表示される" do
         expect{post :create, params:{ recipe: recipe_params }}.to change(Recipe, :count).by(1)
-        expect(response).to redirect_to user_path(@user.id)
-        expect(flash[:notice]).to eq 'レシピを投稿しました'
+        expect_redirect_to_with_notice(user_path(@user.id), 'レシピを投稿しました')
       end
     end
     
@@ -171,12 +166,11 @@ describe Public::RecipesController, type: :controller do
       before do
         sign_out @user
         sign_in @gest_user
+        post :create, params:{ recipe: recipe_params }
       end
       
       it "レシピが保存出来ず、レシピ投稿ページに移動し、エラーメッセージが表示される" do
-        post :create, params:{ recipe: recipe_params }
-        expect(response).to redirect_to(new_recipe_path)
-        expect(flash[:alert]).to eq 'ゲストユーザーはレシピを公開することは出来ません'
+        expect_redirect_to_with_alert(new_recipe_path, 'ゲストユーザーはレシピを公開することは出来ません')
       end
     end
   end
@@ -212,8 +206,7 @@ describe Public::RecipesController, type: :controller do
     context '存在しないレシピを編集しようとした際' do
       it "トップページに移動しエラーメッセージが表示される" do
         get :edit, params: { id: 0 }
-        expect(response).to redirect_to root_path
-        expect(flash[:alert]).to eq "レシピが見つかりませんでした"
+        expect_redirect_to_with_alert(root_path, 'レシピが見つかりませんでした')
       end
     end
     
@@ -221,8 +214,7 @@ describe Public::RecipesController, type: :controller do
       before { get :edit, params: { id: other_user_recipe.id } }
       
       it 'トップページに移動しエラーメッセージが表示される' do
-        expect(response).to redirect_to(root_path)
-        expect(flash[:alert]).to eq '他の会員のレシピの更新、削除はできません。'
+        expect_redirect_to_with_alert(root_path, '他の会員のレシピの更新、削除はできません。')
       end
     end
     
@@ -233,11 +225,9 @@ describe Public::RecipesController, type: :controller do
       end
       
       it "トップページに移動しエラーメッセージが表示される" do
-        expect(response).to redirect_to(root_path)
-        expect(flash[:alert]).to eq '未ログイン時、レシピの更新、削除はできません。'
+        expect_redirect_to_with_alert(root_path, '未ログイン時、レシピの更新、削除はできません。')
       end
     end
-    
   end
   
   describe 'PATCH #update' do
@@ -255,8 +245,7 @@ describe Public::RecipesController, type: :controller do
       
       it 'レシピ名が編集したものに変わり、マイページに移動しメッセージが表示される' do
         expect(recipe.reload.title).to eq new_title
-        expect(response).to redirect_to user_path(@user.id)
-        expect(flash[:notice]).to eq 'レシピを編集しました'
+        expect_redirect_to_with_notice(user_path(@user.id), 'レシピを編集しました')
       end
     end
     
@@ -267,8 +256,7 @@ describe Public::RecipesController, type: :controller do
       
       it 'レシピ名が編集前に戻り、編集画面に移動し、エラーメッセージが表示される' do
         expect(recipe.reload.title).to eq recipe.title
-        expect(response).to render_template :edit
-        expect(flash[:alert]).to eq '編集に失敗しました'
+        expect_render_to_with_alert(:edit,'編集に失敗しました')
       end
     end
     
@@ -277,8 +265,7 @@ describe Public::RecipesController, type: :controller do
       
       it 'レシピ名が編集前に戻り、編集画面に移動し、エラーメッセージが表示される' do
         expect(recipe.reload.title).not_to eq new_title
-        expect(response).to redirect_to(root_path)
-        expect(flash[:alert]).to eq '他の会員のレシピの更新、削除はできません。'
+        expect_redirect_to_with_alert(root_path, '他の会員のレシピの更新、削除はできません。')
       end
     end
     
@@ -290,8 +277,7 @@ describe Public::RecipesController, type: :controller do
       end
       
       it "トップページに移動し、エラーメッセージが表示される" do
-        expect(response).to redirect_to(new_recipe_path)
-        expect(flash[:alert]).to eq 'ゲストユーザーはレシピを公開することは出来ません'
+        expect_redirect_to_with_alert(new_recipe_path, 'ゲストユーザーはレシピを公開することは出来ません')
       end
     end
     
@@ -300,8 +286,7 @@ describe Public::RecipesController, type: :controller do
       
       it "トップページに移動しエラーメッセージが表示される" do
         get :update, params: { id: recipe.id }
-        expect(response).to redirect_to(root_path)
-        expect(flash[:alert]).to eq '未ログイン時、レシピの更新、削除はできません。'
+        expect_redirect_to_with_alert(root_path, '未ログイン時、レシピの更新、削除はできません。')
       end
     end
     
@@ -316,14 +301,9 @@ describe Public::RecipesController, type: :controller do
     end
     
     context "正常系" do
-      it "レシピが削除される" do
+      it "レシピが削除され、マイページに移動しメッセージが表示される" do
         expect {delete :destroy, params: { id: recipe.id }}.to change(Recipe, :count).by(-1)
-      end
-      
-      it "マイページに移動しメッセージが表示される" do
-        delete :destroy, params: { id: recipe.id }
-        expect(response).to redirect_to user_path(recipe.user_id)
-        expect(flash[:notice]).to eq "レシピを削除しました"
+        expect_redirect_to_with_notice(user_path(recipe.user_id), 'レシピを削除しました')
       end
     end
     
@@ -331,16 +311,14 @@ describe Public::RecipesController, type: :controller do
       context "存在しないレシピを削除しようとした場合" do
         it "トップページに移動しエラーメッセージが表示される" do
           delete :destroy, params: { id: 0 }
-          expect(response).to redirect_to root_path
-          expect(flash[:alert]).to eq "レシピが見つかりませんでした"
+          expect_redirect_to_with_alert(root_path, 'レシピが見つかりませんでした')
         end
       end
       
       context "他のユーザーのレシピを削除しようとした場合" do
         it 'トップページに移動しエラーメッセージが表示される' do
           delete :destroy, params: { id: other_user_recipe.id }
-          expect(response).to redirect_to(root_path)
-          expect(flash[:alert]).to eq '他の会員のレシピの更新、削除はできません。'
+          expect_redirect_to_with_alert(root_path, '他の会員のレシピの更新、削除はできません。')
         end
       end
       
@@ -349,8 +327,7 @@ describe Public::RecipesController, type: :controller do
         
         it "トップページに移動しエラーメッセージが表示される" do
           delete :destroy, params: { id: recipe.id }
-          expect(response).to redirect_to(root_path)
-          expect(flash[:alert]).to eq '未ログイン時、レシピの更新、削除はできません。'
+          expect_redirect_to_with_alert(root_path, '未ログイン時、レシピの更新、削除はできません。')
         end
       end
     end
@@ -383,25 +360,22 @@ describe Public::RecipesController, type: :controller do
     let(:time) { 80 }
     let!(:category2) { create(:category, genre_id: @genre.id) }
     
-      it 'レシピ一覧にリダイレクトする' do
-        get :select_time_or_category
-        expect(response).to redirect_to(recipes_path)
-      end
-    
     context '時間で絞り込みをかけた場合' do
-      it 'セッションに選んだ時間が保存される' do
+      it 'セッションに選んだ時間が保存され、レシピ一覧にリダイレクトする' do
         get :select_time_or_category, params: { search_time: time }
         expect(session[:search_time]).to eq(time.to_s)
+        expect(response).to redirect_to(recipes_path)
       end
     end
     
     context 'カテゴリーで絞り込みをかけた場合' do
-      it 'セッションに選んだカテゴリーが保存される' do
+      it 'セッションに選んだカテゴリーが保存され、レシピ一覧にリダイレクトする' do
         get :select_time_or_category, params: { category_id: category.id }
         expect(session[:category_id]).to match_array([ (category.id).to_s ])
+        expect(response).to redirect_to(recipes_path)
       end
       
-      it 'カテゴリを追加した時、セッションに２つカテゴリーが保存される' do
+      it 'すでにカテゴリーがあり、さらにカテゴリーを追加した時、セッションに２つのカテゴリーが保存されている' do
         session[:category_id] = [category.id.to_s]
         get :select_time_or_category, params: { category_id: category2.id }
         expect(session[:category_id]).to match_array([ (category.id).to_s, (category2.id).to_s ])
@@ -440,12 +414,13 @@ describe Public::RecipesController, type: :controller do
       end
     end
     
-    context '複数カテゴリがある時、一つ絞り込みを解除する場合' do
+    context '複数カテゴリがある時、一つのカテゴリーの絞り込みを解除する場合' do
       before { session[:category_id] = [ (category.id).to_s, (category2.id).to_s ] }
       
-       it '選択したカテゴリーのみ、セッションから削除される' do
+       it '選択したカテゴリーのみ、セッションから削除され、レシピ一覧にリダイレクトする' do
          delete :category_id_delete, params: { destroy_category_id: category2.id }
          expect(session[:category_id]).to match_array([ (category.id).to_s ])
+         expect(response).to redirect_to(recipes_path)
        end
      end
   end
@@ -460,12 +435,9 @@ describe Public::RecipesController, type: :controller do
       delete :category_id_all_delete
     end
     
-    it '時間とカテゴリーの両方のセッションが削除される' do
+    it '時間とカテゴリーの両方のセッションが削除され、レシピ一覧に移動する' do
       expect(session[:search_time]).to be_nil
       expect(session[:category_id]).to be_nil
-    end
-    
-    it '削除後、レシピ一覧に移動する' do
       expect(response).to redirect_to(recipes_path)
     end
   end
@@ -499,5 +471,4 @@ describe Public::RecipesController, type: :controller do
       end
     end
   end
-  
 end
