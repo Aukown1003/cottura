@@ -12,24 +12,13 @@ class Public::RecipesController < ApplicationController
   end
 
   def index
-    @recipes = Recipe.with_reviews.by_open.ordered_by_updated_time
-    @recipes = @recipes.by_category(session[:category_id]) if session[:category_id].present?
-    @recipes = @recipes.by_time(session[:search_time].to_i) if session[:search_time].present?
+    recipes = Recipe.with_reviews.by_open.ordered_by_updated_time
+    recipes = recipes.by_category(session[:category_id]) if session[:category_id].present? #レシピを絞り込みカテゴリで選択
+    recipes = recipes.by_time(session[:search_time].to_i) if session[:search_time].present? #レシピを絞り込み時間で選択
+    recipes = Recipe.search_by_keyword(params[:search], recipes) if params[:search].present? #レシピを検索ワードで選択
     @categories = Category.by_id(session[:category_id]) if session[:category_id].present?
     @genres = Genre.with_category
-    
-    # レシピのワードでの検索
-    if params[:search].present?
-      keyword = params[:search].split(/ |　/).uniq.compact
-      @recipes.each do |recipe|
-        recipe.assign_attributes(payload: (recipe.recipe_steps.pluck(:content).join + recipe.recipe_ingredients.pluck(:name).join + recipe.tags.pluck(:name).join + recipe.title ))
-      end
-      @recipes = @recipes.select do |o|
-        result = keyword.map{ |k| o.payload.include?(k) }
-        result.compact.uniq.size == 1 && result.compact.uniq.first == true
-      end
-    end
-    @recipes = Kaminari.paginate_array(@recipes).page(params[:page])
+    @recipes = Kaminari.paginate_array(recipes).page(params[:page])
   end
 
   def show
@@ -85,23 +74,8 @@ class Public::RecipesController < ApplicationController
   
   # 一覧でのカテゴリー、時間での絞り込み
   def select_time_or_category
-    if params[:search_time].present?
-      time_data = params[:search_time]
-      session[:search_time] = time_data
-    end
-    
-    if params[:category_id].present?
-      add_data = params[:category_id]
-      if session[:category_id].present?
-        data = session[:category_id]
-        data << add_data
-      else
-        data = [] << add_data
-      end
-      data.uniq!
-      session[:category_id] = data
-    end
-    
+    session[:search_time] = params[:search_time] if params[:search_time].present?
+    Recipe.add_category_id_to_session(params[:category_id], session) if params[:category_id].present?
     redirect_to recipes_path
   end
 
@@ -134,9 +108,7 @@ class Public::RecipesController < ApplicationController
     end
     get_recipe_id = params.dig(:recipe).keys.first
     get_quantity = params.dig(:recipe).values.first
-    ingredient_quantity = RecipeIngredient.find(get_recipe_id).quantity
-    ratio = (BigDecimal(get_quantity.to_s) / ingredient_quantity)
-    session[:recalculation] = ratio.to_f
+    session[:recalculation] = Recipe.calculate_ratio(get_recipe_id, get_quantity)
     redirect_to request.referer
   end
 
