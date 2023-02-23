@@ -203,5 +203,24 @@ describe Recipe, type: :model do
       end
     end
     
+    context 'time_data' do
+      let(:hour) { 2 }
+      
+      it '時間を2時間、60分毎とした場合、二次元配列[["1時間", 60], ["2時間", 120]]が出力される' do
+        min = 60
+        expect(described_class.time_data(hour, min, suffix = "")).to match_array([["1時間", 60], ["2時間", 120]])
+      end
+      
+      it '時間を2時間、30分毎とした場合、二次元配列[["30分", 30], ["1時間", 60], ["1時間30分", 90], ["2時間", 120]]が出力される' do
+        min = 30
+        expect(described_class.time_data(hour, min, suffix = "")).to match_array( [["30分", 30], ["1時間", 60], ["1時間30分", 90], ["2時間", 120]])
+      end
+      
+      it '時間を1時間、30分毎とし、レシピ一覧用に「以内」をsuffixに入力した場合、二次元配列[["30分", 30], ["1時間", 60]]が出力される' do
+        hour = 1
+        min = 30
+        expect(described_class.time_data(hour, min, suffix = "以内")).to match_array( [["30分以内", 30], ["1時間以内", 60]])
+      end
+    end
   end
 end

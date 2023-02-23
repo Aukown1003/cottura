@@ -348,7 +348,7 @@ describe Public::RecipesController, type: :controller do
       end
     end
     
-    context 'ジャンルを選択した場合' do
+    context 'デフォルト値を選択した場合' do
       it '@categoryに値は存在しない' do
         get :search_category, xhr: true
         expect(assigns(:category)).to be_nil

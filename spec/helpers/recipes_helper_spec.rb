@@ -23,6 +23,15 @@ RSpec.describe Public::RecipesHelper, type: :helper do
     end
     
     context "view_time_data" do
+      
+      it 'レシピの調理時間(total_time) = 50の場合、50分と表示される' do
+        expect(helper.view_time_data(50)).to eq("50分")
+      end
+      
+      it 'レシピの調理時間(total_time) = 120の場合、2時間と表示される' do
+        expect(helper.view_time_data(120)).to eq("2時間")
+      end
+      
       it 'レシピの調理時間(total_time) = 150の場合、2時間30分と表示される' do
         expect(helper.view_time_data(150)).to eq("2時間30分")
       end
