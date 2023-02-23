@@ -54,4 +54,24 @@ describe Admin::UsersController, type: :controller do
     end
   end
   
+  describe "PATCH #update" do
+    context '正常系' do
+      before { request.env['HTTP_REFERER'] = admin_user_path(@user.id) }
+      it 'ユーザーを退会処理にした時、ユーザーの状況が「退会」に変更され、詳細ページに移動する' do
+        patch :update, params: { id: @user.id, user: { is_active: false } } 
+        expect(@user.reload.is_active).to eq(false)
+        expect_redirect_to_with_notice(admin_user_path(@user.id), 'ユーザーの情報を編集しました')
+      end
+    end
+    
+    context '異常系' do
+      before { request.env['HTTP_REFERER'] = admin_user_path(@user.id) }
+      it '管理者以外がアクセスしようとすると、管理者のログイン画面に移動し、エラーメッセージが表示される' do
+        sign_out @admin
+        patch :update, params: { id: @user.id, user: { is_active: false } }
+        expect_redirect_to_with_alert(new_admin_session_path, 'ログインもしくはアカウント登録してください。')
+      end
+    end
+  end
+  
 end
