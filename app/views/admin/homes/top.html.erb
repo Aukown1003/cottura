@@ -20,7 +20,7 @@
           <tr class="align-middle">
             <td><%= report.recipe.user.name %></td>
             <td><%= report.recipe.title %></td>
-            <td class="text-truncate" style="max-width: 200px;"><%= link_to report.content, admin_report_path(id: report.id) %></td>
+            <td class="text-truncate report-content"><%= link_to report.content, admin_report_path(id: report.id) %></td>
             <td><%= link_to report.user.name, admin_user_path(id: report.user.id) %></td>
             <td><%= jp_time_date(report.created_at) %>
             <td><%= link_to "削除", admin_report_path(id: report.id), method: :delete, data: { confirm: '削除してもよろしいですか？' }, class:"btn btn-danger" %></td>

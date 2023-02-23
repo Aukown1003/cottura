@@ -22,6 +22,7 @@ import "../stylesheets/recipe_new"
 import "../stylesheets/sign_in_sign_up"
 import "../stylesheets/user_show"
 import "../stylesheets/bootstrap5"
+import "../stylesheets/admin"
 
 Rails.start()
 Turbolinks.start()
