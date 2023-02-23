@@ -85,9 +85,9 @@ class Recipe < ApplicationRecord
   end
   
   # レシピ材料の分量の再計算
-  def self.calculate_ratio(recipe_id, quantity)
-    ingredient_quantity = RecipeIngredient.find(recipe_id).quantity
-    (BigDecimal(quantity.to_s) / ingredient_quantity).to_f
+  def self.calculate_ratio(recipe_ingredient_id, quantity_data)
+    ingredient_quantity = RecipeIngredient.find(recipe_ingredient_id).quantity
+    (BigDecimal(quantity_data.to_s) / ingredient_quantity).to_f
   end
   
   # 調理時間、絞り込み時間一覧作成メソッド

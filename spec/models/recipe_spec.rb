@@ -160,5 +160,48 @@ describe Recipe, type: :model do
       end
     end
     
+    context 'add_category_id_to_session' do
+      let(:session) { {} }
+      
+      it 'session[:category_id] = 2が存在する時、category_id = 1を足すと、session[:category_id] = [1,2]が出力される' do
+        params_data = 1
+        session[:category_id] = [2]
+        described_class.add_category_id_to_session(params_data, session)
+        expect(session[:category_id]).to match_array([1,2])
+      end
+      
+      it 'session[:category_id] = 2が存在する時、category_id = 2を足すと、重複せずsession[:category_id] = [2]が出力される' do
+        params_data = 2
+        session[:category_id] = [2]
+        described_class.add_category_id_to_session(params_data, session)
+        expect(session[:category_id]).to match_array([ 2 ])
+      end
+      
+      it 'session[:category_id]が存在しない時、category_id = 2を足すと、session[:category_id] = [2]が出力される' do
+        params_data = 2
+        described_class.add_category_id_to_session(params_data, session)
+        expect(session[:category_id]).to match_array([ 2 ])
+      end
+    end
+    
+    context 'calculate_ratio' do
+      before do
+        recipe.recipe_ingredients.build(attributes_for(:recipe_ingredient, quantity: 4, unit_id: unit.id))
+        recipe.recipe_steps.build(attributes_for(:recipe_step))
+        recipe.save
+        @recipe_ingredient_id = recipe.recipe_ingredients.first.id
+      end
+      
+      it '材料の分量が4、再計算の分量が2の時、再計算のレートは0.5になる' do
+        quantity_data = 2
+        expect(described_class.calculate_ratio(@recipe_ingredient_id, quantity_data)).to eq(0.5)
+      end
+      
+      it '材料の分量が4、再計算の分量が11.3の時、再計算のレートは2.825になる' do
+        quantity_data = 11.3
+        expect(described_class.calculate_ratio(@recipe_ingredient_id, quantity_data)).to eq(2.825)
+      end
+    end
+    
   end
 end
