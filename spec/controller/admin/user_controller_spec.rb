@@ -9,9 +9,8 @@ describe Admin::UsersController, type: :controller do
   end
   
   describe "GET #index" do
-    before { get :index }
     context '正常系' do
-      
+      before { get :index }
       it "ユーザ一覧のビューが正しく表示されている" do
         expect(response).to render_template :index
       end
@@ -24,17 +23,32 @@ describe Admin::UsersController, type: :controller do
     context '異常系' do
       before do 
         sign_out @admin
-        sign_in @user
         get :index
       end
-      
-      it 'ユーザーがアクセスしようとすると、管理者のログイン画面に移動し、エラーメッセージが表示される' do
+      it '管理者以外がアクセスしようとすると、管理者のログイン画面に移動し、エラーメッセージが表示される' do
         expect_redirect_to_with_alert(new_admin_session_path, 'ログインもしくはアカウント登録してください。')
       end
+    end
+  end
+  
+  describe "GET #show" do
+    context '正常系' do
+      before { get :show, params: { id: @user.id } }
+      it 'ユーザ詳細のビューが正しく表示されている' do
+        expect(response).to render_template :show
+      end
       
-      it '未ログインでアクセスしようとすると、管理者のログイン画面に移動し、エラーメッセージが表示される' do
-        sign_out @user
-        get :index
+      it "ユーザーデータが、インスタンス変数 @user に割り当てられている" do
+        expect(assigns(:user)).to eq(@user)
+      end
+    end
+    
+    context '異常系' do
+      before do 
+        sign_out @admin
+        get :show, params: { id: @user.id }
+      end
+      it '管理者以外がアクセスしようとすると、管理者のログイン画面に移動し、エラーメッセージが表示される' do
         expect_redirect_to_with_alert(new_admin_session_path, 'ログインもしくはアカウント登録してください。')
       end
     end
