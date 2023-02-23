@@ -125,6 +125,40 @@ describe Recipe, type: :model do
   end
   
   describe 'クラスメソッド' do
+    let(:user) { create(:user) }
+    let(:genre) { create(:genre) }
+    let(:unit) { create(:unit) }
+    let!(:category) { create(:category, genre_id: genre.id) }
+    let!(:recipe) { build(:recipe, title: 'カレーライス', user_id: user.id, category_id: category.id) }
+    
+    
+    context 'search_by_keyword' do
+      let!(:recipe2) { build(:recipe, title: '肉じゃが', user_id: user.id, category_id: category.id) }
+      let!(:recipe3) { build(:recipe, title: 'オムライス', user_id: user.id, category_id: category.id) }
+      let!(:recipe4) { build(:recipe, title: 'スープカレー', user_id: user.id, category_id: category.id) }
+      
+      before do
+        save_recipe_with_ingredient_and_step_and_tag(recipe,'じゃがいも',unit,'にんじんを切る','辛口')
+        save_recipe_with_ingredient_and_step_and_tag(recipe2,'牛肉',unit,'じゃがいもを切る','お手軽')
+        save_recipe_with_ingredient_and_step_and_tag(recipe3,'卵',unit,'卵を混ぜる','お手軽')
+        save_recipe_with_ingredient_and_step_and_tag(recipe4,'じゃがいも',unit,'じゃがいもを切る','本格的')
+      end
+      
+      it 'キーワードが「カレー」であった場合(タイトル)' do
+        keyword = 'カレー'
+        expect(described_class.search_by_keyword(keyword, described_class.all)).to match_array([recipe, recipe4])
+      end
+      
+      it 'キーワードが「じゃがいも」であった場合(材料名、作り方の説明)' do
+        keyword = 'じゃがいも'
+        expect(described_class.search_by_keyword(keyword, described_class.all)).to match_array([recipe, recipe2, recipe4])
+      end
+      
+      it 'キーワードが「カレー、辛口」であった場合(タイトル、タグ)' do
+        keyword = 'カレー　辛口'
+        expect(described_class.search_by_keyword(keyword, described_class.all)).to match_array([recipe])
+      end
+    end
     
   end
 end
