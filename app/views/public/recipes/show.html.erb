@@ -144,7 +144,10 @@
         <h5 class="mx-auto font-weight-bold border-bottom border-secondary mb-3">タグ一覧</h5>
         <div class="tags d-flex flex-wrap">
         <% @recipe.tags.each do |tag| %>
-          <p class="tag-item p-1 mb-1 mr-2"><span class="pl-1"><i class="fas fa-tag"></i></span><span class="px-2"><%= tag.name %></span></p>
+          <%= link_to recipes_path(search: tag.name), class: "tag-item p-1 mb-1 mr-2" do %>
+            <span class="pl-1"><i class="fas fa-tag"></i></span>
+            <span class="px-2"><%= tag.name %></span>
+          <% end %>
         <% end %>
         </div>
       </div>

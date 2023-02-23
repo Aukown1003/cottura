@@ -58,6 +58,17 @@
   color: #fff;
 }
 
+.tags a {
+  text-decoration: none;
+}
+
+.tag-item:hover{
+  border: 1px solid;
+  border-radius: 10px;
+  background-color: #fff;
+  color: #282936;
+}
+
 .content-width_10 {
   width: 10%;
 }
