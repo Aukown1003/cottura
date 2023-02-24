@@ -79,4 +79,25 @@ describe Admin::GenresController, type: :controller do
       end
     end
   end
+  
+  describe "PATCH #update" do
+    let(:genre) { create(:genre) }
+    
+    context '正常系' do
+      it '編集した名前にレコードが変更され、ジャンル、カテゴリー一覧に移動し、メッセージが表示される' do
+        patch :update, params: {id: genre.id, genre:{name: 'new_genre_name'}}
+        expect(genre.reload.name).to eq('new_genre_name')
+        expect_redirect_to_with_notice(admin_genres_path, 'ジャンルを変更しました')
+      end
+    end
+    
+    context '正常系' do
+      it '編集前の名前に戻り、ジャンル編集画面に移動し、エラーメッセージが表示される' do
+        patch :update, params: {id: genre.id, genre:{name: nil}}
+        expect(genre.reload.name).to eq(genre.name)
+        expect_redirect_to_with_alert(edit_admin_genre_path, 'ジャンルの変更に失敗しました')
+      end
+    end
+  end
+  
 end
