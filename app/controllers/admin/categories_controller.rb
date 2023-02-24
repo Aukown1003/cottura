@@ -25,11 +25,8 @@ class Admin::CategoriesController < ApplicationController
 
   def destroy
     @category = Category.find(params[:id])
-    if @category.destroy
-      redirect_to admin_genres_path, notice: 'カテゴリーを削除しました'
-    else
-      redirect_to admin_genres_path, alert: 'カテゴリーの削除に失敗しました'
-    end
+    @category.destroy!
+    redirect_to admin_genres_path, notice: 'カテゴリーを削除しました'
   end
 
   private

@@ -63,4 +63,14 @@ describe Admin::CategoriesController, type: :controller do
       end
     end
   end
+  
+  describe "DELETE #destroy" do
+    context '正常系' do
+      it 'カテゴリーが削除出来、ジャンル、カテゴリー一覧に移動し、メッセージが表示される' do
+        category_id = category.id
+        expect{delete :destroy, params: { id: category_id }}.to change(Category, :count).by(-1)
+        expect_redirect_to_with_notice(admin_genres_path, 'カテゴリーを削除しました')
+      end
+    end
+  end
 end

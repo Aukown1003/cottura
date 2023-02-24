@@ -99,7 +99,7 @@ describe Admin::GenresController, type: :controller do
 
   describe "DELETE #destroy" do
     context '正常系' do
-      it 'ジャンルが削除出来、ジャンル一覧に移動し、メッセージが表示される' do
+      it 'ジャンルが削除出来、ジャンル、一覧に移動し、メッセージが表示される' do
         genre_id = genre.id
         expect{delete :destroy, params: { id: genre_id }}.to change(Genre, :count).by(-1)
         expect_redirect_to_with_notice(admin_genres_path, 'ジャンルを削除しました')
