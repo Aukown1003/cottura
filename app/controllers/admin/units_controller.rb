@@ -8,9 +8,9 @@ class Admin::UnitsController < ApplicationController
   def create
     @unit = Unit.new(params_unit)
     if @unit.save
-      redirect_to admin_units_index_path, notice: '単位を作成しました'
+      redirect_to admin_units_path, notice: '単位を作成しました'
     else
-      redirect_to admin_units_index_path, alert: '単位の作成に失敗しました'
+      redirect_to admin_units_path, alert: '単位の作成に失敗しました'
     end
   end
 
@@ -21,7 +21,7 @@ class Admin::UnitsController < ApplicationController
   def update
     @unit = Unit.find(params[:id])
     if @unit.update(params_unit)
-      redirect_to admin_units_index_path, notice: '単位を変更しました'
+      redirect_to admin_units_path, notice: '単位を変更しました'
     else
       redirect_to edit_admin_unit_path(@unit.id), alert: '単位の変更に失敗しました'
     end
@@ -29,11 +29,8 @@ class Admin::UnitsController < ApplicationController
   
   def destroy
     @unit = Unit.find(params[:id])
-    if @unit.destroy
-      redirect_to admin_units_index_path, notice: '単位を削除しました'
-    else
-      redirect_to admin_units_index_path, alert: '単位の削除に失敗しました'
-    end
+    @unit.destroy!
+    redirect_to admin_units_path, notice: '単位を削除しました'
   end
   
   private

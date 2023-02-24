@@ -28,7 +28,6 @@ describe Admin::GenresController, type: :controller do
     end
     
     context '@categoriesの絞り込み' do
-      # let(:genre) { create(:genre) }
       let(:genre2) { create(:genre) }
       let(:category) { create(:category, genre_id: genre.id)}
       let(:category2) { create(:category, genre_id: genre2.id)}
@@ -49,7 +48,7 @@ describe Admin::GenresController, type: :controller do
   describe "POST #create" do
     context '正常系' do
       let(:params_data) { build(:genre) }
-      it '投稿したジャンルが保存でき、ジャンル、カテゴリー一覧に移動する' do
+      it 'ジャンルが保存でき、ジャンル、カテゴリー一覧に移動し、メッセージが表示される' do
         expect{post :create, params:{ genre: params_data.attributes }}.to change(Genre, :count).by(1)
         expect_redirect_to_with_notice(admin_genres_path, 'ジャンルを作成しました')
       end
@@ -82,7 +81,7 @@ describe Admin::GenresController, type: :controller do
   
   describe "PATCH #update" do
     context '正常系' do
-      it '編集した名前にレコードが変更され、ジャンル、カテゴリー一覧に移動し、メッセージが表示される' do
+      it '編集したジャンル名にレコードが変更され、ジャンル、カテゴリー一覧に移動し、メッセージが表示される' do
         patch :update, params: {id: genre.id, genre:{name: 'new_genre_name'}}
         expect(genre.reload.name).to eq('new_genre_name')
         expect_redirect_to_with_notice(admin_genres_path, 'ジャンルを変更しました')
@@ -90,7 +89,7 @@ describe Admin::GenresController, type: :controller do
     end
     
     context '異常系' do
-      it '編集前の名前に戻り、ジャンル編集画面に移動し、エラーメッセージが表示される' do
+      it '編集前のジャンル名に戻り、ジャンル編集画面に移動し、エラーメッセージが表示される' do
         patch :update, params: {id: genre.id, genre:{name: nil}}
         expect(genre.reload.name).to eq(genre.name)
         expect_redirect_to_with_alert(edit_admin_genre_path, 'ジャンルの変更に失敗しました')
