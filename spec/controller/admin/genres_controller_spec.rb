@@ -5,7 +5,7 @@ describe Admin::GenresController, type: :controller do
     @admin = create(:admin)
     sign_in @admin
   end
-  let(:genre) { create(:genre) }
+  let!(:genre) { create(:genre) }
   
   describe "GET #index" do
     before { get :index }
@@ -99,9 +99,8 @@ describe Admin::GenresController, type: :controller do
 
   describe "DELETE #destroy" do
     context '正常系' do
-      it 'ジャンルが削除出来、ジャンル、一覧に移動し、メッセージが表示される' do
-        genre_id = genre.id
-        expect{delete :destroy, params: { id: genre_id }}.to change(Genre, :count).by(-1)
+      it 'ジャンルが削除出来、ジャンル、カテゴリー一覧に移動し、メッセージが表示される' do
+        expect{delete :destroy, params: { id: genre.id }}.to change(Genre, :count).by(-1)
         expect_redirect_to_with_notice(admin_genres_path, 'ジャンルを削除しました')
       end
     end

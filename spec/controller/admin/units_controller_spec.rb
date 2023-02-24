@@ -5,7 +5,7 @@ describe Admin::UnitsController, type: :controller do
     @admin = create(:admin)
     sign_in @admin
   end
-  let(:unit) { create(:unit) }
+  let!(:unit) { create(:unit) }
   
   describe "GET #index" do
     before { get :index }
@@ -79,8 +79,7 @@ describe Admin::UnitsController, type: :controller do
   describe "DELETE #destroy" do
     context '正常系' do
       it '単位が削除出来、単位一覧に移動し、メッセージが表示される' do
-        unit_id = unit.id
-        expect{delete :destroy, params: { id: unit_id }}.to change(Unit, :count).by(-1)
+        expect{delete :destroy, params: { id: unit.id }}.to change(Unit, :count).by(-1)
         expect_redirect_to_with_notice(admin_units_path, '単位を削除しました')
       end
     end

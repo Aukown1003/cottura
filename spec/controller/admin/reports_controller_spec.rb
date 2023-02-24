@@ -29,4 +29,12 @@ describe Admin::ReportsController, type: :controller do
     end
   end
   
+  describe "DELETE #destroy" do
+    context '正常系' do
+      it 'レポートが削除出来、管理画面に移動し、メッセージが表示される' do
+        expect{delete :destroy, params: { id: report.id }}.to change(Report, :count).by(-1)
+        expect_redirect_to_with_notice(admin_root_path, '報告を削除しました')
+      end
+    end
+  end
 end

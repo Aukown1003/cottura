@@ -6,7 +6,7 @@ describe Admin::CategoriesController, type: :controller do
     sign_in @admin
   end
   let(:genre) { create(:genre) }
-  let(:category) { create(:category, genre_id: genre.id) }
+  let!(:category) { create(:category, genre_id: genre.id) }
   
   describe "POST #create" do
     context '正常系' do
@@ -67,8 +67,7 @@ describe Admin::CategoriesController, type: :controller do
   describe "DELETE #destroy" do
     context '正常系' do
       it 'カテゴリーが削除出来、ジャンル、カテゴリー一覧に移動し、メッセージが表示される' do
-        category_id = category.id
-        expect{delete :destroy, params: { id: category_id }}.to change(Category, :count).by(-1)
+        expect{delete :destroy, params: { id: category.id }}.to change(Category, :count).by(-1)
         expect_redirect_to_with_notice(admin_genres_path, 'カテゴリーを削除しました')
       end
     end
