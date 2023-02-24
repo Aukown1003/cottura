@@ -52,7 +52,7 @@ describe Admin::UnitsController, type: :controller do
         expect(response).to render_template :edit
       end
       
-      it "単位が、インスタンス変数 @unit に割り当てられている" do
+      it "編集単位が、インスタンス変数 @unit に割り当てられている" do
         expect(assigns(:unit)).to eq(unit)
       end
     end

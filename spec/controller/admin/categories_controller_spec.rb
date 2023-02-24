@@ -25,4 +25,24 @@ describe Admin::CategoriesController, type: :controller do
       end
     end
   end
+  
+  describe "GET #edit" do
+    before do
+      get :edit, params: {id: category.id}
+    end
+    
+    context '正常系' do
+      it 'カテゴリー編集のビューが正しく表示されている' do
+        expect(response).to render_template :edit
+      end
+      
+      it "編集するカテゴリーが、インスタンス変数 @category に割り当てられている" do
+        expect(assigns(:category)).to eq(category)
+      end
+      
+      it "全てジャンルが、インスタンス変数 @genres に割り当てられている" do
+        expect(assigns(:genres)).to eq(Genre.all)
+      end
+    end
+  end
 end
