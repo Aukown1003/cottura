@@ -14,19 +14,20 @@
   z-index: 1;
   color: #282936 !important;
 }
+
 .nav-link::before {
- content: "";
- position: absolute;
- top: 0;
- left: 0;
- height: 100%;
- width: 0;
- border-radius: 0.21rem;
- background-color: #282936;
- z-index: -1;
- -webkit-box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
- box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
- transition: all 250ms
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0;
+  border-radius: 0.21rem;
+  background-color: #282936;
+  z-index: -1;
+  -webkit-box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+  box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27);
+  transition: all 250ms
 }
 
 .nav-link:hover {

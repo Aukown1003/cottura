@@ -15,12 +15,12 @@
       <%= render 'layouts/header' %>
       <main>
         <% if flash[:notice] %>
-          <div class="alert alert-success mb-0" role="alert" style="background: #d1e7dd;">
+          <div class="alert alert-success mb-0" role="alert">
             <i class="fas fa-check-circle me-2"></i><%= notice %>
           </div>
         <% end %>
         <% if flash[:alert] %>
-          <div class="alert alert-danger mb-0" role="alert" style="background: #f8d7da;">
+          <div class="alert alert-danger mb-0" role="alert">
             <i class="fas fa-exclamation-triangle me-2"></i><%= alert %>
           </div>
         <% end %>

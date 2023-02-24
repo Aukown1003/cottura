@@ -6,10 +6,7 @@ class Admin::ReportsController < ApplicationController
 
   def destroy
     @report = Report.find(params[:id])
-    if @report.destroy
-      redirect_to admin_root_path, notice: '報告を削除しました'
-    else
-      redirect_to admin_root_path, alert: '報告を削除に失敗しました'
-    end
+    @report.destroy!
+    redirect_to admin_root_path, notice: '報告を削除しました'
   end
 end

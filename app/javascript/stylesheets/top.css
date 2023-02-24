@@ -11,6 +11,14 @@
   bottom: 0;
 }
 
+.alert-success {
+ background: #d1e7dd;
+}
+
+.alert-danger {
+ background: #f8d7da;
+}
+
 /*画像処理*/
 .top_image_form{
   position: relative;

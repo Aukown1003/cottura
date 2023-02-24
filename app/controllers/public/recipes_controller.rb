@@ -1,4 +1,5 @@
 class Public::RecipesController < ApplicationController
+  rescue_from ActiveRecord::RecordNotFound, with: :redirect_to_toppage
   before_action :authenticate_user!, only: [:new, :create]
   before_action :user_check, only: [:edit, :update, :destroy]
   before_action :gest_user_request_check, only: [:create, :update]
@@ -11,30 +12,18 @@ class Public::RecipesController < ApplicationController
   end
 
   def index
-    @recipes = Recipe.with_reviews.by_open.ordered_by_updated_time
-    @recipes = @recipes.by_category(session[:category_id]) if session[:category_id].present?
-    @recipes = @recipes.by_time(session[:search_time].to_i) if session[:search_time].present?
+    recipes = Recipe.with_reviews.by_open.ordered_by_updated_time
+    recipes = recipes.by_category(session[:category_id]) if session[:category_id].present? #レシピを絞り込みカテゴリで選択
+    recipes = recipes.by_time(session[:search_time].to_i) if session[:search_time].present? #レシピを絞り込み時間で選択
+    recipes = Recipe.search_by_keyword(params[:search], recipes) if params[:search].present? #レシピを検索ワードで選択
     @categories = Category.by_id(session[:category_id]) if session[:category_id].present?
     @genres = Genre.with_category
-    
-    # レシピのワードでの検索
-    if params[:search].present?
-      keyword = params[:search].split(/ |　/).uniq.compact
-      @recipes.each do |recipe|
-        recipe.assign_attributes(payload: (recipe.recipe_steps.pluck(:content).join + recipe.recipe_ingredients.pluck(:name).join + recipe.tags.pluck(:name).join + recipe.title ))
-      end
-      @recipes = @recipes.select do |o|
-        result = keyword.map{ |k| o.payload.include?(k) }
-        result.compact.uniq.size == 1 && result.compact.uniq.first == true
-      end
-    end
-    @recipes = Kaminari.paginate_array(@recipes).page(params[:page])
+    @recipes = Kaminari.paginate_array(recipes).page(params[:page])
   end
 
   def show
     @recipe = Recipe.with_recipe_detail_and_review.find(params[:id])
     @review = Review.new
-    impressionist(@recipe, nil, unique: [:ip_address])
   end
 
   def create
@@ -72,38 +61,21 @@ class Public::RecipesController < ApplicationController
 
   def destroy
     @recipe = Recipe.find(params[:id])
-    @recipe.destroy
+    @recipe.destroy!
     redirect_to user_path(@recipe.user_id), notice: "レシピを削除しました"
   end
   
   # 投稿編集時のカテゴリーの絞り込み処理
   def search_category
-    @category = Category.where(genre_id: params[:genre_id])
-    if @category.empty?
-      @category = nil
+    if params[:genre_id].present?
+      @category = Category.where(genre_id: params[:genre_id])
     end
   end
   
   # 一覧でのカテゴリー、時間での絞り込み
-  def search
-    if params[:search_time].present?
-      time_data = params[:search_time]
-      session[:search_time] = time_data
-    end
-    
-    if params[:category_id].present?
-      add_data = params[:category_id]
-      if session[:category_id].present?
-        data = session[:category_id]
-        data << add_data
-      else
-        data = [] << add_data
-      end
-
-      data.uniq!
-      session[:category_id] = data
-    end
-    
+  def select_time_or_category
+    session[:search_time] = params[:search_time] if params[:search_time].present?
+    Recipe.add_category_id_to_session(params[:category_id], session) if params[:category_id].present?
     redirect_to recipes_path
   end
 
@@ -130,22 +102,20 @@ class Public::RecipesController < ApplicationController
 
   # 詳細でのレシピ材料の分量再計算
   def recalculation
-    recipe_array = {}
     if params[:recipe].keys.size > 1
       redirect_to request.referer, alert: '2つ以上の値で再計算は行なえません'
       return
     end
-    params[:recipe].each do |key, value|
-      unless value.empty?
-        recipe_array.store(key, value)
-      end
-    end
-    get_recipe_id = recipe_array.first[0]
-    get_quantity = recipe_array.first[1]
-    ingredient_quantity = RecipeIngredient.find(get_recipe_id).quantity
-    ratio = (BigDecimal(get_quantity.to_s) / ingredient_quantity).to_f
-    session[:recalculation] = ratio
+    get_recipe_id = params.dig(:recipe).keys.first
+    get_quantity = params.dig(:recipe).values.first
+    session[:recalculation] = Recipe.calculate_ratio(get_recipe_id, get_quantity)
     redirect_to request.referer
+  end
+
+  protected
+  
+  def redirect_to_toppage
+    redirect_to root_path, alert: 'レシピが見つかりませんでした'
   end
 
   private

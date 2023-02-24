@@ -12,7 +12,7 @@
   <div class="category-list">
     <% genre.categories.each do |category| %>
       <div class="category-item">
-        <%= link_to category.name, search_recipe_path(category_id: category.id), class:"w-100 btn"%>
+        <%= link_to category.name, select_time_or_category_recipe_path(category_id: category.id), class:"w-100 btn"%>
       </div>
     <% end %>
   </div>
@@ -31,7 +31,7 @@
   <div class="category-list">
     <% Recipe.time_data(3,30,"以内").each do |search_time| %>
       <div class="category-item">
-        <%= link_to search_time[0], search_recipe_path(search_time: search_time[1]), class:"w-100 d-block btn" %>
+        <%= link_to search_time[0], select_time_or_category_recipe_path(search_time: search_time[1]), class:"w-100 d-block btn" %>
       </div>
     <% end %>
   </di>

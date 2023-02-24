@@ -38,7 +38,7 @@ class Recipe < ApplicationRecord
   scope :by_time, -> (time) { where(total_time: ..time) }
   scope :ordered_by_updated_time, -> { order(updated_at: :desc) }
 
-  # お気にいりしているかの確認
+  # お気に入りに登録しているかの確認
   def favorited_by(user)
     favorites.exists?(user_id: user.id)
   end
@@ -54,7 +54,42 @@ class Recipe < ApplicationRecord
     attach_default_image unless image.attached?
     image.variant(resize_to_fill: [width, height]).processed
   end
-
+  
+  # レシピの検索
+  def self.search_by_keyword(keyword, search_datas)
+    keywords = keyword.split(/ |　/).uniq.compact
+    search_datas.each do |recipe|
+      recipe.assign_attributes(payload: (
+        recipe.recipe_steps.pluck(:content).join +
+        recipe.recipe_ingredients.pluck(:name).join +
+        recipe.tags.pluck(:name).join +
+        recipe.title
+      ))
+    end
+    search_datas.select do |o|
+      result = keywords.map{ |k| o.payload.include?(k) }
+      result.compact.uniq.size == 1 && result.compact.uniq.first == true
+    end
+  end
+  
+  # 絞り込み表示用のカテゴリーIDのセッションへの登録
+  def self.add_category_id_to_session(params_data, session)
+    if session[:category_id].present?
+      base_data = session[:category_id]
+      base_data << params_data
+    else
+      base_data = Array(params_data)
+    end
+    base_data.uniq!
+    session[:category_id] = base_data
+  end
+  
+  # レシピ材料の分量の再計算
+  def self.calculate_ratio(recipe_ingredient_id, quantity_data)
+    ingredient_quantity = RecipeIngredient.find(recipe_ingredient_id).quantity
+    (BigDecimal(quantity_data.to_s) / ingredient_quantity).to_f
+  end
+  
   # 調理時間、絞り込み時間一覧作成メソッド
   def self.time_data(hour, min, suffix = "")
     data = []

@@ -1,11 +1,12 @@
-# Cottura!
+# Cottura! [![Maintainability](https://api.codeclimate.com/v1/badges/77aa114ea3a6302893fb/maintainability)](https://codeclimate.com/github/Aukown1003/cottura/maintainability)
+<p align="center"><img width="1502" alt="top画面" src="https://user-images.githubusercontent.com/115121908/221098042-f3e81267-e00b-4c1a-adcf-ace468fc37eb.png"></p>
 
 ## サイト概要
 
 ### サイトテーマ
 投稿、閲覧の出来るレシピサイトです。ユーザーはレシピを投稿したり、他のユーザーが投稿したレシピを見たりする事が出来ます。
 またレシピに対してレビューを投稿したり、お気に入り登録を行う事もできます。
-
+<p align="center"><img src="https://user-images.githubusercontent.com/115121908/219905418-4ff5c49c-09a6-4c10-9939-aba4ee5b2fd7.png" alt="index画面"></p>
 
 ### テーマを選んだ理由
 生活の中で自炊をすることが多々ありますが、以下のような課題を感じています。
@@ -13,11 +14,18 @@
 - 作り方を忘れてしまう為、レシピを残しておきたいが、公開はしたくない
 - レシピサイトを使用する際、分量を作りたい量に合わせて再計算するのが大変である
 
-またレシピサイトの調査では、サイトを利用する理由について、「新しいメニューの開発」についで、「毎日の献立の参考にするため」が挙げられています。  
-日々の献立で使用するので有れば、限られた時間の中で調理を行わなければならない為、時間の記載が重要ですが、
-現状はそれらがレシピ詳細を開くまでわからない事や、そもそも記載が無いなど、ニーズに答えられて無いのでは無いかと感じました。
+献立のレパートリーに関する悩みは、参考資料にあるように、料理をする人にとって共通の問題であると思われます。
+>参考資料 [アイランド株式会社 コロナ禍における家庭料理の変化に関するアンケート調査](https://www.ai-land.co.jp/press/p-ailand/9959/)
 
-上記課題を解決できれば、レシピサイトを活用するユーザーの役に立つと考え、今回このアプリケーションの開発を行いました。
+>参考資料 [クックパッド株式会社 料理に関するアンケート結果](https://info.cookpad.com/news/press_2013_0723)
+
+またレシピサイトの調査では、サイトを利用する理由について、「新しいメニューの開発」についで、「毎日の献立の参考にするため」が挙げられています。
+>参考資料 [株式会社ドゥ・ハウス「レシピサイト」に関する調査結果](https://www.dohouse.co.jp/datacolle/rs20200218/)
+
+日々の献立で使用するので有れば、限られた時間の中で調理を行わなければならない為、時間の記載が重要です。
+しかしそれらがレシピ詳細を開くまでわからない事や、そもそも記載が無いなど、ニーズに答えられて無いのでは無いかと感じました。
+
+そこで上記課題を解決できれば、レシピサイトを活用するユーザーの役に立つと考え、今回このアプリケーションの開発を行いました。
 
 ### ターゲットユーザ
 - レシピを検索したい人
@@ -43,11 +51,12 @@
 
 
 ## 設計書
-ER図
-- https://app.diagrams.net/#G1wGo1P4-u-lNbNLx2ljPa1Z98Af7KatTV
+- ER図
 
-テーブル定義書、アプリケーション詳細設計
-- https://docs.google.com/spreadsheets/d/1jnGbXNi4KXIugBe_R0kpUMbWws8Fr0oqK7ycwsBHSDc/edit#gid=856357510
+<img width="1077" alt="ER図" src="https://user-images.githubusercontent.com/115121908/219905208-3f49ef9d-2a23-4254-810d-91effb6b9192.png">
+
+- [テーブル定義書](https://docs.google.com/spreadsheets/d/1jnGbXNi4KXIugBe_R0kpUMbWws8Fr0oqK7ycwsBHSDc/edit#gid=856357510)
+- [アプリケーション詳細設計](https://docs.google.com/spreadsheets/d/1AUkGpHbqGblt1CAEtsyFpFhF_2Sv1VkEG0Ie9eaWd5I/edit#gid=0)
 
 ## 開発環境
 - OS：Linux(CentOS)
@@ -57,6 +66,7 @@ ER図
 - IDE：Cloud9
 
 ## 使用素材
-- https://pixabay.com/ja/
-- https://illustration-free.net/
-- https://www.ac-illust.com/
+- [pixabay(画像)](https://pixabay.com/ja/ "pixabay")
+- [illust-ac(画像)](https://www.ac-illust.com/ "illust-ac")
+- [IFN(アイコン)](https://illustration-free.net/ "IFN")
+- [Canva(ロゴ)](https://www.canva.com/ "Canva")
