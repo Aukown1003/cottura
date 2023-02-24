@@ -5,6 +5,7 @@ describe Admin::GenresController, type: :controller do
     @admin = create(:admin)
     sign_in @admin
   end
+  let(:genre) { create(:genre) }
   
   describe "GET #index" do
     before { get :index }
@@ -27,7 +28,7 @@ describe Admin::GenresController, type: :controller do
     end
     
     context '@categoriesの絞り込み' do
-      let(:genre) { create(:genre) }
+      # let(:genre) { create(:genre) }
       let(:genre2) { create(:genre) }
       let(:category) { create(:category, genre_id: genre.id)}
       let(:category2) { create(:category, genre_id: genre2.id)}
@@ -64,7 +65,6 @@ describe Admin::GenresController, type: :controller do
   end
   
   describe "GET #edit" do
-    let(:genre) { create(:genre) }
     before do
       get :edit, params: {id: genre.id}
     end
@@ -81,8 +81,6 @@ describe Admin::GenresController, type: :controller do
   end
   
   describe "PATCH #update" do
-    let(:genre) { create(:genre) }
-    
     context '正常系' do
       it '編集した名前にレコードが変更され、ジャンル、カテゴリー一覧に移動し、メッセージが表示される' do
         patch :update, params: {id: genre.id, genre:{name: 'new_genre_name'}}
@@ -91,7 +89,7 @@ describe Admin::GenresController, type: :controller do
       end
     end
     
-    context '正常系' do
+    context '異常系' do
       it '編集前の名前に戻り、ジャンル編集画面に移動し、エラーメッセージが表示される' do
         patch :update, params: {id: genre.id, genre:{name: nil}}
         expect(genre.reload.name).to eq(genre.name)
@@ -99,5 +97,14 @@ describe Admin::GenresController, type: :controller do
       end
     end
   end
-  
+
+  describe "DELETE #destroy" do
+    context '正常系' do
+      it 'ジャンルが削除出来、ジャンル一覧に移動し、メッセージが表示される' do
+        genre_id = genre.id
+        expect{delete :destroy, params: { id: genre_id }}.to change(Genre, :count).by(-1)
+        expect_redirect_to_with_notice(admin_genres_path, 'ジャンルを削除しました')
+      end
+    end
+  end
 end
