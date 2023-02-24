@@ -40,8 +40,26 @@ describe Admin::CategoriesController, type: :controller do
         expect(assigns(:category)).to eq(category)
       end
       
-      it "全てジャンルが、インスタンス変数 @genres に割り当てられている" do
+      it "全てのジャンルが、インスタンス変数 @genres に割り当てられている" do
         expect(assigns(:genres)).to eq(Genre.all)
+      end
+    end
+  end
+  
+  describe "PATCH #update" do
+    context '正常系' do
+      it '編集したカテゴリー名にレコードが変更され、ジャンル、カテゴリー一覧に移動し、メッセージが表示される' do
+        patch :update, params: {id: category.id, category:{name: 'new_category_name'}}
+        expect(category.reload.name).to eq('new_category_name')
+        expect_redirect_to_with_notice(admin_genres_path, 'カテゴリーを変更しました')
+      end
+    end
+    
+    context '異常系' do
+      it '編集前のカテゴリー名に戻り、ジャンル編集画面に移動し、エラーメッセージが表示される' do
+        patch :update, params: {id: category.id, category:{name: nil}}
+        expect(category.reload.name).to eq(category.name)
+        expect_redirect_to_with_alert(edit_admin_category_path, 'カテゴリーの変更に失敗しました')
       end
     end
   end

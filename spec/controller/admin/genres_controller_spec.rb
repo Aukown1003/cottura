@@ -14,7 +14,7 @@ describe Admin::GenresController, type: :controller do
         expect(response).to render_template :index
       end
       
-      it "全てジャンルが、インスタンス変数 @genres に割り当てられている" do
+      it "全てのジャンルが、インスタンス変数 @genres に割り当てられている" do
         expect(assigns(:genres)).to eq(Genre.all)
       end
       
@@ -73,7 +73,7 @@ describe Admin::GenresController, type: :controller do
         expect(response).to render_template :edit
       end
       
-      it "編集ジャンルが、インスタンス変数 @genre に割り当てられている" do
+      it "編集するジャンルが、インスタンス変数 @genre に割り当てられている" do
         expect(assigns(:genre)).to eq(genre)
       end
     end
