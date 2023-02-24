@@ -1,5 +1,5 @@
 # Cottura! [![Maintainability](https://api.codeclimate.com/v1/badges/77aa114ea3a6302893fb/maintainability)](https://codeclimate.com/github/Aukown1003/cottura/maintainability)
-<p align="center"><img src="https://user-images.githubusercontent.com/115121908/219905237-c744a716-9592-4503-ad98-7e6640934eb6.png" alt="Cottura_logo" width="30%" height="30%" ></p>
+<p align="center"><img width="1502" alt="top画面" src="https://user-images.githubusercontent.com/115121908/221098042-f3e81267-e00b-4c1a-adcf-ace468fc37eb.png"></p>
 
 ## サイト概要
 
@@ -14,10 +14,10 @@
 - 作り方を忘れてしまう為、レシピを残しておきたいが、公開はしたくない
 - レシピサイトを使用する際、分量を作りたい量に合わせて再計算するのが大変である
 
-特に献立のレパートリーに悩むのは、参考資料にもあるように料理をする人にとっては共通の悩み事であると考えます。
+献立のレパートリーに関する悩みは、参考資料にあるように、料理をする人にとって共通の問題であると思われます。
 >参考資料 [アイランド株式会社 コロナ禍における家庭料理の変化に関するアンケート調査](https://www.ai-land.co.jp/press/p-ailand/9959/)
 
->参考資料 [クックパッド株式会社 料理に関するアンケート結果](https://cf.cpcdn.com/info/assets/wp-content/uploads/20140306000000/pr130723-survey.pdf)
+>参考資料 [クックパッド株式会社 料理に関するアンケート結果](https://info.cookpad.com/news/press_2013_0723)
 
 またレシピサイトの調査では、サイトを利用する理由について、「新しいメニューの開発」についで、「毎日の献立の参考にするため」が挙げられています。
 >参考資料 [株式会社ドゥ・ハウス「レシピサイト」に関する調査結果](https://www.dohouse.co.jp/datacolle/rs20200218/)
