@@ -26,41 +26,13 @@ class Public::ReviewsController < ApplicationController
     params.require(:review).permit(:user_id ,:recipe_id, :score, :content)
   end
   
-  # def user_check
-  #   return if admin_signed_in?
-    
-  #   unless user_signed_in?
-  #     redirect_to recipes_path, alert: '未ログイン時、レビューを投稿、削除することは出来ません'
-  #     return
-  #   end
-  
-  #   if guest_user?
-  #     redirect_to recipes_path, alert: 'ゲストユーザーはレビューを投稿、削除することは出来ません'
-  #     return
-  #   end
-  
-  #   if params[:action] == "create"
-  #     recipe = Recipe.find(params[:review][:recipe_id])
-  #   elsif params[:action] == "destroy"
-  #     recipe = Recipe.find(params[:recipe_id])
-  #   end
-  #   if current_user.id == recipe.user_id
-  #     redirect_to recipes_path, alert: '自身のレシピにレビューを投稿、削除することは出来ません'
-  #   end
-  # end
-  
   def user_check
-    if admin_signed_in?
-      return
-    elsif !user_signed_in?
-      redirect_to recipes_path, alert: '未ログイン時、レビューを投稿、削除することは出来ません'
-    elsif guest_user?
-      redirect_to recipes_path, alert: 'ゲストユーザーはレビューを投稿、削除することは出来ません'
-    else
-      recipe_id = params[:review].present? ? params[:review][:recipe_id] : params[:recipe_id]
-      recipe = Recipe.find(recipe_id)
-      redirect_to recipes_path, alert: '自身のレシピにレビューを投稿、削除することは出来ません' if current_user.id == recipe.user_id
-    end
+    redirect_to recipes_path, alert: '未ログイン時、レビューを投稿、削除することは出来ません' and return unless user_signed_in?
+    redirect_to recipes_path, alert: 'ゲストユーザーはレビューを投稿、削除することは出来ません' and return if guest_user?
+    
+    recipe = params[:review].present? ? Recipe.find(params[:review][:recipe_id]) : Recipe.find(params[:id])
+    redirect_to recipes_path, alert: '自身のレシピにレビューを投稿、削除することは出来ません' if current_user.id == recipe.user_id
+    
+    return if admin_signed_in?
   end
-
 end
