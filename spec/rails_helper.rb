@@ -5,6 +5,7 @@ require_relative '../config/environment'
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
+require 'capybara/rspec'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -65,5 +66,19 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   config.include Devise::Test::IntegrationHelpers, type: :request
   config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include Devise::Test::IntegrationHelpers, type: :system
   config.include CommonHelpers
 end
+
+# Capybara.register_driver :headless_chrome do |app|
+#   chrome_options = Selenium::WebDriver::Chrome::Options.new
+#   chrome_options.args << '--headless'
+#   driver = Capybara::Selenium::Driver.new(app, browser: :chrome, options: chrome_options)
+#   driver.browser.manage.window.size = Selenium::WebDriver::Dimension.new(2000, 3000)
+#   driver
+# end
+
+# Capybara.javascript_driver = :headless_chrome
+# Capybara.default_max_wait_time = 5
+# Capybara.server = :puma, { Silent: true }
+

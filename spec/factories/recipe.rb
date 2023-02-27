@@ -9,5 +9,20 @@ FactoryBot.define do
     is_open { "true" }
     impressions_count { 0 }
     payload { nil }
+    
+    trait :with_recipe_ingredient do
+      after(:build) do |recipe|
+        ingredient = build(:recipe_ingredient, unit_id: unit.id)
+        recipe.ingredients << ingredient
+      end
+    end
+    
+    trait :with_recipe_step do
+      after(:build) do |recipe|
+        step = build(:recipe_step)
+        recipe.steps << step
+      end
+    end
+    
   end
 end
