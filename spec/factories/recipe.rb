@@ -12,15 +12,15 @@ FactoryBot.define do
     
     trait :with_recipe_ingredient do
       after(:build) do |recipe|
-        ingredient = build(:recipe_ingredient, unit_id: unit.id)
-        recipe.ingredients << ingredient
+        ingredient = build(:recipe_ingredient)
+        recipe.recipe_ingredients << ingredient
       end
     end
     
     trait :with_recipe_step do
       after(:build) do |recipe|
         step = build(:recipe_step)
-        recipe.steps << step
+        recipe.recipe_steps << step
       end
     end
     
