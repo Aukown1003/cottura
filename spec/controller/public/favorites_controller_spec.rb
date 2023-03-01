@@ -7,16 +7,18 @@ describe Public::FavoritesController, type: :controller do
     @genre = create(:genre)
     request.env['devise.mapping'] = Devise.mappings[:user]
     sign_in @user
-    save_recipe_with_ingredient_and_step(recipe, unit)
+    # save_recipe_with_ingredient_and_step(recipe, unit)
   end
-  let(:category) { create(:category, genre_id: @genre.id) }
-  let(:unit) { create(:unit) }
-  let!(:recipe) { build(:recipe, user_id: @recipe_user.id, category_id: category.id) }
+  # let(:category) { create(:category, genre_id: @genre.id) }
+  # let(:unit) { create(:unit) }
+  # let!(:recipe) { build(:recipe, user_id: @recipe_user.id, category_id: category.id) }
+  let!(:recipe) { create(:recipe, :with_recipe_ingredient, :with_recipe_step, user_id: @user.id) }
   
   describe 'POST #create' do
     let!(:favorite_params) { build(:favorite, user_id: @user.id, recipe_id: recipe.id) }
     context '正常系' do
       it 'お気に入りが保存される' do
+        # binding.pry
         expect{post :create, xhr: true, params:{ favorite: favorite_params.attributes, recipe_id: recipe.id} }.to change(Favorite, :count).by(1)
       end
     end

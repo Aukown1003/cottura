@@ -5,13 +5,14 @@ describe Admin::ReportsController, type: :controller do
     @admin = create(:admin)
     @report_user = create(:user)
     sign_in @admin
-    save_recipe_with_ingredient_and_step(recipe, unit)
+    # save_recipe_with_ingredient_and_step(recipe, unit)
   end
   let(:user) { create(:user) }
   let(:genre) { create(:genre) }
   let(:category) { create(:category, genre_id: genre.id) }
   let(:unit) { create(:unit) }
-  let!(:recipe) { build(:recipe, user_id: user.id, category_id: category.id) }
+  # let!(:recipe) { build(:recipe, user_id: user.id, category_id: category.id) }
+  let!(:recipe) { create(:recipe, :with_recipe_ingredient, :with_recipe_step, user_id: @report_user.id, category_id: category.id) }
   let!(:report) {create(:report, user_id: @report_user.id, recipe_id: recipe.id)}
   
   describe "GET #show" do

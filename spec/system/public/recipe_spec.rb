@@ -18,12 +18,38 @@ RSpec.describe "レシピの総合テスト", type: :system do
   
   describe '新規レシピ投稿' do
     context '正常系' do
+      before { visit new_recipe_path }
       it 'test' do
-        visit new_recipe_path
         fill_in 'recipe_title', with: recipe.title
         fill_in 'recipe_content', with: recipe.content
         select '1時間30分', from: 'recipe[total_time]'
       end
+      
+      it 'レシピ名フォームが表示される' do
+        expect(page).to have_field 'recipe[title]'
+      end
+      
+      it 'レシピ紹介文フォームが表示される' do
+        expect(page).to have_field 'recipe[content]'
+      end
+      
+      it '調理時間選択フォームが表示される' do
+        expect(page).to have_field 'recipe[total_time]'
+      end
+      
+      it 'ジャンル選択フォームが表示される' do
+        expect(page).to have_field 'recipe[genre_id]'
+      end
+      
+      it 'カテゴリー選択フォームが入力不可(disabled)で表示される' do
+        expect(page).to have_field('recipe[category_id]', disabled: true)
+      end
+      
+      
+      it 'レシピを投稿するボタンが表示される' do
+        expect(page).to have_button 'レシピを投稿する'
+      end
+      
     end
     context '異常系' do
     end

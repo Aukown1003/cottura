@@ -2,7 +2,8 @@ FactoryBot.define do
   # レシピモデルのダミーデータ
   factory :recipe do
     user_id { association :user }
-    category_id { association :category }
+    # category_id { association :category }
+    association :category
     title { Faker::Lorem.characters(number: 20) }
     content { Faker::Lorem.characters(number: 20) }
     total_time { Faker::Number.number(digits: 3) }
