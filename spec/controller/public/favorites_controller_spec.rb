@@ -18,7 +18,6 @@ describe Public::FavoritesController, type: :controller do
     let!(:favorite_params) { build(:favorite, user_id: @user.id, recipe_id: recipe.id) }
     context '正常系' do
       it 'お気に入りが保存される' do
-        # binding.pry
         expect{post :create, xhr: true, params:{ favorite: favorite_params.attributes, recipe_id: recipe.id} }.to change(Favorite, :count).by(1)
       end
     end

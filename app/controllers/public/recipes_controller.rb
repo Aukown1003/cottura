@@ -29,7 +29,7 @@ class Public::RecipesController < ApplicationController
   def create
     ActiveRecord::Base.transaction do
       @recipe = current_user.recipes.new(recipe_params)
-      if @recipe.save
+      if @recipe.save!
         redirect_to user_path(current_user.id), notice: "レシピを投稿しました"
       else
         @recipe.image = nil
