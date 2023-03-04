@@ -27,7 +27,6 @@ class Public::RecipesController < ApplicationController
   end
 
   def create
-    binding.pry
     ActiveRecord::Base.transaction do
       @recipe = current_user.recipes.new(recipe_params)
       if @recipe.save

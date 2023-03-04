@@ -6,6 +6,7 @@ RSpec.describe "レシピの総合テスト", type: :system do
   before do
     @user = create(:user)
     @gest_user = create(:user, email: "guest@example.com")
+    @admin = create(:admin)
     sign_in @user
   end
   
@@ -146,8 +147,34 @@ RSpec.describe "レシピの総合テスト", type: :system do
         click_button 'レシピを投稿する'
         expect(page).to have_content("カテゴリー が選択されていません。")
       end
-      
-      
     end
   end
+  
+  describe 'レシピ詳細' do
+    
+    it '登録したレシピのデータが正しく表示されている' do
+      visit recipe_path(posted_recipe.id)
+      expect(page).to have_content(posted_recipe.title)
+      expect(page).to have_content(posted_recipe.content)
+      expect(page).to have_content("材料名1")
+      expect(page).to have_content(100)
+      expect(page).to have_content("単位1")
+    end
+    
+    it '管理者にはレシピ編集、レシピ削除のリンクが表示される' do
+      sign_in @admin
+      visit recipe_path(posted_recipe.id)
+      expect(page).to have_content("レシピ編集")
+      expect(page).to have_content("レシピ削除")
+    end
+    
+    it '管理者と本人以外にはレシピ編集、レシピ削除のリンクが表示されない' do
+      sign_in @gest_user
+      visit recipe_path(posted_recipe.id)
+      expect(page).to_not have_content("レシピ編集")
+      expect(page).to_not have_content("レシピ削除")
+    end
+    
+  end
+  
 end

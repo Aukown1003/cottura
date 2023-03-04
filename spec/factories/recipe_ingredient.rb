@@ -3,7 +3,7 @@ FactoryBot.define do
   factory :recipe_ingredient do
     recipe_id { association :recipe }
     association :unit 
-    name { Faker::Lorem.words(number: 3) }
-    quantity { Faker::Number.number(digits: 3) }
+    name { "材料名1" }
+    quantity { 100 }
   end
 end
