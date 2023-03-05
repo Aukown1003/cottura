@@ -6,7 +6,7 @@ FactoryBot.define do
     association :category
     title { Faker::Lorem.characters(number: 20) }
     content { Faker::Lorem.characters(number: 20) }
-    total_time { Faker::Number.number(digits: 3) }
+    total_time { 180 }
     is_open { "true" }
     impressions_count { 0 }
     payload { nil }

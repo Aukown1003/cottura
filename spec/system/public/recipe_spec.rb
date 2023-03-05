@@ -177,4 +177,39 @@ RSpec.describe "レシピの総合テスト", type: :system do
     
   end
   
+  describe 'レシピ編集' do
+    before { visit edit_recipe_path(posted_recipe.id) }
+    
+    context '正常系' do
+      it 'レシピ名フォームが表示され、保存されたレシピ名が入力されている' do
+        expect(page).to have_field 'recipe[title]', with: posted_recipe.title
+      end
+      
+      it 'レシピ紹介文フォームが表示され、保存されたレシピ紹介が入力されている' do
+        expect(page).to have_field 'recipe[content]', with: posted_recipe.content
+      end
+      
+      it '調理時間選択フォームが表示され、保存された調理時間が選択されている' do
+        expect(page).to have_field 'recipe[total_time]', with: posted_recipe.total_time
+      end
+      
+      it 'ジャンル選択フォームが表示され、カテゴリーidに紐づくジャンルが選択されている' do
+        expect(page).to have_field 'recipe[genre_id]', with: posted_recipe.category.genre.id
+      end
+      
+      it 'ジャンル選択フォームが表示され、保存されたジャンルが選択されている' do
+        expect(page).to have_field 'recipe[category_id]', with: posted_recipe.category_id
+      end
+      
+      
+      
+    end
+    
+    context '異常系' do
+      
+    end
+  end
+  
+  describe 'レシピ削除' do
+  end
 end
