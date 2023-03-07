@@ -178,7 +178,11 @@ RSpec.describe "レシピの総合テスト", type: :system do
   end
   
   describe 'レシピ編集' do
-    before { visit edit_recipe_path(posted_recipe.id) }
+    before do
+      new_genre = create(:genre, name: '汁もの') 
+      create(:category, name: '味噌汁', genre_id: new_genre.id)
+      visit edit_recipe_path(posted_recipe.id)
+    end
     
     context '正常系' do
       it 'レシピ名フォームが表示され、保存されたレシピ名が入力されている' do
@@ -201,6 +205,33 @@ RSpec.describe "レシピの総合テスト", type: :system do
         expect(page).to have_field 'recipe[category_id]', with: posted_recipe.category_id
       end
       
+      it 'レシピが編集できる' do
+        fill_in 'recipe[title]', with: "recipe_title2"
+        fill_in 'recipe[content]', with: "recipe_content2"
+        select '2時間', from: 'recipe[total_time]'
+        select '汁もの', from: 'recipe[genre_id]', visible: false
+        select '味噌汁', from: 'recipe[category_id]', visible: false, disabled: false
+        click_link "材料の追加"
+        page.all(".ingredient-name")[1].set("材料名2")
+        page.all(".ingredient-quantity")[1].set(200)
+        click_link "作り方の追加"
+        page.all(".step-content")[1].set("作り方2")
+        find('label[for=recipe_is_open_false]').click 
+        click_button 'レシピを投稿する'
+        visit recipe_path(posted_recipe.id)
+        expect(page).to have_content("recipe_title2")
+        expect(page).to have_content("recipe_content2")
+        expect(page).to have_content(jp_time_date(posted_recipe.updated_at))
+        expect(page).to have_content("2時間")
+        expect(page).to have_content("汁もの")
+        expect(page).to have_content("味噌汁")
+        expect(page).to have_content("材料名1")
+        expect(page).to have_content("材料名2")
+        expect(page).to have_content(100)
+        expect(page).to have_content(200)
+        expect(page).to have_content("作り方1")
+        expect(page).to have_content("作り方2")
+      end
       
       
     end
