@@ -232,12 +232,48 @@ RSpec.describe "レシピの総合テスト", type: :system do
         expect(page).to have_content("作り方1")
         expect(page).to have_content("作り方2")
       end
-      
-      
     end
     
     context '異常系' do
       
+      it "レシピ名か、レシピ紹介、調理時間が未選択であると送信できず入力するように促される" do
+        fill_in 'recipe[title]', with: nil
+        fill_in 'recipe[content]', with: nil
+        select '汁もの', from: 'recipe[genre_id]', visible: false
+        select '味噌汁', from: 'recipe[category_id]', visible: false, disabled: false
+        click_link "材料の追加"
+        page.all(".ingredient-name")[1].set("材料名2")
+        page.all(".ingredient-quantity")[1].set(200)
+        click_link "作り方の追加"
+        page.all(".step-content")[1].set("作り方2")
+        find('label[for=recipe_is_open_false]').click 
+        click_button 'レシピを投稿する'
+        expect(page).to have_current_path(edit_recipe_path(posted_recipe.id))
+      end
+      
+      it '材料名と材料の分量が未入力だと、レシピを更新できず、エラーメッセージが表示される' do
+        find(".ingredient-name").set(nil)
+        find(".ingredient-quantity").set(nil)
+        click_button 'レシピを投稿する'
+        expect(page).to have_content("編集に失敗しました")
+        expect(page).to have_content("材料名 が入力されていません。")
+        expect(page).to have_content("分量 が入力されていません。")
+      end
+      
+      it '作り方の詳細が未入力だと、レシピを更新できず、エラーメッセージが表示される' do
+        find(".step-content").set(nil)
+        click_button 'レシピを投稿する'
+        expect(page).to have_content("編集に失敗しました")
+        expect(page).to have_content("作り方の詳細 が入力されていません。")
+      end
+      
+      
+      it "他の方のレシピは編集不可" do
+        sign_in @gest_user
+        visit edit_recipe_path(posted_recipe.id)
+        expect(current_path).to eq root_path
+        expect(page).to have_content("他の会員のレシピの更新、削除はできません")
+      end
     end
   end
   
