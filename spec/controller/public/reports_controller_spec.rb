@@ -7,11 +7,13 @@ describe Public::ReportsController, type: :controller do
     @genre = create(:genre)
     request.env['devise.mapping'] = Devise.mappings[:user]
     sign_in @user
-    save_recipe_with_ingredient_and_step(recipe, unit)
+    # save_recipe_with_ingredient_and_step(recipe, unit)
   end
   let(:category) { create(:category, genre_id: @genre.id) }
-  let(:unit) { create(:unit) }
-  let!(:recipe) { build(:recipe, user_id: @recipe_user.id, category_id: category.id) }
+  # let(:unit) { create(:unit) }
+  # let!(:recipe) { build(:recipe, user_id: @recipe_user.id, category_id: category.id) }
+  let!(:recipe) { create(:recipe, :with_recipe_ingredient, :with_recipe_step, user_id: @user.id, category_id: category.id) }
+  
   
   describe 'GET #new' do
     before { get :new, params:{ id: recipe.id }}

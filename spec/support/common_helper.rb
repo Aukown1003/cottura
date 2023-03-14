@@ -31,4 +31,8 @@ module CommonHelpers
     expect(response).to render_template action
     expect(flash[:alert]).to eq messege
   end
+  
+  def jp_time_date(time_date)
+    time_date.strftime("%Y年%m月%d日")
+  end
 end

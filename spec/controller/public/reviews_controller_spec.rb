@@ -62,7 +62,7 @@ describe Public::ReviewsController, type: :controller do
     
     context "正常系" do
       it 'レビューが削除され、レシピ詳細ページに戻り、メッセージが表示される' do
-        expect {delete :destroy, params: { id: review.id, recipe_id: recipe.id }}.to change(Review, :count).by(-1)
+        expect {delete :destroy, params: { id: review.id }}.to change(Review, :count).by(-1)
         expect_redirect_to_with_notice(recipe_path(recipe.id), 'レビューを削除しました。')
       end
     end
@@ -74,21 +74,21 @@ describe Public::ReviewsController, type: :controller do
       
       it '未ログイン時にレビューを削除しようとすると、保存されずレシピ一覧に移動し、エラーメッセージが表示される' do
         sign_out @user
-        delete :destroy, params: { id: review.id, recipe_id: recipe.id }
+        delete :destroy, params: { id: review.id }
         expect_redirect_to_with_alert(recipes_path, '未ログイン時、レビューを投稿、削除することは出来ません')
       end
       
       it 'ゲストユーザーがレビューを削除しようとすると、保存されずレシピ一覧に移動し、エラーメッセージが表示される' do
         sign_out @user
         sign_in @gest_user
-        delete :destroy, params: { id: review.id, recipe_id: recipe.id }
+        delete :destroy, params: { id: review.id }
         expect_redirect_to_with_alert(recipes_path, 'ゲストユーザーはレビューを投稿、削除することは出来ません')
       end
       
       it '自分自身のレシピのレビューを削除しようとすると、保存されずレシピ一覧に移動し、エラーメッセージが表示される' do
         recipe.user_id = @user.id
         recipe.save
-        delete :destroy, params: { id: review.id, recipe_id: recipe.id }
+        delete :destroy, params: { id: review.id }
         expect_redirect_to_with_alert(recipes_path, '自身のレシピにレビューを投稿、削除することは出来ません')
       end
     end

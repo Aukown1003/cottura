@@ -102,10 +102,8 @@ class Public::RecipesController < ApplicationController
 
   # 詳細でのレシピ材料の分量再計算
   def recalculation
-    if params[:recipe].keys.size > 1
-      redirect_to request.referer, alert: '2つ以上の値で再計算は行なえません'
-      return
-    end
+    return redirect_to request.referer, alert: '値を入力してください' if params[:recipe].values[0].empty?
+    return redirect_to request.referer, alert: '2つ以上の値で再計算は行なえません' if params[:recipe].keys.size > 1
     get_recipe_id = params.dig(:recipe).keys.first
     get_quantity = params.dig(:recipe).values.first
     session[:recalculation] = Recipe.calculate_ratio(get_recipe_id, get_quantity)

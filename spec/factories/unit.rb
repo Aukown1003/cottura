@@ -1,6 +1,6 @@
 FactoryBot.define do
   # 単位のダミーデータ
   factory :unit do
-    name { Faker::Lorem.words(number: 3) }
+    name { "単位1" }
   end
 end

@@ -49,19 +49,19 @@ describe User, type: :model do
   end
   
   describe 'アソシエーション' do
-    it 'ユーザーとレシピは、N対1である' do
+    it 'ユーザーとレシピは、1対Nである' do
       expect(User.reflect_on_association(:recipes).macro).to eq :has_many
     end
     
-    it 'ユーザーとレビューは、N対1である' do
+    it 'ユーザーとレビューは、1対Nである' do
       expect(User.reflect_on_association(:reviews).macro).to eq :has_many
     end
     
-    it 'ユーザーとお気に入りは、N対1である' do
+    it 'ユーザーとお気に入りは、1対Nである' do
       expect(User.reflect_on_association(:favorites).macro).to eq :has_many
     end
     
-    it 'ユーザーとレポートは、N対1である' do
+    it 'ユーザーとレポートは、1対Nである' do
       expect(User.reflect_on_association(:reports).macro).to eq :has_many
     end
   end
