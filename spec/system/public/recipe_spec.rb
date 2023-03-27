@@ -278,5 +278,19 @@ RSpec.describe "レシピの総合テスト", type: :system do
   end
   
   describe 'レシピ削除' do
+    context '正常系' do
+      it 'レシピデータを削除出来る' do
+        visit recipe_path(posted_recipe.id)
+        expect(page).to have_content("レシピ削除")
+        click_link "レシピ削除"
+        alert = page.driver.browser.switch_to.alert
+        alert.accept
+        expect(current_path).to eq user_path(posted_recipe.user_id)
+        # posted_recipe を reload した際に ActiveRecord::RecordNotFound エラーが発生することを期待する
+        expect{ posted_recipe.reload }.to raise_error ActiveRecord::RecordNotFound
+      end
+      
+      
+    end
   end
 end
