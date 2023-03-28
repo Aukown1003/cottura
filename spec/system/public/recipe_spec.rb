@@ -289,8 +289,17 @@ RSpec.describe "レシピの総合テスト", type: :system do
         # posted_recipe を reload した際に ActiveRecord::RecordNotFound エラーが発生することを期待する
         expect{ posted_recipe.reload }.to raise_error ActiveRecord::RecordNotFound
       end
-      
-      
+    end
+  end
+  
+  describe 'レシピ検索' do
+    context '正常系' do
+       it 'レシピを検索出来る' do
+         visit recipes_path
+         fill_in 'search', with: posted_recipe.title
+         find('button').click 
+         expect(page).to have_content(posted_recipe.title)
+       end
     end
   end
 end
