@@ -294,12 +294,27 @@ RSpec.describe "レシピの総合テスト", type: :system do
   
   describe 'レシピ検索' do
     context '正常系' do
-       it 'レシピを検索出来る' do
+       it 'レシピ名で検索が出来る' do
          visit recipes_path
          fill_in 'search', with: posted_recipe.title
          find('button').click 
          expect(page).to have_content(posted_recipe.title)
        end
+       
+       it 'レシピの材料で検索出来る' do
+         visit recipes_path
+         fill_in 'search', with: posted_recipe.recipe_ingredients.first.name
+         find('button').click 
+         expect(page).to have_content(posted_recipe.title)
+       end
+       
+       it 'レシピの作り方で検索出来る' do
+         visit recipes_path
+         fill_in 'search', with: posted_recipe.recipe_steps.first.content
+         find('button').click 
+         expect(page).to have_content(posted_recipe.title)
+       end
     end
+    
   end
 end
