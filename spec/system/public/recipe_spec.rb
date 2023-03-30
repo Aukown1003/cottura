@@ -294,26 +294,48 @@ RSpec.describe "レシピの総合テスト", type: :system do
   
   describe 'レシピ検索' do
     context '正常系' do
-       it 'レシピ名で検索が出来る' do
-         visit recipes_path
-         fill_in 'search', with: posted_recipe.title
-         find('button').click 
-         expect(page).to have_content(posted_recipe.title)
-       end
-       
-       it 'レシピの材料で検索出来る' do
-         visit recipes_path
-         fill_in 'search', with: posted_recipe.recipe_ingredients.first.name
-         find('button').click 
-         expect(page).to have_content(posted_recipe.title)
-       end
-       
-       it 'レシピの作り方で検索出来る' do
-         visit recipes_path
-         fill_in 'search', with: posted_recipe.recipe_steps.first.content
-         find('button').click 
-         expect(page).to have_content(posted_recipe.title)
-       end
+      before do
+        visit recipes_path
+      end
+      it 'レシピ名で検索が出来る' do
+        fill_in 'search', with: posted_recipe.title
+        find('button').click 
+        expect(page).to have_content(posted_recipe.title)
+      end
+     
+      it 'レシピの材料で検索出来る' do
+        fill_in 'search', with: posted_recipe.recipe_ingredients.first.name
+        find('button').click 
+        expect(page).to have_content(posted_recipe.title)
+      end
+     
+      it 'レシピの作り方で検索出来る' do
+        fill_in 'search', with: posted_recipe.recipe_steps.first.content
+        find('button').click 
+        expect(page).to have_content(posted_recipe.title)
+      end
+      
+      it '合致するものがない場合は表示されない' do
+        fill_in 'search', with: 'テスト'
+        find('button').click 
+        expect(page).to_not have_content(posted_recipe.title)
+      end
+      
+      it '時間での絞り込みと併用できる' do
+        find('.time-btn').click
+        click_link "3時間以内"
+        fill_in 'search', with: posted_recipe.title
+        find('button').click 
+        expect(page).to have_content(posted_recipe.title)
+      end
+      
+      it '時間での絞り込み時、レシピ名と一致しても絞り込んだ時間の条件が合わなければ表示されない' do
+        find('.time-btn').click
+        click_link "2時間以内"
+        fill_in 'search', with: posted_recipe.title
+        find('button').click 
+        expect(page).to_not have_content(posted_recipe.title)
+      end
     end
     
   end
